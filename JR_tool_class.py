@@ -1,11 +1,13 @@
 from JR_dragger_class import *
 from JR_attribute_class import *
 from JR_selection_class import *
+from JR_material_class import *
+import JR_camera_shake
 import JR_playblast_tool
 import JR_rename_tool
 import JR_camera_shuffle
 #
-class Tools(Selection, DraggerTool, Attributes):
+class Tools(Selection, DraggerTool, Attributes, Materials):
 	def __init__(self):
 		Selection.__init__(self)
 	def convertSelection(self, toType):
@@ -30,11 +32,18 @@ class Tools(Selection, DraggerTool, Attributes):
 				cmds.selectType(polymeshFace = True) # default in case no type matches
 		else:
 			cmds.selectType( allComponents = False, allObjects = True )
+	def cameraShakeTool(self):
+		JR_camera_shake.CameraShake.toggle()
 	def renameTool(self):
 		JR_rename_tool.UI()
-	def playblastTool(self):
+	def bridgeTool(self):
+		X = self.getSelection()
+		cmds.polyBridgeEdge(X, ch= 1, divisions= 0, smoothingAngle = 30)
+		Attribute.setAttributes( attrs = [ ('Twist', '.twist') , ('Divisions', '.divisions'), ('CurveType', '.curveType'), ('Taper', '.taper') ]  )
+		Dragger( X , 'Bridge')
+	def playblastTool(self, formatInfo):
 		selectedCams = []
-		formatInfo = [ 'qt', 'Sorenson Video 3', [1280, 720] ]
+		#formatInfo = [ 'qt', 'Sorenson Video 3', [1280, 720] ]
 		if self.getSelection == 'None':
 			JR_playblast_tool.playblastStart( self.getCameras('scene'), self.desktop, formatInfo )
 		else:
@@ -43,21 +52,86 @@ class Tools(Selection, DraggerTool, Attributes):
 				if self.getType(i)[0] == 'camera':
 					selectedCams.append(selection[i])
 			if len(selectedCams) == 0:
+				print self.desktop
 				JR_playblast_tool.playblastStart( self.getCameras('scene') , self.desktop, formatInfo )
 			else:
 				JR_playblast_tool.playblastStart( selectedCams , self.desktop, formatInfo )
 	def extrudeTool(self):
+		X = self.getSelection() # adds selection to a variable so we can deselect it later while still using it for the Dragger command.
 		if self.getType(0) == 'face':
-			cmds.polyExtrudeFacet( self.getSelection(), constructionHistory = 1, keepFacesTogether = 1)
-			Attribute.setAttributes( attrs = [('Z Translate', '.localTranslateZ'), ('Local Sca3le', '.localScale'), ('Division', '.divisions')] )
+			cmds.polyExtrudeFacet( X, constructionHistory = 1, keepFacesTogether = 1)
+			Attribute.setAttributes( attrs = [('Z Translate', '.localTranslateZ'), ('Local Scale', '.localScale'), ('Division', '.divisions')] )
+		elif self.getType(0) == 'edge':
+			cmds.polyExtrudeEdge( X, constructionHistory = 1, keepFacesTogether = 1)
+			Attribute.setAttributes( attrs = [('Z Translate', '.localTranslateZ'), ('Local Scale', '.localScale'), ('Division', '.divisions')] )
 		else:
 			pass
-		Dragger(self.getSelection(), 'Extrude')
+		#cmds.select( deselect = 1 ) # removes selection from the face initially extruded, to allow for rotation and translation of new extruded face
+		Dragger( X , 'Extrude')
+	def chipFacesTool(self):
+		# cuts faces off of the poly and then seperates the faces to it's own polygon object, also ungroups them
+		selectedFaces = self.getSelection()
+		selectionParent = cmds.listRelatives(selectedFaces[0], p=True)
+		cmds.polyChipOff( selectedFaces, dup=True)
+		seperated = cmds.polySeparate(selectionParent[0])
+		allSeperated = [i for i in seperated if 'Separate' not in i]
+		if len(allSeperated) > 2:
+			cmds.polyUnite(allSeperated[1:])
+			new = self.getSelection()
+		else:
+			new = allSeperated[1]
+		old = []; old.append(allSeperated[0])
+		oldParent = cmds.listRelatives(old[0], p=True)
+		oldParentChildren = cmds.listRelatives(oldParent[0], c=True)
+		oldNodesToDelete = set(old) ^ set(oldParentChildren)
+		cmds.ungroup( oldParent )
+		cmds.delete(new, ch=1)
+		cmds.delete(old, ch=1)
+		cmds.rename(old, oldParent )
+		cmds.select(new)
+		self.assignRandomMaterial() # assigns random lambert to newly created poly
+		cmds.delete(selectedFaces)
+		cmds.select(new) # reselect it after material assign
+		JR_rename_tool.UI('exit') # to rename the freshly branched poly
+	def bevelTool(self):
+		X = self.getSelection() # this is added because once the bevel is performed the face is deselected.
+		cmds.polyBevel( X, ch=1, offset=0.5 ,segments =1, smoothingAngle = 30, offsetAsFraction = 1, autoFit = 1, worldSpace = 1, angleTolerance = 180, miteringAngle = 180, uvAssignment = 0, mergeVertices = 1, mergeVertexTolerance = 0.0001 )
+		Attribute.setAttributes( attrs = [ ('Offset', '.offset'), ('Segments', '.segments') ] )
+		Dragger( X , 'Bevel')
+	def polySeperateTool(self):
+		cmds.polySeparate()
+		cmds.delete(ch=1)
+		A = self.getSelection()
+		B = cmds.listRelatives(A[0], p=True)
+		cmds.ungroup( B )
+		cmds.select(A)
+		JR_rename_tool.UI('exit') # to rename the freshly branched poly
+	def polyMergeTool(self):
+		cmds.polyUnite( self.getSelection() )
+		cmds.delete(ch=1)
+		JR_rename_tool.UI('exit') # to rename the freshly branched poly
+	def vertexMergeTool(self):
+		length = len( self.getSelection() )
+		if self.getSelection() == 'None': # set tool to the merge vertex tool if no verts are selected
+			cmds.setToolTo('polyMergeVertexContext')
+		else: # if verts are already selected, then run the commands below
+			if self.getType(0) == 'vertex': # check to see if the selection is of the vertex type, in case the mask is set to vert but the sel is edge etc.
+				if length == 2:
+					cmds.polyMergeVertex(alwaysMergeTwoVertices = True)
+				elif length  > 2:
+					cmds.polyMergeVertex(distance = 0.01)
+					newLength = len(self.getSelection())
+					if newLength == length: # Nothing was merged because the before and after are the same, state so
+						cmds.headsUpMessage( str(length) + ' Verts Selected - 0 Merged', verticalOffset=-100, horizontalOffset=-200 )
+					else: # means a merge did happen, so tell how many were merged and how many are left now
+						cmds.headsUpMessage( 'FROM ' + str(length) + ' TO ' + str(newLength), verticalOffset=-100, horizontalOffset=-200 )
+			else:
+				cmds.warning('Vertex not selected')
 	def exportTool(self, category):
 		if category == 'frostbite':
-			print 'here is where the Frostbite export will go'
+			cmds.warning( 'here is where the Frostbite export will go')
 		Attribute.setAttributes()
-	def cameraTool(self, category):
+	def cameraTool(self, category = 'NA'):
 		if category == 'frostbite':
 			frostbiteCam = cmds.camera(dr = 1, dgm = 1, ncp = .1, fcp = 10000 )
 			cmds.addAttr( frostbiteCam [0], longName = 'isCamera', attributeType = 'bool' )
@@ -69,8 +143,8 @@ class Tools(Selection, DraggerTool, Attributes):
 			cmds.addAttr( frostbiteCam [0], longName = 'FOV' )
 			cmds.setAttr( str(frostbiteCam [0]) +'.FOV', keyable = True )
 			cmds.color( frostbiteCam[0], ud=2 )
-		else:
-			print ' only works for Frostbite right now'
+		elif category == 'NA':
+			cmds.camera(dr = 1, dgm = 1, ncp = .01, fcp = 10000 )
 		Attribute.setAttributes()
 	def motionPathTool(self, status):
 		if status == 'On':
@@ -81,11 +155,6 @@ class Tools(Selection, DraggerTool, Attributes):
 			print 'need to fix'
 	def sceneCamSwitch(self):
 		i = self.getCameras('scene')
-		# Activate lens HUD window
-		x = cmds.window('FOV', query=1 , exists = 1)
-		if x is False:
-			HUD.lensHUD()
-		#
 		# check cached offset to see if it's beyond the limit
 		if Cache.camSceneOffset > len(i) - 1:
 			Cache.camSceneOffset = 0
@@ -93,12 +162,12 @@ class Tools(Selection, DraggerTool, Attributes):
 		JR_camera_shuffle.createWindow(i) 
 		#
 		if Cache.cameraJob == 2000: ### this is the default number setup in Cache, not the most ideal way to work :S
-			Cache.cameraJob = cmds.scriptJob(e= ["SelectionChanged", "JR_camera_shuffle.currentCamera()"] ) #, protected=True)
+			Cache.cameraJob = cmds.scriptJob ( event = ["SelectionChanged", "JR_camera_shuffle.currentCamera()"] ) #, protected=True)
 			print Cache.cameraJob, ' this is the camera job #'
 		# add to the offset
 		Cache.camSceneOffset +=1
 		# clear attributes
-		Attribute.setAttributes()
+		#Attribute.setAttributes()
 	def defaultCamSwitch(self):
 		i = self.getCameras('default')
 		# check cached offset to see if it's beyond the limit
@@ -113,7 +182,7 @@ class Tools(Selection, DraggerTool, Attributes):
 		cmds.modelEditor( 'modelPanel4', edit=True, camera = i[ Cache.camDefaultOffset ])
 		Cache.camDefaultOffset +=1
 		# clear attributes
-		Attribute.setAttributes()
+		#Attribute.setAttributes()
 	def selectTool(self):
 		selectAttributes = [ ('Normal', 'options = 4'), ('Reflection', '.options = 4') ]
 		paintAttributes = [ ('Select', 'options = 4'), ('Soft Select', '.options = 4'), ('Brush Size', '.options = 4') ]

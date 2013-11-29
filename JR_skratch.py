@@ -1,3 +1,117 @@
+
+###########################
+###   MEASUREMENT TOOL  ###
+###########################
+import maya.cmds as cmds
+sl = cmds.ls(selection=True, flatten = True)
+oldLocators = cmds.ls(type = 'locator')
+oldDistances = cmds.ls(type = 'distanceDimShape')
+item1 = cmds.pointPosition( sl[0] )
+item2 = cmds.pointPosition( sl[1] )
+cmds.distanceDimension( startPoint = item1, endPoint= item2 )
+newLocators = set(cmds.ls(type='locator')) - set(oldLocators)
+newDistances = set(cmds.ls(type='distanceDimShape')) - set(oldDistances)
+if len(newLocators) == 2:
+    cmds.group(list(newLocators)[0], list(newLocators)[1] , list(newDistances)[0], n = 'measurement')
+elif len(newLocators) == 1:
+    cmds.group(list(newLocators)[0], list(newDistances)[0], n = 'measurement')
+###########################
+###    PLAYBLAST HUD3   ###
+###########################
+import maya.cmds as cmds
+cmds.window(t='Playblast')
+icon = cmds.internalVar(upd = True) + 'icons/JR_icons/folder.jpg'
+mainLayout = cmds.columnLayout(w = 180, h = 80)
+rowColumnLayout = cmds.rowColumnLayout(nc = 3, cw = [(1, 50), (2, 60), (3, 60)] , columnOffset = [(1, 'both', 5), (2, 'both', 5), (3, 'both', 5)]   ) # first section relates to 1 and 2 columb widths
+cmds.radioCollection()
+cmds.text( label='Frame:', align = 'left' )
+cmds.radioButton( label='1080' )
+cmds.radioButton( label='720' )
+cmds.radioCollection()
+cmds.text( label='Format:', align = 'left' )
+cmds.radioButton( label='avi' )
+cmds.radioButton( label='mov' )
+characerOptionMenu = cmds.optionMenu ( width = 160, label = 'Codec:    ')
+cmds.text( label='')
+cmds.text( label='' )
+cmds.text( label='Custom:', align = 'left' )
+customWidth = cmds.textField(text = 'W')
+customHeight = cmds.textField(text = 'H')
+inputField = cmds.textField( w =120, text = 'Location')
+cmds.text( label='')
+cmds.symbolButton(w=20, h=20, image = icon )
+cmds.showWindow()
+###########################
+###    PLAYBLAST HUD2   ###
+###########################
+import maya.cmds as cmds
+#    The following script will position the buttons in 2 rows, each
+#    row a different height.
+#
+#    +----++----++----++----+
+#    | b1 || b3 || b5 || b7 |
+#    +----++----++----++----+
+#    +----++----++----+
+#    |    ||    ||    |
+#    | b2 || b4 || b6 |
+#    |    ||    ||    |
+#    +----++----++----+
+#
+cmds.window()
+cmds.rowColumnLayout( numberOfRows=1 )
+cmds.button(l = 'Playblast')
+#numberOfColumns=3, columnWidth=[(1, 60), (2, 80), (3, 100)] 
+cmds.rowColumnLayout( numberOfColumns=4)
+cmds.radioCollection()
+cmds.separator(style = 'none'); cmds.separator(style = 'none'); cmds.separator(style = 'none'); cmds.separator(style = 'none')
+cmds.separator( width=60, style='in' )
+cmds.separator( width=60, style='in' )
+cmds.separator( width=60, style='in' )
+cmds.separator( width=60, style='in' )
+cmds.text( label='  Size: ' )
+#cmds.separator(style = 'none', w = 40)
+cmds.radioButton( label='1080' )
+cmds.radioButton( label='720' )
+cmds.radioButton( label='640' )
+cmds.text( label='Width:' )
+customWidth = cmds.textField(w=5)
+cmds.text( label='Height:' )
+customHeight = cmds.textField(w=10)
+cmds.separator(style = 'none')
+cmds.separator(style = 'none')
+cmds.separator(style = 'none')
+#cmds.separator( width=60, style='in' )
+cmds.showWindow()
+###########################
+###    PLAYBLAST HUD    ###
+###########################
+import maya.cmds as cmds
+def change1():
+    print 'one'
+def change2():
+    print 'two'
+def change3():
+    print 'three'
+def lensHUD():
+	cmds.window('FOV4')
+	cmds.rowColumnLayout( nc=1,cw= [(2,60)] )
+	cmds.radioCollection()
+	cmds.separator(h= 10, style = 'none')
+	cmds.text(label = "SIZE :", align = 'left')
+	cmds.radioButton( label='  720' )
+	cmds.radioButton( label='1080' )
+	###
+	cmds.separator(h= 10, style = 'none')
+	cmds.text(label = "COMPRESSION :", align = 'left')
+	cmds.radioCollection()
+	cmds.radioButton( label='Sorenson 3' )
+	cmds.radioButton( label='Quicktime' )
+	cmds.radioButton( label='AVI' )
+	cmds.separator(h= 10, style = 'none')
+	cmds.button (l= 'PLAYBLAST', al='center', w= 160, h= 20, c= change1 )
+	cmds.showWindow('FOV4')
+lensHUD()
+
 ###########################
 ###    PLAYBLAST CODE   ###
 ###########################

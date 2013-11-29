@@ -69,6 +69,9 @@ class Hotkeys(Selection):
 					Tool.selectionMask( 'face' )
 	def alt_three(self):
 		JR_custom_window.graphWindow()
+	###############################################      4      ###############################################
+	def alt_four(self):
+		cmds.HypershadeWindow()
 	###############################################      Q      ###############################################
 	def q (self):
 		offsetCount = 2
@@ -129,7 +132,7 @@ class Hotkeys(Selection):
 			Tool.exportTool(Cache.currentCategory)
 		else:
 			Cache.currentTool = ''
-			print ' only works with Frostbite category right now'
+			cmds.warning(' only works with Frostbite category right now')
 		HUD.updateToolHUD()
 	###############################################      R      ###############################################
 	def r (self):
@@ -152,13 +155,17 @@ class Hotkeys(Selection):
 	def alt_r(self):
 		Tool.renameTool()
 		HUD.updateToolHUD()
+	def ctrl_r(self):
+		cmds.ReferenceEditor()
 	###############################################      L      ###############################################
 	def ctrl_l (self):
-		cmds.spaceLocator( name = 'JR_locator_01', position = self.getMiddle())
-		cmds.xform(centerPivots=True)
+		i = self.getMiddle()[0]
+		cmds.spaceLocator( name = 'JR_locator_01', position = (0,0,0) )# 0 for the possion value in the returned middle
+		cmds.xform( translation = i )
+		#cmds.xform(centerPivots=True)
 	###############################################      P      ###############################################
 	def alt_p (self):
-		Tool.playblastTool()
+		HUD.playblastHUD()
 	###############################################      F      ###############################################
 	#def f (self):
 	#	cmds.viewFit(animate = False)
@@ -169,34 +176,81 @@ class Hotkeys(Selection):
 		if self.getType(0)[1] == 'CAMERA':
 			currentCamera = self.getSelection()
 			cmds.setKeyframe(str(currentCamera[0]) + '.fl')
+		if self.getType(0) == 'edge':
+			cmds.polyCloseBorder()
+	###############################################      B      ###############################################
+	def alt_b (self):
+		if self.getSelection() == 'None':
+			cmds.CycleBackgroundColor() # cycles the background color as per the default
+		else:
+			if self.getType(0) == 'face' or self.getType(0) == 'vertex' or self.getType(0) == 'edge':
+				Tool.bevelTool()
+			# switch this over to recognize the animation category later on istead of just fitting to a camera selection. Should be able to work on any object selected
+			elif self.getType(0)[0] == 'camera':
+				start = cmds.findKeyframe( self.getSelection(), which = "first" )
+				end = cmds.findKeyframe( self.getSelection(), which = "last" )
+				if start == end: # this means there's no keyframes
+					start = cmds.playbackOptions(q=1, minTime=1)
+					end =   cmds.playbackOptions(q=1, maxTime=1)
+				cmds.bakeSimulation(self.getSelection(), time =(start,end), sampleBy = 1 )
+
+	###############################################      D      ###############################################
+	def d (self):
+		# Tool To create the measurement tool when vertexes are selected
+		if self.getType(0) == 'vertex':
+			sl = cmds.ls(selection=True, flatten = True)
+			locators = cmds.ls(type = 'locator')
+			distances = cmds.ls(type = 'distanceDimShape')
+			cmds.distanceDimension(startPoint = cmds.pointPosition( self.getSelection()[0]) ,endPoint= cmds.pointPosition( self.getSelection()[1] ))
+			newLocators = set(cmds.ls(type='locator')) - set(locators)
+			newDistances = set(cmds.ls(type='distanceDimShape')) - set(distances)
+			if len(newLocators) == 2:
+			    cmds.group(list(newLocators)[0], list(newLocators)[1] , list(newDistances)[0], n = 'measurement')
+			elif len(newLocators) == 1:
+			    cmds.group(list(newLocators)[0], list(newDistances)[0], n = 'measurement')
 	###############################################      A      ###############################################
 	#def a (self):
 	#	cmds.viewFit(all = True, animate = False)
 	#def a_release(self):
 	#	pass
 	###############################################      I      ###############################################
+	def i (self):
+		cmds.playbackOptions( minTime = cmds.currentTime( query=True ) )
+	def alt_i (self):
+		x = self.getType(0)
+		print x
 	def ctrl_i (self):
 		multipleFilters = "All Files (*.*);;Maya ASCii(*.ma);;Maya Binary(*.mb);;FBX (*.fbx);;Atom(*.atom)"
 		#filename = cmds.fileDialog2(fileMode=1, caption="Import")
 		filename = cmds.fileDialog2 ( fileMode=1, fileFilter= multipleFilters, caption= "Import" )
 		cmds.file ( filename[0], i=True )
+	###############################################      O      ###############################################
+	def o (self):
+		cmds.playbackOptions( maxTime = cmds.currentTime( query=True ) )
 	###############################################      C      ###############################################
 	def c (self):
 		cmds.snapMode( curve = True )
 	def c_release (self):
 		cmds.snapMode( curve = False )
 	def C (self):
-		if Cache.currentCategory == 'frostbite':
-			Cache.currentTool = ''
-			Tool.cameraTool(Cache.currentCategory)
+		if self.getType(0) == 'locator' or self.getType(0)[0] == 'camera':
+			cmds.color(ud = 2)
 		else:
-			Cache.currentTool = ''
-			print ' only works with Frostbite category right now'
+			if Cache.currentCategory == 'frostbite':
+				Cache.currentTool = ''
+				Tool.cameraTool(Cache.currentCategory)
+			else:
+				Cache.currentTool = ''
+				Tool.cameraTool() # just creates a normal camera, nothing special inside
 		HUD.updateToolHUD()
 	def C_release (self):
 		cmds.snapMode( curve = False ) # it gets stuck for some reason and must be turned off
 	def alt_c (self):
 		Tool.sceneCamSwitch()
+		# Activate lens HUD window
+		x = cmds.window('FOV', query=1 , exists = 1)
+		if x is False:
+			HUD.lensHUD()
 	def alt_shift_c (self):
 		Tool.defaultCamSwitch()
 	###############################################      V      ###############################################
@@ -214,12 +268,39 @@ class Hotkeys(Selection):
 			if self.getType(0) == 'face':
 				Cache.currentTool = 'Extrude Face'
 				Tool.extrudeTool()
+			elif self.getType(0) == 'edge':
+				Cache.currentTool = 'Extrude Edge'
+				Tool.extrudeTool()
 			else:
 				Cache.currentTool = ''
-				print 'nothing selected'
+				cmds.warning('nothing selected')
 		HUD.updateToolHUD()
 	###############################################      S      ###############################################
+	def S(self):
+		if cmds.currentCtx() == 'polySlideEdgeContext':
+			cmds.setToolTo ('polySelectEditContext')
+		elif cmds.currentCtx() == 'polySelectEditContext':
+			cmds.setToolTo ('polySlideEdgeContext')
+		else:
+			if self.getType(0) == 'edge':
+				Tool.bridgeTool()
+			elif cmds.selectType(q=1, polymeshVertex = True) == True: #check to see if mask type is vertex
+				Tool.vertexMergeTool()
+			elif self.getType(0) == 'face':
+				Tool.chipFacesTool()
+			elif self.getType(0) == 'mesh':
+				if len(self.getSelection()) == 1:
+					Tool.polySeperateTool() # seperate because there's only one poly selected
+				else:
+					Tool.polyMergeTool() # merge because there's more than one poly selected
+			elif self.getType(0)[0] == 'camera':
+				print 'yes it is'
+				Tool.cameraShakeTool()
+			else:
+				cmds.setToolTo ('polySelectEditContext')
 	def alt_s (self):
 		currentCamera = cmds.modelEditor(Cache.modelPanel, query = 1, cam = 1)
 		cmds.select(currentCamera)
+	def ctrl_S(self):
+		cmds.SaveSceneAs()
 HK = Hotkeys()

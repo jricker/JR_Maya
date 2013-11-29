@@ -1,6 +1,7 @@
 import maya.cmds as cmds
+from functools import partial
 from JR_rename_class import *
-def UI():
+def UI(processCall = 'NA'):
 	refItem = cmds.ls(selection = True, flatten=True); sortedRef = sorted(refItem) #orderedSelection=True - this was in the ls, took it out
 	if sortedRef == []:sortedRef.append('nothing selected') #Used if nothing is selected in scene but tool is called.
 	if cmds.window('renameUI', exists = True):
@@ -9,15 +10,17 @@ def UI():
 	mainLayout = cmds.columnLayout(w = 200, h=100)
 	cmds.text(label = "Name", align = 'left')
 	cmds.textField("inputField", w=200, text=sortedRef[0])
-	cmds.textField('inputField', edit = True, alwaysInvokeEnterCommandOnReturn = True, enterCommand = process)
 	cmds.textField("replaceField", w=200)
-	cmds.textField("replaceField", edit = True, alwaysInvokeEnterCommandOnReturn = True, enterCommand = process)
 	cmds.text(label = "Replace Top with Bottom", align = 'right')
 	cmds.textField("withField", w=200)
-	cmds.textField("withField", edit = True, alwaysInvokeEnterCommandOnReturn = True, enterCommand = process)
+	# add functions
+	cmds.textField('inputField', edit = True, alwaysInvokeEnterCommandOnReturn = True, enterCommand = partial (process, processCall) )
+	cmds.textField("replaceField", edit = True, alwaysInvokeEnterCommandOnReturn = True, enterCommand = partial (process, processCall) )
+	cmds.textField("withField", edit = True, alwaysInvokeEnterCommandOnReturn = True, enterCommand = partial (process, processCall) )
+	cmds.setFocus('withField') # set focus to the with field so it's easier to just tab to the input field
 	cmds.showWindow(window)
-
-def process(*args):
+####
+def process( call, *args):
 	# Selection
 	intialSelection = cmds.ls(selection=True, flatten=True)
 	selections = intialSelection[:]
@@ -42,3 +45,9 @@ def process(*args):
 				cmds.namespace(addNamespace = X [:-1] ) # create namespace if doesn't already exist
 			cmds.rename( D.selection[i] , ':' + D.processNamespace(i) + D.processRename(i) )
 			cmds.namespace(set = ':') # set namespace back to root so any new object created is under the root
+	if call == 'NA':
+		cmds.warning('no exit call, window stays open')
+	elif call == 'exit':
+		cmds.warning('exit called, closing rename window')
+		cmds.evalDeferred('cmds.deleteUI("renameUI")')
+		#cmds.deleteUI(window)

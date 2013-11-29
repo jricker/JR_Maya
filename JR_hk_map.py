@@ -1,4 +1,5 @@
 import maya.cmds as cmds
+from functools import partial
 from JR_cache_class import *
 class Mapping():
 	def __init__(self):
@@ -17,6 +18,8 @@ class Mapping():
 		# 3
 		cmds.nameCommand('three', ann= 'three', stp='python', c="python(\"from JR_hk_cmds import *;i=Hotkeys();i.three()\")")
 		cmds.nameCommand('alt_three', ann= 'alt_three', stp='python', c="python(\"from JR_hk_cmds import *;i=Hotkeys();i.alt_three()\")")
+		# 4
+		cmds.nameCommand('alt_four', ann= 'alt_four', stp='python', c="python(\"from JR_hk_cmds import *;i=Hotkeys();i.alt_four()\")")
 		# Q
 		cmds.nameCommand('q', ann= 'q', stp='python', c="python(\"from JR_hk_cmds import *;i=Hotkeys();i.q()\")")
 		cmds.nameCommand('q_release', ann= 'q_release', stp='python', c="python(\"from JR_hk_cmds import *;i=Hotkeys();i.q_release()\")")
@@ -28,6 +31,7 @@ class Mapping():
 		cmds.nameCommand('e_release', ann= 'e_release', stp='python', c="python(\"from JR_hk_cmds import *;i=Hotkeys();i.e_release()\")")
 		# R
 		cmds.nameCommand('r', ann= 'r', stp='python', c="python(\"from JR_hk_cmds import *;i=Hotkeys();i.r()\")")
+		cmds.nameCommand('ctrl_r', ann= 'ctrl_r', stp='python', c="python(\"from JR_hk_cmds import *;i=Hotkeys();i.ctrl_r()\")")
 		cmds.nameCommand('r_release', ann= 'r_release', stp='python', c="python(\"from JR_hk_cmds import *;i=Hotkeys();i.r_release()\")")
 		cmds.nameCommand('alt_r', ann= 'alt_r', stp='python', c="python(\"from JR_hk_cmds import *;i=Hotkeys();i.alt_r()\")")
 		# L
@@ -37,8 +41,16 @@ class Mapping():
 		cmds.nameCommand('alt_p_release', ann= 'alt_p_release', stp='python', c="python(\"from JR_hk_cmds import *;i=Hotkeys();i.alt_p()\")")
 		# F
 		cmds.nameCommand('F', ann= 'F', stp='python', c="python(\"from JR_hk_cmds import *;i=Hotkeys();i.F()\")")
+		# B
+		cmds.nameCommand('alt_b', ann= 'alt_b', stp='python', c="python(\"from JR_hk_cmds import *;i=Hotkeys();i.alt_b()\")")
+		# D
+		cmds.nameCommand('d', ann= 'd', stp='python', c="python(\"from JR_hk_cmds import *;i=Hotkeys();i.d()\")")
 		# I
+		cmds.nameCommand('i', ann= 'i', stp='python', c="python(\"from JR_hk_cmds import *;i=Hotkeys();i.i()\")")
+		cmds.nameCommand('alt_i', ann= 'alt_i', stp='python', c="python(\"from JR_hk_cmds import *;i=Hotkeys();i.alt_i()\")")
 		cmds.nameCommand('ctrl_i', ann= 'ctrl_i', stp='python', c="python(\"from JR_hk_cmds import *;i=Hotkeys();i.ctrl_i()\")")
+		# O
+		cmds.nameCommand('o', ann= 'o', stp='python', c="python(\"from JR_hk_cmds import *;i=Hotkeys();i.o()\")")
 		# C
 		cmds.nameCommand('c', ann= 'c', stp='python', c="python(\"from JR_hk_cmds import *;i=Hotkeys();i.c()\")")
 		cmds.nameCommand('c_release', ann= 'c_release', stp='python', c="python(\"from JR_hk_cmds import *;i=Hotkeys();i.c_release()\")")
@@ -51,7 +63,9 @@ class Mapping():
 		cmds.nameCommand('x', ann= 'x', stp='python', c="python(\"from JR_hk_cmds import *;i=Hotkeys();i.x()\")")
 		cmds.nameCommand('x_release', ann= 'x_release', stp='python', c="python(\"from JR_hk_cmds import *;i=Hotkeys();i.x_release()\")")
 		# S
+		cmds.nameCommand('S', ann= 'S', stp='python', c="python(\"from JR_hk_cmds import *;i=Hotkeys();i.S()\")")
 		cmds.nameCommand('alt_s', ann= 'alt_s', stp='python', c="python(\"from JR_hk_cmds import *;i=Hotkeys();i.alt_s()\")")
+		cmds.nameCommand('ctrl_S', ann= 'ctrl_S', stp='python', c="python(\"from JR_hk_cmds import *;i=Hotkeys();i.ctrl_S()\")")
 	def categoryHotkeys(self):
 		# X
 		cmds.nameCommand(Cache.currentCategory + '_alt_x', ann= Cache.currentCategory + '_alt_x', stp='python', c="python(\"from JR_hk_cmds import *;i=Hotkeys();i.alt_x()\")")
@@ -82,6 +96,8 @@ class Mapping():
 		# 3
 		cmds.hotkey( k='3', name= 'three' ) # three
 		cmds.hotkey( k='3', alt=True, name= 'alt_three' ) # Alt + three
+		# 4
+		cmds.hotkey( k='4', alt=True, name= 'alt_four' ) # Alt + four
 		# Q
 		cmds.hotkey( k='q', name= 'q', releaseName = 'q_release' ) # q
 		# W
@@ -90,18 +106,24 @@ class Mapping():
 		cmds.hotkey( k='e', name= 'e', releaseName = 'e_release' ) # e
 		# R
 		cmds.hotkey( k='r', name= 'r', releaseName = 'r_release' ) # r
+		cmds.hotkey( k='r', ctl=True, name = 'ctrl_r' ) # Ctrl + r
 		cmds.hotkey( k='r', alt=True, name = 'alt_r' ) # Alt + r
 		# L
 		cmds.hotkey( k='l', ctl=True, name = 'ctrl_l' ) # Ctrl + l
 		# P
 		cmds.hotkey( k='p', alt=True, name = 'alt_p', releaseName = 'alt_p_release' ) # Alt + p
 		# F
-		#cmds.hotkey( k='f', name= 'f', releaseName = 'f_release' ) # f
 		cmds.hotkey( k='F', name= 'F' ) # F
-		# A
-		#cmds.hotkey( k='a', name= 'a', releaseName = 'a_release' ) # a
+		# B
+		cmds.hotkey( k='b', alt=True, name= 'alt_b' ) # ctrl + b
+		# D
+		cmds.hotkey( k='d', name= 'd' ) # d
 		# I
+		cmds.hotkey( k='i', name= 'i' ) # i
+		cmds.hotkey( k='i', alt=True, name= 'alt_i' ) # Alt + i
 		cmds.hotkey( k='i', ctl=True, name= 'ctrl_i' ) # Ctrl + i
+		# O
+		cmds.hotkey( k='o', name= 'o' ) # o
 		# C
 		cmds.hotkey( k='c', name= 'c', releaseName = 'c_release') # c
 		cmds.hotkey( k='c', alt=True, name= 'alt_c') # alt + c
@@ -117,6 +139,8 @@ class Mapping():
 		# E
 		cmds.hotkey( k='e', alt=True, name= category + '_alt_e' ) # Alt + e
 		# S
+		cmds.hotkey( k='S', name= 'S' ) # S
 		cmds.hotkey( k='s', alt=True, name= 'alt_s' ) # Alt + s
+		cmds.hotkey( k='S', ctl=True, name= 'ctrl_S' ) # Ctrl + Shift + s
 #
 Map = Mapping()

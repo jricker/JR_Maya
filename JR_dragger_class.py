@@ -9,6 +9,7 @@ class DraggerTool(Selection):
 		self.dragDirection = []
 	def __call__(self, selection , historyName ):
 		self.selection = selection
+		print self.selection, ' this is the selection'
 		self.history = self.getHistory(-1, historyName)
 		self.attribute = self.history[-1] + Cache.currentAttribute
 		print self.attribute, ' this is the start attribute'
@@ -49,10 +50,10 @@ class DraggerTool(Selection):
 			cmds.draggerContext( 'dragTool', edit=True, space = 'screen')
 		if self.modifier == 'ctrl':
 			self.speed = self.speed * .01
-			self.speedY = self.speedY * .01
+			#self.speedY = self.speedY * .01
 		if self.modifier == 'shift':
 			self.speed = self.speed * 10
-			self.speedY = self.speedY * 10
+			#self.speedY = self.speedY * 10
 		if len(self.dragDirection) > 0:
 			self.dragDirection = []
 	def dragFunction(self):

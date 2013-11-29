@@ -18,4 +18,9 @@ class myCache():
 		self.camSceneOffset = 0
 		self.camDefaultOffset = 0
 		self.lensHUDvis = 0
+		# cached items for playblast settings
+		self.playblastFormat = 'qt'
+		self.playblastSize = [1280, 720]
+		self.playblastCodec = 'Sorenson Video 3'
+		self.playblastLocation = ''
 Cache = myCache()

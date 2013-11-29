@@ -1,4 +1,5 @@
 import maya.cmds as cmds
+import maya.mel as mel
 def setSceneHUD():
 	return cmds.file(query = True, shortName = True, sceneName = True)
 def resetSceneHUD():
@@ -28,10 +29,19 @@ def playblastStart(cameraList, directory, formatInfo):
 		fileExtension = '.mov'
 	elif formatInfo[0] == 'avi':
 		fileExtension = '.avi'
-	cmds.ToggleCurrentFrame() # turns on the current frame hud
+	# setup the HUD elements to be visible
+	mel.eval( "setCurrentFrameVisibility  (1) ;" )
+	mel.eval( "setSceneTimecodeVisibility (1) ;" )
+	mel.eval( "setFocalLengthVisibility   (1) ;" )
 	cmds.headsUpDisplay( 'sceneNameHUD', edit = True, c = setSceneHUD )
+	#
 	for x in cameraList:
+		# cache current clipping planes just in case we need them for some reason
+		near = cmds.getAttr(str(x) + '.nearClipPlane')
+		far = cmds.getAttr(str(x) +'.farClipPlane')
 		# Set attrs to avoid clipping issues
+		cmds.setAttr(str(x) + '.nearClipPlane', 0.001 )
+		cmds.setAttr(str(x) + '.farClipPlane', 100000 )
 		cmds.setAttr( str(x) + '.bestFitClippingPlanes', False )
 		#
 		cmds.select(x)
@@ -50,7 +60,13 @@ def playblastStart(cameraList, directory, formatInfo):
 			cmds.warning('keyframes found on ' + str(x) + ', playblasting ' + str(start) + ' to ' + str(end) )
 			cmds.playblast (startTime = start, endTime = end, format = formatInfo[0], compression = formatInfo[1], forceOverwrite = 1, showOrnaments = 1, filename = directory + sceneName + '_' + x + fileExtension , clearCache = 1 , viewer = 0, percent = 100, quality = 100, widthHeight = formatInfo[2] )
 		# Set attrs back to normal 
+		cmds.setAttr(str(x) + '.nearClipPlane', near )
+		cmds.setAttr(str(x) + '.farClipPlane', far )
 		cmds.setAttr( str(x) + '.bestFitClippingPlanes', True )
-	cmds.ToggleCurrentFrame() # turns off the current frame hud
+	####
+	mel.eval( "setCurrentFrameVisibility  (0) ;" )
+	mel.eval( "setSceneTimecodeVisibility (0) ;" )
+	mel.eval( "setFocalLengthVisibility   (0) ;" )
+	####
 	cmds.headsUpDisplay( 'sceneNameHUD', edit = True, c = resetSceneHUD )
-	cmds.modelEditor( focus, edit = True, cameras = True, locators = True, grid = 1, lights = 1, displayTextures=0, shadows = 0, displayLights = 'default' , rendererName = 'base_OpenGL_Renderer' ) # sets viewport back to default
+	cmds.modelEditor( focus, edit = True, cameras = True, locators = True, grid = 1, lights = 1, displayTextures=0, shadows = 0, displayLights = 'default' , rendererName = 'base_OpenGL_Renderer', camera = 'persp'  ) # sets viewport back to default

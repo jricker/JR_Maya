@@ -33,15 +33,18 @@ class Selection():
 	def getContext(self):
 		return cmds.currentCtx()
 	def getMiddle(self):
-		middle = [0,0,0] # start middle off as 0 just in the begniing, everytime.
+		# so far this method is only giving values for the position, if you want to put in values
+		# for the rotation and normal directino you'll have to devise actions for those in here as well
+		# using the 1 and 2 slots in the middle attr.
+		middle = [ [0,0,0], [0,0,0], [0,0,0] ] # 0 is the position, 1 is the rotation, 2 is the normal Angle
 		if self.getSelection() == 'None':
-			middle = [0,0,0]
+			middle[0] = [0,0,0]
 		elif len(self.getSelection() ) == 1: # use this if only 1 objects selected
-		    middle = cmds.objectCenter(self.getSelection() ) # find the center of the object and use that as the middle
+		    middle[0] = cmds.objectCenter(self.getSelection() ) # find the center of the object and use that as the middle
 		else: # means more than one item is in the selection list
 		    for i in self.getSelection():
-		        middle = [x + y for x, y in zip(cmds.objectCenter(i), middle)] # sum of the lists of middle and then the object center
-		    middle =[x / len(self.getSelection() ) for x in middle ] # average out the x,y,z values for the final middle list
+		        middle[0] = [x + y for x, y in zip(cmds.objectCenter(i), middle[0])] # sum of the lists of middle and then the object center
+		    middle[0] =[x / len(self.getSelection() ) for x in middle[0] ] # average out the x,y,z values for the final middle list
 		return middle
 	def getType(self, i):
 		currentSelection = self.getSelection()
@@ -67,6 +70,7 @@ class Selection():
 					#print 'it is a transform'
 					getParent = cmds.listRelatives(currentSelection[i], s=True)
 					checkType = cmds.objectType( getParent[0] )
+					print checkType, '  this is the raw type in the transform section'
 					if checkType == 'mesh':
 						return 'mesh'
 					elif checkType == 'camera':
@@ -87,12 +91,15 @@ class Selection():
 						return 'nurb'
 					elif checkType == 'nurbsCurve':
 						return 'curve'
+					elif checkType == 'locator':
+						return 'locator'
 				elif cmds.objectType( currentSelection[i] ) == 'joint':
 					return 'joint'
 		else:
 			return 'None'
 	def getHistory(self, i, historyName):
 		selectionParent = cmds.listRelatives(self.selection[i], p=True)
+		print selectionParent, ' this  is the selection parent test'
 		if historyName == 'Extrude':
 			if self.getType(0) == 'vert':
 				historyName = 'polyExtrudeVertex'
@@ -100,6 +107,8 @@ class Selection():
 				historyName = 'polyExtrudeEdge'
 			elif self.getType(0) == 'face':
 				historyName = 'polyExtrudeFace'
+		elif historyName == 'Bevel':
+			historyName = 'polyBevel'
 		historyList = cmds.listHistory( str(selectionParent[0]) )
 		return sorted( set(x for x in historyList if historyName in x) )
 	def reFunction(self, item, isolate):

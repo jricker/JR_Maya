@@ -22,10 +22,10 @@ def hyperWindow():
 		#cmds.window('hyperGraphPanel1Window', edit = True, vis = True)
 def graphWindow():
 	graphEditor = cmds.getPanel(scriptType = 'graphEditor')
-	print graphEditor
+	print graphEditor, ' this is graphEditor'
 	for editors in graphEditor:
 		graphEditorWindow = (editors + 'Window') 
-		print graphEditorWindow
+		print graphEditorWindow, ' this is graphEditorWindow'
 		if cmds.window(graphEditorWindow, exists = True):
 			cmds.deleteUI(graphEditorWindow, window =True)
 		else:
