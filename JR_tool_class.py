@@ -33,7 +33,7 @@ class Tools(Selection, DraggerTool, Attributes, Materials):
 		else:
 			cmds.selectType( allComponents = False, allObjects = True )
 	def cameraShakeTool(self):
-		JR_camera_shake.CameraShake.toggle()
+		JR_camera_shake.run()
 	def renameTool(self):
 		JR_rename_tool.UI()
 	def bridgeTool(self):
