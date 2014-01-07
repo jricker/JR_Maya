@@ -1,5 +1,6 @@
 class myCache():
 	def __init__(self):
+		self.icons = 'C:\\Program Files\\Autodesk\\Maya2013\\icons'
 		self.attributeList = []
 		self.offset = 0
 		self.keyOffset = 0

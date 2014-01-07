@@ -58,10 +58,10 @@ def setupHotkeys():
 	cmds.setAttr("topShape.farClipPlane",    1000000 )
 	cmds.setAttr("frontShape.farClipPlane",  1000000 )
 	# NEAR PLANE
-	cmds.setAttr("perspShape.nearClipPlane", 0.001 )
-	cmds.setAttr("sideShape.nearClipPlane",  0.001 )
-	cmds.setAttr("topShape.nearClipPlane",   0.001 )
-	cmds.setAttr("frontShape.nearClipPlane", 0.001 )
+	#cmds.setAttr("perspShape.nearClipPlane", 0.01 )
+	#cmds.setAttr("sideShape.nearClipPlane",  0.01 )
+	#cmds.setAttr("topShape.nearClipPlane",   0.01 )
+	#cmds.setAttr("frontShape.nearClipPlane", 0.01 )
 	# turn current frame off to start with
 	mel.eval( "setCurrentFrameVisibility  (0) ;" )
 	mel.eval( "setSceneTimecodeVisibility (0) ;" )

@@ -38,6 +38,7 @@ class Mapping():
 		cmds.nameCommand('ctrl_l', ann= 'ctrl_l', stp='python', c="python(\"from JR_hk_cmds import *;i=Hotkeys();i.ctrl_l()\")")
 		# P
 		cmds.nameCommand('alt_p', ann= 'alt_p', stp='python', c="python(\"from JR_hk_cmds import *;i=Hotkeys();i.alt_p()\")")
+		cmds.nameCommand('ctrl_p', ann= 'ctrl_p', stp='python', c="python(\"from JR_hk_cmds import *;i=Hotkeys();i.ctrl_p()\")")
 		cmds.nameCommand('alt_p_release', ann= 'alt_p_release', stp='python', c="python(\"from JR_hk_cmds import *;i=Hotkeys();i.alt_p()\")")
 		# F
 		cmds.nameCommand('F', ann= 'F', stp='python', c="python(\"from JR_hk_cmds import *;i=Hotkeys();i.F()\")")
@@ -112,6 +113,7 @@ class Mapping():
 		cmds.hotkey( k='l', ctl=True, name = 'ctrl_l' ) # Ctrl + l
 		# P
 		cmds.hotkey( k='p', alt=True, name = 'alt_p', releaseName = 'alt_p_release' ) # Alt + p
+		cmds.hotkey( k='p', ctl=True, name = 'ctrl_p' ) # Ctrl + p
 		# F
 		cmds.hotkey( k='F', name= 'F' ) # F
 		# B

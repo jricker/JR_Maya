@@ -41,6 +41,12 @@ class Tools(Selection, DraggerTool, Attributes, Materials):
 		cmds.polyBridgeEdge(X, ch= 1, divisions= 0, smoothingAngle = 30)
 		Attribute.setAttributes( attrs = [ ('Twist', '.twist') , ('Divisions', '.divisions'), ('CurveType', '.curveType'), ('Taper', '.taper') ]  )
 		Dragger( X , 'Bridge')
+	def smoothTool(self):
+		X = self.getSelection()
+		if self.getType(0) == 'face':
+			cmds.polySubdivideFacet
+			Attribute.setAttributes( attrs = [ ('U', '.divisionsU') , ('V', '.divisionsV') ]  )
+		Dragger(X, 'polySubdFace')
 	def playblastTool(self, formatInfo):
 		selectedCams = []
 		#formatInfo = [ 'qt', 'Sorenson Video 3', [1280, 720] ]
@@ -56,6 +62,13 @@ class Tools(Selection, DraggerTool, Attributes, Materials):
 				JR_playblast_tool.playblastStart( self.getCameras('scene') , self.desktop, formatInfo )
 			else:
 				JR_playblast_tool.playblastStart( selectedCams , self.desktop, formatInfo )
+	def splitFaceTool(self):
+		cmds.polySplitCtx('polySplitContext', edit=1, snaptoedge=1, enablesnap=1, precsnap=10 )
+		cmds.setToolTo('polySplitContext')
+		#cmds.polySplitCtx2('polySplitContext2', edit=1, constrainToEdges=1, edgeMagnets=2, st=0.2 )
+		#cmds.setToolTo('polySplitContext2')
+		#cmds.polySplitCtx2('cutFaces', constrainToEdges=1, edgeMagnets=1, st=0.1) 
+		#cmds.setToolTo('cutFaces')
 	def extrudeTool(self):
 		X = self.getSelection() # adds selection to a variable so we can deselect it later while still using it for the Dragger command.
 		if self.getType(0) == 'face':

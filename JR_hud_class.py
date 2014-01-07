@@ -17,6 +17,21 @@ class HUDs(Selection):
 		else:
 			cmds.window( 'category', h=20, titleBar = 0, s=0)
 			cmds.rowColumnLayout( numberOfRows=1, rs = [10, 10])
+			cmds.button(label = 'CUBE',  c = partial(self.setCategory, 'modeling' ) ) # MODELING
+			cmds.separator(w = categorySpace, style = 'none')
+			cmds.button(label = 'SPHERE', c = partial(self.setCategory, 'frostbite') ) # FROSTBITE
+			cmds.separator(w = categorySpace, style = 'none')
+			cmds.button(label = 'animation', c = partial(self.setCategory, 'animation') ) # ANIMATION
+			cmds.separator(w = categorySpace, style = 'none')
+			cmds.button(label = 'uv', c = partial(self.setCategory, 'uv') ) # UV
+			cmds.showWindow('category')
+	def primitiveMenu(self):
+		categorySpace = 5
+		if cmds.window('primitives', exists=True):
+			cmds.deleteUI('primitives', window=True )
+		else:
+			cmds.window( 'primitives', h=20, titleBar = 0, s=0)
+			cmds.rowColumnLayout( numberOfRows=1, rs = [10, 10])
 			cmds.button(label = 'modeling',  c = partial(self.setCategory, 'modeling' ) ) # MODELING
 			cmds.separator(w = categorySpace, style = 'none')
 			cmds.button(label = 'frostbite', c = partial(self.setCategory, 'frostbite') ) # FROSTBITE
@@ -24,7 +39,7 @@ class HUDs(Selection):
 			cmds.button(label = 'animation', c = partial(self.setCategory, 'animation') ) # ANIMATION
 			cmds.separator(w = categorySpace, style = 'none')
 			cmds.button(label = 'uv', c = partial(self.setCategory, 'uv') ) # UV
-			cmds.showWindow('category')
+			cmds.showWindow('primitives')
 	def lensChange(self, FOV, *args ):
 		currentCamera = cmds.ls(selection = True)
 		#currentCamera = cmds.modelEditor(Cache.modelPanel, query = 1, cam = 1)

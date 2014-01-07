@@ -166,6 +166,9 @@ class Hotkeys(Selection):
 	###############################################      P      ###############################################
 	def alt_p (self):
 		HUD.playblastHUD()
+	def ctrl_p(self):
+		if self.getType(0) == 'face' or self.getType(0) == 'mesh':
+			print 'est'
 	###############################################      F      ###############################################
 	#def f (self):
 	#	cmds.viewFit(animate = False)
@@ -208,6 +211,10 @@ class Hotkeys(Selection):
 			    cmds.group(list(newLocators)[0], list(newLocators)[1] , list(newDistances)[0], n = 'measurement')
 			elif len(newLocators) == 1:
 			    cmds.group(list(newLocators)[0], list(newDistances)[0], n = 'measurement')
+		elif self.getType(0) == 'face':
+			cmds.polySubdivideFacet(sbm=1) #starts it off in linear form
+			Tool.smoothTool()
+		HUD.updateToolHUD()
 	###############################################      A      ###############################################
 	#def a (self):
 	#	cmds.viewFit(all = True, animate = False)
@@ -229,12 +236,17 @@ class Hotkeys(Selection):
 		cmds.playbackOptions( maxTime = cmds.currentTime( query=True ) )
 	###############################################      C      ###############################################
 	def c (self):
-		cmds.snapMode( curve = True )
+		if Cache.currentContext == 'myMove':
+			cmds.snapMode( curve = True )
+		else:
+			print 'this is where we can place the convert or create tools'
 	def c_release (self):
 		cmds.snapMode( curve = False )
 	def C (self):
 		if self.getType(0) == 'locator' or self.getType(0)[0] == 'camera':
 			cmds.color(ud = 2)
+		elif self.getType(0) == 'face' or self.getType(0) == 'mesh':
+			Tool.splitFaceTool()
 		else:
 			if Cache.currentCategory == 'frostbite':
 				Cache.currentTool = ''
@@ -274,6 +286,8 @@ class Hotkeys(Selection):
 			else:
 				Cache.currentTool = ''
 				cmds.warning('nothing selected')
+		else:
+			pass
 		HUD.updateToolHUD()
 	###############################################      S      ###############################################
 	def S(self):
