@@ -52,6 +52,8 @@ class Mapping():
 		cmds.nameCommand('ctrl_i', ann= 'ctrl_i', stp='python', c="python(\"from JR_hk_cmds import *;i=Hotkeys();i.ctrl_i()\")")
 		# O
 		cmds.nameCommand('o', ann= 'o', stp='python', c="python(\"from JR_hk_cmds import *;i=Hotkeys();i.o()\")")
+		# G
+		cmds.nameCommand('alt_g', ann= 'alt_g', stp='python', c="python(\"from JR_hk_cmds import *;i=Hotkeys();i.alt_g()\")")
 		# C
 		cmds.nameCommand('c', ann= 'c', stp='python', c="python(\"from JR_hk_cmds import *;i=Hotkeys();i.c()\")")
 		cmds.nameCommand('c_release', ann= 'c_release', stp='python', c="python(\"from JR_hk_cmds import *;i=Hotkeys();i.c_release()\")")
@@ -126,6 +128,8 @@ class Mapping():
 		cmds.hotkey( k='i', ctl=True, name= 'ctrl_i' ) # Ctrl + i
 		# O
 		cmds.hotkey( k='o', name= 'o' ) # o
+		# G
+		cmds.hotkey( k='g', alt=True, name= 'alt_g') # alt + g
 		# C
 		cmds.hotkey( k='c', name= 'c', releaseName = 'c_release') # c
 		cmds.hotkey( k='c', alt=True, name= 'alt_c') # alt + c

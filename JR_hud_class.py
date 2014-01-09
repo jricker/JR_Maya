@@ -30,28 +30,40 @@ class HUDs(Selection):
 		if cmds.window('primitives', exists=True):
 			cmds.deleteUI('primitives', window=True )
 		else:
-			window = cmds.window(sizeable = 0 )
+			cmds.window('primitives', sizeable = 0, t='' )
 			cmds.rowColumnLayout( numberOfColumns=3, columnWidth=[(1, 40), (2, 40), (3, 40)] )
-			cmds.nodeIconButton( style='iconOnly', command='cmds.polyCube()', image1='polyCube.png' )
-			cmds.nodeIconButton( style='iconOnly', command='cmds.polySphere()', image1='polySphere.png' )
-			cmds.nodeIconButton( style='iconOnly', command='cmds.polyCylinder()', image1='polyCylinder.png' )
-			cmds.nodeIconButton( style='iconOnly', command='cmds.polyCylinder()', image1='polyTorus.png' )
-			cmds.nodeIconButton( style='iconOnly', command='cmds.polyCylinder()', image1='polyCone.png' )
-			cmds.nodeIconButton( style='iconOnly', command='cmds.polyCylinder()', image1='polyPyramid.png' )
-			cmds.nodeIconButton( style='iconOnly', command='cmds.polyCylinder()', image1='polyPipe.png' )
-			cmds.nodeIconButton( style='iconOnly', command='cmds.setToolTo("CreatePolyPlaneCtx")', image1='polyMesh.png' )
-			cmds.nodeIconButton( style='iconOnly', command='cmds.polyCylinder()', image1='curveEP.png' )
-			cmds.showWindow( window )
-			#cmds.window( 'primitives', h=20, titleBar = 0, s=0)
-			#cmds.rowColumnLayout( numberOfRows=1, rs = [10, 10])
-			#cmds.button(label = 'modeling',  c = partial(self.setCategory, 'modeling' ) ) # MODELING
-			#cmds.separator(w = categorySpace, style = 'none')
-			#cmds.button(label = 'frostbite', c = partial(self.setCategory, 'frostbite') ) # FROSTBITE
-			#cmds.separator(w = categorySpace, style = 'none')
-			#cmds.button(label = 'animation', c = partial(self.setCategory, 'animation') ) # ANIMATION
-			#cmds.separator(w = categorySpace, style = 'none')
-			#cmds.button(label = 'uv', c = partial(self.setCategory, 'uv') ) # UV
-			#cmds.showWindow('primitives')
+			cmds.nodeIconButton( style='iconOnly', command= partial(self.primitiveActions, 'CreatePolyCubeCtx', 'cmds.polyCube()') , image1='polyCube.png' )
+			cmds.nodeIconButton( style='iconOnly', command= partial(self.primitiveActions, 'CreatePolySphereCtx', 'cmds.polySphere()'), image1='polySphere.png' )
+			cmds.nodeIconButton( style='iconOnly', command= partial(self.primitiveActions, 'CreatePolyCylinderCtx', 'cmds.polyCylinder()'), image1='polyCylinder.png' )
+			cmds.nodeIconButton( style='iconOnly', command= partial(self.primitiveActions, 'CreatePolyTorusCtx', 'cmds.polyTorus()'), image1='polyTorus.png' )
+			cmds.nodeIconButton( style='iconOnly', command= partial(self.primitiveActions,'CreatePolyConeCtx', 'cmds.polyCone()'), image1='polyCone.png' )
+			cmds.nodeIconButton( style='iconOnly', command= partial(self.primitiveActions,'CreatePolyPyramidCtx','cmds.polyPyramid()'), image1='polyPyramid.png' )
+			#cmds.nodeIconButton( style='iconOnly', command= partial(self.primitiveActions, 'cmds.setToolTo("CreatePolyPipeCtx")', image1='polyPipe.png' )
+			#cmds.nodeIconButton( style='iconOnly', command= partial(self.primitiveActions, 'cmds.setToolTo("CreatePolyPlaneCtx")', image1='polyMesh.png' )
+			#cmds.nodeIconButton( style='iconOnly', command= partial(self.primitiveActions, 'cmds.setToolTo("curveContextEP")', image1='curveEP.png' )
+			cmds.showWindow( 'primitives' )
+	def primitiveActions(self, toolName, createCommand):
+		if toolName.endswith('Ctx'):
+			if self.getType(0) == 'None':
+				cmds.setToolTo(toolName)
+			else:
+				if len(self.getSelection()) == 1:
+					location = self.getMiddle()[0]
+					exec createCommand
+					cmds.xform(t = location)
+				else:
+					items = []
+					for i in self.getSelection():
+						cmds.select(i)
+						location = self.getMiddle()[0]
+						exec createCommand
+						items.append(cmds.ls(selection=True))
+						cmds.xform(t = location)
+					cmds.select(clear = 1)
+					for i in items:
+						cmds.select(i, add = 1)
+		else:
+			pass
 	def lensChange(self, FOV, *args ):
 		currentCamera = cmds.ls(selection = True)
 		#currentCamera = cmds.modelEditor(Cache.modelPanel, query = 1, cam = 1)

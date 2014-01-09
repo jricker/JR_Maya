@@ -72,6 +72,9 @@ class Hotkeys(Selection):
 	###############################################      4      ###############################################
 	def alt_four(self):
 		cmds.HypershadeWindow()
+	###############################################      G      ###############################################
+	def alt_g(self):
+		cmds.ToggleGrid()
 	###############################################      Q      ###############################################
 	def q (self):
 		offsetCount = 2
@@ -159,10 +162,36 @@ class Hotkeys(Selection):
 		cmds.ReferenceEditor()
 	###############################################      L      ###############################################
 	def ctrl_l (self):
-		i = self.getMiddle()[0]
-		cmds.spaceLocator( name = 'JR_locator_01', position = (0,0,0) )# 0 for the possion value in the returned middle
-		cmds.xform( translation = i )
-		#cmds.xform(centerPivots=True)
+		Tool.createInMiddle("cmds.spaceLocator( name = 'JR_locator_01', position = (0,0,0) )")
+		if Cache.locatorList != []:
+			newLocators = self.getSelection()
+			#print Cache.locatorList, ' this is the cache list'
+			#print self.getSelection(), 'this is the locator list'
+			# automatically bake the locators if more than one has been created, because I would only create more than one if it was necessary for verts of faces.
+			parentObject = self.getParent(Cache.locatorList[0] )
+			#print parentObject[0]
+			start = cmds.findKeyframe( parentObject, which = "first" )
+			end = cmds.findKeyframe( parentObject, which = "last" )
+			if start == end: # this means there's no keyframes
+				start = cmds.playbackOptions(q=1, minTime=1)
+				end =   cmds.playbackOptions(q=1, maxTime=1)
+			print end-start, ' this is end - start value'
+			print start, ' THIS IS START'
+			for i in range(int(end-start)):
+				print i, ' this is the iterator value'
+				cmds.currentTime(start)
+				for x in range(len(Cache.locatorList)):
+					cmds.select(Cache.locatorList[x])
+					print Cache.locatorList[x], ' this is the locator list for x'
+					print newLocators[x], ' this is the new locators for x'
+					middle =  self.getMiddle()
+					cmds.xform(newLocators[x], t= middle[0])
+					cmds.setKeyframe(newLocators[x])
+					#print cache.locatorList[i], ' pared with ...', self.getSelection(i)
+				start += 1
+			print 'finished'
+		else:
+			print 'not working'
 	###############################################      P      ###############################################
 	def alt_p (self):
 		HUD.playblastHUD()
@@ -189,7 +218,7 @@ class Hotkeys(Selection):
 			if self.getType(0) == 'face' or self.getType(0) == 'vertex' or self.getType(0) == 'edge':
 				Tool.bevelTool()
 			# switch this over to recognize the animation category later on istead of just fitting to a camera selection. Should be able to work on any object selected
-			elif self.getType(0)[0] == 'camera':
+			else:
 				start = cmds.findKeyframe( self.getSelection(), which = "first" )
 				end = cmds.findKeyframe( self.getSelection(), which = "last" )
 				if start == end: # this means there's no keyframes
@@ -239,7 +268,10 @@ class Hotkeys(Selection):
 		if Cache.currentContext == 'myMove':
 			cmds.snapMode( curve = True )
 		else:
-			print 'this is where we can place the convert or create tools'
+			if self.getType(0) == 'None':
+				HUD.primitiveMenu()
+			else:
+				print 'this is where we can place the convert or create tools'
 	def c_release (self):
 		cmds.snapMode( curve = False )
 	def C (self):

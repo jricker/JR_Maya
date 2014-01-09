@@ -32,6 +32,24 @@ class Tools(Selection, DraggerTool, Attributes, Materials):
 				cmds.selectType(polymeshFace = True) # default in case no type matches
 		else:
 			cmds.selectType( allComponents = False, allObjects = True )
+	def createInMiddle(self, execCommand):
+		Cache.locatorList = []
+		if len(self.getSelection()) == 1:
+			location = self.getMiddle()[0]
+			exec execCommand
+			cmds.xform(t = location)
+		else:
+			items = []
+			for i in self.getSelection():
+				Cache.locatorList.append(i) #to understand which locator goes to which selection point
+				cmds.select(i)
+				location = self.getMiddle()[0]
+				exec execCommand
+				items.append(cmds.ls(selection=True))
+				cmds.xform(t = location)
+			cmds.select(clear = 1)
+			for i in items:
+				cmds.select(i, add = 1)
 	def cameraShakeTool(self):
 		JR_camera_shake.run()
 	def renameTool(self):

@@ -8,6 +8,8 @@ class Selection():
 		userFolder = os.path.dirname(userPath)
 		#
 		self.desktop = userFolder + '/Desktop/'
+	def getParent(self, i):
+		return cmds.listRelatives(i, p=True)
 	def getSelection(self):
 		initialSelection = cmds.ls(orderedSelection=True, flatten=True)
 		if initialSelection == []:
@@ -40,10 +42,17 @@ class Selection():
 		if self.getSelection() == 'None':
 			middle[0] = [0,0,0]
 		elif len(self.getSelection() ) == 1: # use this if only 1 objects selected
-		    middle[0] = cmds.objectCenter(self.getSelection() ) # find the center of the object and use that as the middle
+			#cmds.select(self.getSelection())
+			bbx = cmds.xform(q=True, bb=True, ws=True) # world space
+			middle[0] = [ ((bbx[0] + bbx[3]) / 2.0), ((bbx[1] + bbx[4]) / 2.0), ((bbx[2] + bbx[5]) / 2.0) ]
+			#middle[0] = cmds.xform(self.getSelection(), query = 1, translation = 1)
+		    #middle[0] = cmds.objectCenter(self.getSelection() ) # find the center of the object and use that as the middle
 		else: # means more than one item is in the selection list
 		    for i in self.getSelection():
-		        middle[0] = [x + y for x, y in zip(cmds.objectCenter(i), middle[0])] # sum of the lists of middle and then the object center
+		    	bbx = cmds.xform(i, q=True, bb=True, ws=True) # world space
+		    	bbf = [ ((bbx[0] + bbx[3]) / 2.0), ((bbx[1] + bbx[4]) / 2.0), ((bbx[2] + bbx[5]) / 2.0) ]
+		    	middle[0] = [x + y for x, y in zip(bbf, middle[0])] # sum of the lists of middle and then the object center
+		        #middle[0] = [x + y for x, y in zip(cmds.objectCenter(i), middle[0])] # sum of the lists of middle and then the object center
 		    middle[0] =[x / len(self.getSelection() ) for x in middle[0] ] # average out the x,y,z values for the final middle list
 		return middle
 	def getType(self, i):
