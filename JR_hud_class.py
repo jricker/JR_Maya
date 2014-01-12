@@ -1,7 +1,10 @@
 import maya.cmds as cmds
 from functools import partial
+from JR_cache_class import *
 from JR_tool_class import *
 from JR_hk_map import *
+from JR_dragger_class import *
+from JR_attribute_class import *
 from JR_selection_class import *
 class HUDs(Selection):
 	def __init__(self):
@@ -17,9 +20,9 @@ class HUDs(Selection):
 		else:
 			cmds.window( 'category', h=20, titleBar = 0, s=0)
 			cmds.rowColumnLayout( numberOfRows=1, rs = [10, 10])
-			cmds.button(label = 'CUBE',  c = partial(self.setCategory, 'modeling' ) ) # MODELING
+			cmds.button(label = 'modeling',  c = partial(self.setCategory, 'modeling' ) ) # MODELING
 			cmds.separator(w = categorySpace, style = 'none')
-			cmds.button(label = 'SPHERE', c = partial(self.setCategory, 'frostbite') ) # FROSTBITE
+			cmds.button(label = 'frostbite', c = partial(self.setCategory, 'frostbite') ) # FROSTBITE
 			cmds.separator(w = categorySpace, style = 'none')
 			cmds.button(label = 'animation', c = partial(self.setCategory, 'animation') ) # ANIMATION
 			cmds.separator(w = categorySpace, style = 'none')
@@ -62,6 +65,23 @@ class HUDs(Selection):
 					cmds.select(clear = 1)
 					for i in items:
 						cmds.select(i, add = 1)
+			X = self.getSelection()
+			toolHistory = createCommand[5:-2]
+			if createCommand.endswith('polyCube()'):
+				Attribute.setAttributes( attrs = [ ('Width Div', '.subdivisionsWidth') , ('Height Div', '.subdivisionsHeight'), ('Depth Div', '.subdivisionsDepth') ]  )
+			elif createCommand.endswith('polySphere()'):
+				Attribute.setAttributes( attrs = [ ('Axis Div', '.subdivisionsAxis') , ('Height Div', '.subdivisionsHeight') ]  )
+			elif createCommand.endswith('polyCylinder()'):
+				Attribute.setAttributes( attrs = [ ('Radius', '.radius') , ('Height', '.height'), ('Axis Div', '.subdivisionsAxis') , ('Height Div', '.subdivisionsHeight'), ('Caps Div', '.subdivisionsCaps') ]  )			
+			elif createCommand.endswith('polyTorus()'):
+				Attribute.setAttributes( attrs = [ ('Radius', '.radius') , ('Section Radius', '.sectionRadius'), ('Twist', '.twist') , ('Axis Div', '.subdivisionsAxis'), ('Height Div', '.subdivisionsHeight') ]  )			
+			elif createCommand.endswith('polyCone()'):
+				Attribute.setAttributes( attrs = [ ('Radius', '.radius') , ('Height', '.height'), ('Axis Div', '.subdivisionsAxis') , ('Height Div', '.subdivisionsHeight'), ('Cap Div', '.subdivisionsCap') ]  )			
+			elif createCommand.endswith('polyPyramid()'):
+				Attribute.setAttributes( attrs = [ ('Radius', '.sideLength') , ('Height Div', '.subdivisionsHeight'), ('Cap Div', '.subdivisionsCaps') , ('Sides', '.numberOfSides') ]  )			
+			print toolHistory
+			print Cache.currentAttribute, ' HERE ARE THE ATTRIBUTES'
+			Dragger( X , str(toolHistory) )
 		else:
 			pass
 	def lensChange(self, FOV, *args ):
