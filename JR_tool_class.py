@@ -214,6 +214,28 @@ class Tools(Selection, DraggerTool, Attributes, Materials):
 		Cache.camDefaultOffset +=1
 		# clear attributes
 		#Attribute.setAttributes()
+	def mirrorModelingTool(self, direction):
+		print ' this is the mirror modeling tool pointed in the ', direction
+	def primitiveTool(self):
+		if self.getHistory(self.getSelection(), 0, 'polyCube' ):
+			Attribute.setAttributes( attrs = [ ('Width Div', '.subdivisionsWidth') , ('Height Div', '.subdivisionsHeight'), ('Depth Div', '.subdivisionsDepth') ]  )
+			history = 'polyCube' 
+		elif self.getHistory(self.getSelection(), 0, 'polySphere' ):
+			Attribute.setAttributes( attrs = [ ('Axis Div', '.subdivisionsAxis') , ('Height Div', '.subdivisionsHeight') ]  )
+			history = 'polySphere' 
+		elif self.getHistory(self.getSelection(), 0, 'polyCylinder' ):
+			Attribute.setAttributes( attrs = [ ('Radius', '.radius') , ('Height', '.height'), ('Axis Div', '.subdivisionsAxis') , ('Height Div', '.subdivisionsHeight'), ('Caps Div', '.subdivisionsCaps') ]  )
+			history = 'polyCylinder' 
+		elif self.getHistory(self.getSelection(), 0, 'polyTorus' ):
+			Attribute.setAttributes( attrs = [ ('Radius', '.radius') , ('Section Radius', '.sectionRadius'), ('Twist', '.twist') , ('Axis Div', '.subdivisionsAxis'), ('Height Div', '.subdivisionsHeight') ]  )
+			history = 'polyTorus' 
+		elif self.getHistory(self.getSelection(), 0, 'polyCone' ):
+			Attribute.setAttributes( attrs = [ ('Radius', '.radius') , ('Height', '.height'), ('Axis Div', '.subdivisionsAxis') , ('Height Div', '.subdivisionsHeight'), ('Cap Div', '.subdivisionsCap') ]  )
+			history = 'polyCone' 
+		elif self.getHistory(self.getSelection(), 0, 'polyPyramid' ):
+			Attribute.setAttributes( attrs = [ ('Radius', '.sideLength') , ('Height Div', '.subdivisionsHeight'), ('Cap Div', '.subdivisionsCaps') , ('Sides', '.numberOfSides') ]  )
+			history = 'polyPyramid'
+		Dragger(self.getSelection(), history )
 	def selectTool(self):
 		selectAttributes = [ ('Normal', 'options = 4'), ('Reflection', '.options = 4') ]
 		paintAttributes = [ ('Select', 'options = 4'), ('Soft Select', '.options = 4'), ('Brush Size', '.options = 4') ]
@@ -222,20 +244,27 @@ class Tools(Selection, DraggerTool, Attributes, Materials):
 				cmds.selectContext('mySelect', edit = True)
 				Cache.currentContext = 'mySelect'
 				Attribute.setAttributes ( selectAttributes )
-			else:
+			elif Cache.keyOffset == 1:
 				cmds.artSelectCtx('myPaintSelect', edit = True)
 				Cache.currentContext = 'myPaintSelect'
 				Attribute.setAttributes ( paintAttributes )
+			elif Cache.keyOffset == 2:
+				Cache.currentContext = 'selectDragger'
+				self.primitiveTool()
 		except:
 			if Cache.keyOffset == 0:
 				cmds.selectContext ( 'mySelect' )
 				Cache.currentContext = 'mySelect'
 				Attribute.setAttributes ( selectAttributes )
-			else:
+			elif Cache.keyOffset == 1:
 				cmds.artSelectCtx ( 'myPaintSelect' )
 				Cache.currentContext = 'myPaintSelect'
 				Attribute.setAttributes ( paintAttributes )
-		cmds.setToolTo( Cache.currentContext )
+			elif Cache.keyOffset == 2:
+				Cache.currentContext = 'selectDragger'
+				self.primitiveTool()
+		if Cache.currentContext != 'selectDragger':
+			cmds.setToolTo( Cache.currentContext )
 	def moveTool(self):
 		try:
 			if Cache.keyOffset == 0:

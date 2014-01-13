@@ -29,7 +29,6 @@ class HUDs(Selection):
 			cmds.button(label = 'uv', c = partial(self.setCategory, 'uv') ) # UV
 			cmds.showWindow('category')
 	def primitiveMenu(self):
-		categorySpace = 5
 		if cmds.window('primitives', exists=True):
 			cmds.deleteUI('primitives', window=True )
 		else:
@@ -45,6 +44,25 @@ class HUDs(Selection):
 			#cmds.nodeIconButton( style='iconOnly', command= partial(self.primitiveActions, 'cmds.setToolTo("CreatePolyPlaneCtx")', image1='polyMesh.png' )
 			#cmds.nodeIconButton( style='iconOnly', command= partial(self.primitiveActions, 'cmds.setToolTo("curveContextEP")', image1='curveEP.png' )
 			cmds.showWindow( 'primitives' )
+	def mirrorMenu(self, tool):
+		if cmds.window('mirror', exists=True):
+			cmds.deleteUI('mirror', window=True )
+		else:
+			cmds.window('mirror', sizeable = 0, t='' )
+			cmds.rowColumnLayout( numberOfColumns=3, columnWidth=[(1, 40), (2, 40), (3, 40)] )
+			cmds.button(label = '- X',  c = partial(tool, '-x' ) )
+			cmds.button(label = '- Y',  c = partial(tool, '-y' ) )
+			cmds.button(label = '- Z',  c = partial(tool, '-z' ) )
+			cmds.button(label = '+ X',  c = partial(tool, '+x' ) )
+			cmds.button(label = '+ Y',  c = partial(tool, '+y' ) )
+			cmds.button(label = '+ Z',  c = partial(tool, '+z' ) )
+			cmds.showWindow( 'mirror' )
+			#cmds.nodeIconButton( style='iconOnly', command= partial(self.primitiveActions, 'CreatePolyCubeCtx', 'cmds.polyCube()') , image1='polyCube.png' )
+			#cmds.nodeIconButton( style='iconOnly', command= partial(self.primitiveActions, 'CreatePolySphereCtx', 'cmds.polySphere()'), image1='polySphere.png' )
+			#cmds.nodeIconButton( style='iconOnly', command= partial(self.primitiveActions, 'CreatePolyCylinderCtx', 'cmds.polyCylinder()'), image1='polyCylinder.png' )
+			#cmds.nodeIconButton( style='iconOnly', command= partial(self.primitiveActions, 'CreatePolyTorusCtx', 'cmds.polyTorus()'), image1='polyTorus.png' )
+			#cmds.nodeIconButton( style='iconOnly', command= partial(self.primitiveActions,'CreatePolyConeCtx', 'cmds.polyCone()'), image1='polyCone.png' )
+			#cmds.nodeIconButton( style='iconOnly', command= partial(self.primitiveActions,'CreatePolyPyramidCtx','cmds.polyPyramid()'), image1='polyPyramid.png' )
 	def primitiveActions(self, toolName, createCommand):
 		if toolName.endswith('Ctx'):
 			if self.getType(0) == 'None':
@@ -65,25 +83,25 @@ class HUDs(Selection):
 					cmds.select(clear = 1)
 					for i in items:
 						cmds.select(i, add = 1)
-			X = self.getSelection()
-			toolHistory = createCommand[5:-2]
-			if createCommand.endswith('polyCube()'):
-				Attribute.setAttributes( attrs = [ ('Width Div', '.subdivisionsWidth') , ('Height Div', '.subdivisionsHeight'), ('Depth Div', '.subdivisionsDepth') ]  )
-			elif createCommand.endswith('polySphere()'):
-				Attribute.setAttributes( attrs = [ ('Axis Div', '.subdivisionsAxis') , ('Height Div', '.subdivisionsHeight') ]  )
-			elif createCommand.endswith('polyCylinder()'):
-				Attribute.setAttributes( attrs = [ ('Radius', '.radius') , ('Height', '.height'), ('Axis Div', '.subdivisionsAxis') , ('Height Div', '.subdivisionsHeight'), ('Caps Div', '.subdivisionsCaps') ]  )			
-			elif createCommand.endswith('polyTorus()'):
-				Attribute.setAttributes( attrs = [ ('Radius', '.radius') , ('Section Radius', '.sectionRadius'), ('Twist', '.twist') , ('Axis Div', '.subdivisionsAxis'), ('Height Div', '.subdivisionsHeight') ]  )			
-			elif createCommand.endswith('polyCone()'):
-				Attribute.setAttributes( attrs = [ ('Radius', '.radius') , ('Height', '.height'), ('Axis Div', '.subdivisionsAxis') , ('Height Div', '.subdivisionsHeight'), ('Cap Div', '.subdivisionsCap') ]  )			
-			elif createCommand.endswith('polyPyramid()'):
-				Attribute.setAttributes( attrs = [ ('Radius', '.sideLength') , ('Height Div', '.subdivisionsHeight'), ('Cap Div', '.subdivisionsCaps') , ('Sides', '.numberOfSides') ]  )			
-			print toolHistory
-			print Cache.currentAttribute, ' HERE ARE THE ATTRIBUTES'
-			Dragger( X , str(toolHistory) )
-		else:
-			pass
+		#	X = self.getSelection()
+		#	toolHistory = createCommand[5:-2]
+		#	if createCommand.endswith('polyCube()'):
+		#		Attribute.setAttributes( attrs = [ ('Width Div', '.subdivisionsWidth') , ('Height Div', '.subdivisionsHeight'), ('Depth Div', '.subdivisionsDepth') ]  )
+		#	elif createCommand.endswith('polySphere()'):
+		#		Attribute.setAttributes( attrs = [ ('Axis Div', '.subdivisionsAxis') , ('Height Div', '.subdivisionsHeight') ]  )
+		#	elif createCommand.endswith('polyCylinder()'):
+		#		Attribute.setAttributes( attrs = [ ('Radius', '.radius') , ('Height', '.height'), ('Axis Div', '.subdivisionsAxis') , ('Height Div', '.subdivisionsHeight'), ('Caps Div', '.subdivisionsCaps') ]  )			
+		#	elif createCommand.endswith('polyTorus()'):
+		#		Attribute.setAttributes( attrs = [ ('Radius', '.radius') , ('Section Radius', '.sectionRadius'), ('Twist', '.twist') , ('Axis Div', '.subdivisionsAxis'), ('Height Div', '.subdivisionsHeight') ]  )			
+		#	elif createCommand.endswith('polyCone()'):
+		#		Attribute.setAttributes( attrs = [ ('Radius', '.radius') , ('Height', '.height'), ('Axis Div', '.subdivisionsAxis') , ('Height Div', '.subdivisionsHeight'), ('Cap Div', '.subdivisionsCap') ]  )			
+		#	elif createCommand.endswith('polyPyramid()'):
+		#		Attribute.setAttributes( attrs = [ ('Radius', '.sideLength') , ('Height Div', '.subdivisionsHeight'), ('Cap Div', '.subdivisionsCaps') , ('Sides', '.numberOfSides') ]  )			
+		#	print toolHistory
+		#	print Cache.currentAttribute, ' HERE ARE THE ATTRIBUTES'
+		#	Dragger( X , str(toolHistory) )
+		#else:
+		#	pass
 	def lensChange(self, FOV, *args ):
 		currentCamera = cmds.ls(selection = True)
 		#currentCamera = cmds.modelEditor(Cache.modelPanel, query = 1, cam = 1)

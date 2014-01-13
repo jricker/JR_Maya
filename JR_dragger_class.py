@@ -7,10 +7,12 @@ from JR_attribute_class import *
 class DraggerTool(Selection):
 	def __init__(self):
 		self.dragDirection = []
-	def __call__(self, selection , historyName ):
-		self.selection = selection
-		print self.selection, ' this is the selection'
-		self.history = self.getHistory(-1, historyName)
+	def __call__(self, selection = 'NA' , historyName = 'NA' ):
+		if selection == 'NA':
+			selection = self.getSelection()
+		#self.selection = selection
+		#print self.selection, ' this is the selection'
+		self.history = self.getHistory(selection, -1, historyName)
 		self.attribute = self.history[-1] + Cache.currentAttribute
 		print self.attribute, ' this is the start attribute'
 		#self.attributeValue = cmds.getAttr( self.attribute )

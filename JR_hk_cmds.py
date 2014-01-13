@@ -78,7 +78,7 @@ class Hotkeys(Selection):
 	###############################################      Q      ###############################################
 	def q (self):
 		offsetCount = 2
-		if self.getContext() == 'mySelect' or self.getContext() == 'myPaintSelect':
+		if self.getContext() == 'mySelect' or self.getContext() == 'myPaintSelect' or Cache.currentContext == 'selectDragger':
 			if Cache.keyOffset >= offsetCount-1:
 				Cache.keyOffset = 0
 			else:
@@ -92,6 +92,11 @@ class Hotkeys(Selection):
 		Tool.selectTool()
 	def q_release(self):
 		print 'claiming "q" release from default maya'
+		HUD.updateToolHUD()
+	def alt_q(self):
+		Cache.keyOffset = 2
+		Cache.currentTool = 'select - attrs'
+		Tool.selectTool()
 		HUD.updateToolHUD()
 	###############################################      W      ###############################################
 	def w (self):
@@ -197,7 +202,7 @@ class Hotkeys(Selection):
 		HUD.playblastHUD()
 	def ctrl_p(self):
 		if self.getType(0) == 'face' or self.getType(0) == 'mesh':
-			print 'est'
+			print ' not sure which tool should go here .. '
 	###############################################      F      ###############################################
 	#def f (self):
 	#	cmds.viewFit(animate = False)
@@ -210,6 +215,9 @@ class Hotkeys(Selection):
 			cmds.setKeyframe(str(currentCamera[0]) + '.fl')
 		if self.getType(0) == 'edge':
 			cmds.polyCloseBorder()
+	###############################################      M      ###############################################
+	def ctrl_m (self):
+		HUD.mirrorMenu( Tool.mirrorModelingTool() )
 	###############################################      B      ###############################################
 	def alt_b (self):
 		if self.getSelection() == 'None':

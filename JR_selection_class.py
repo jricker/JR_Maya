@@ -106,9 +106,15 @@ class Selection():
 					return 'joint'
 		else:
 			return 'None'
-	def getHistory(self, i, historyName):
-		selectionParent = cmds.listRelatives(self.selection[i], p=True)
-		print selectionParent, ' this  is the selection parent test'
+	def getHistory(self, selection, i, historyName):
+		self.selection = selection
+		#try:
+		#	self.selection
+		#except:
+		#	self.selection = self.getSelection() # This was originallly coming from the dragger tool class but if we want to use it somehwere else, needed to add it here. 
+		selectionParent = cmds.listRelatives(self.selection[i], p=True) # creates a list for the selection parnet var
+		if selectionParent == None:
+			selectionParent = self.selection # already a list so no need to have a [0] callout in it
 		if historyName == 'Extrude':
 			if self.getType(0) == 'vert':
 				historyName = 'polyExtrudeVertex'
@@ -118,7 +124,7 @@ class Selection():
 				historyName = 'polyExtrudeFace'
 		elif historyName == 'Bevel':
 			historyName = 'polyBevel'
-		historyList = cmds.listHistory( str(selectionParent[0]) )
+		historyList = cmds.listHistory( str(selectionParent[0]) ) # need the [0] because selection parent is always a list no matter what.
 		return sorted( set(x for x in historyList if historyName in x) )
 	def reFunction(self, item, isolate):
 		# This method finds the location of 
