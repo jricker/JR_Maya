@@ -214,8 +214,45 @@ class Tools(Selection, DraggerTool, Attributes, Materials):
 		Cache.camDefaultOffset +=1
 		# clear attributes
 		#Attribute.setAttributes()
-	def mirrorModelingTool(self, direction):
-		print ' this is the mirror modeling tool pointed in the ', direction
+	def mirrorModelingTool(self, direction, *args):
+		original = self.getSelection()
+		pivot = cmds.xform(query = True, worldSpace = True, scalePivot = True)
+		instance = original[0]+'_instance'
+		try:
+			if instance:
+				cmds.delete(instance)
+				cmds.instance(name = instance)
+		except:
+			cmds.instance(name = instance)
+		if direction == '-x':
+			cmds.scale(-1,1,1, instance, r=1, )
+			position = -1*(pivot[0]*2)
+			cmds.move(position, 0, 0, instance, relative=True)
+		elif direction == '+x':
+			cmds.scale(-1,1,1, instance, r=1, )
+			position = 1*(pivot[0]*2)
+			cmds.move(position, 0, 0, instance, relative=True)
+		elif direction == '-y':
+			cmds.scale(1,-1,1, instance, r=1, )
+			position = -1*(pivot[1]*2)
+			cmds.move(0, position, 0, instance, relative=True)
+		elif direction == '+y':
+			cmds.scale(1,1,1, instance, r=1, )
+			position = 1*(pivot[1]*2)
+			cmds.move(0, position, 0, instance, relative=True)
+		elif direction == '-z':
+			cmds.scale(1,1,-1, instance, r=1, )
+			position = -1*(pivot[2]*2)
+			cmds.move(0, 0, position, instance, relative=True)
+		elif direction == '+z':
+			cmds.scale(1,1,1, instance, r=1, )
+			position = 1*(pivot[2]*2)
+			cmds.move(0, 0, position, instance, relative=True)
+		cmds.deleteUI('mirror', window=True )
+		#cmds.select(clear = True)
+		#cmds.select(new)
+		#cmds.createDisplayLayer(name = 'Instances', noRecurse=True)
+		#cmds.setAttr('Instances'+'.displayType', 2)
 	def primitiveTool(self):
 		if self.getHistory(self.getSelection(), 0, 'polyCube' ):
 			Attribute.setAttributes( attrs = [ ('Width Div', '.subdivisionsWidth') , ('Height Div', '.subdivisionsHeight'), ('Depth Div', '.subdivisionsDepth') ]  )

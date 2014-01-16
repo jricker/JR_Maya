@@ -217,7 +217,7 @@ class Hotkeys(Selection):
 			cmds.polyCloseBorder()
 	###############################################      M      ###############################################
 	def ctrl_m (self):
-		HUD.mirrorMenu( Tool.mirrorModelingTool() )
+		HUD.mirrorMenu( Tool.mirrorModelingTool )
 	###############################################      B      ###############################################
 	def alt_b (self):
 		if self.getSelection() == 'None':
