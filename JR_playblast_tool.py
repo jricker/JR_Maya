@@ -40,7 +40,7 @@ def playblastStart(cameraList, directory, formatInfo):
 		near = cmds.getAttr(str(x) + '.nearClipPlane')
 		far = cmds.getAttr(str(x) +'.farClipPlane')
 		# Set attrs to avoid clipping issues
-		cmds.setAttr(str(x) + '.nearClipPlane', 0.001 )
+		cmds.setAttr(str(x) + '.nearClipPlane', 0.1 )
 		cmds.setAttr(str(x) + '.farClipPlane', 100000 )
 		cmds.setAttr( str(x) + '.bestFitClippingPlanes', False )
 		#

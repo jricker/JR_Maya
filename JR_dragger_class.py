@@ -7,7 +7,7 @@ from JR_attribute_class import *
 class DraggerTool(Selection):
 	def __init__(self):
 		self.dragDirection = []
-	def __call__(self, selection = 'NA' , historyName = 'NA' ):
+	def __call__(self, selection = 'NA' , historyName = '' ):
 		if selection == 'NA':
 			selection = self.getSelection()
 		#self.selection = selection

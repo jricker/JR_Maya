@@ -254,6 +254,9 @@ class Tools(Selection, DraggerTool, Attributes, Materials):
 		#cmds.createDisplayLayer(name = 'Instances', noRecurse=True)
 		#cmds.setAttr('Instances'+'.displayType', 2)
 	def primitiveTool(self):
+		if self.getType(0)[1] == 'CAMERA':
+			Attribute.setAttributes( attrs = [('Locator Scale', '.locatorScale')] )
+			history = ''
 		if self.getHistory(self.getSelection(), 0, 'polyCube' ):
 			Attribute.setAttributes( attrs = [ ('Width Div', '.subdivisionsWidth') , ('Height Div', '.subdivisionsHeight'), ('Depth Div', '.subdivisionsDepth') ]  )
 			history = 'polyCube' 
