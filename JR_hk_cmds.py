@@ -4,6 +4,7 @@ from JR_tool_class import *
 from JR_cache_class import *
 from JR_attribute_class import *
 from JR_selection_class import *
+from JR_refresh_modules import *
 class Hotkeys(Selection):
 	def __init__(self):
 		pass
@@ -157,6 +158,9 @@ class Hotkeys(Selection):
 		elif Cache.keyOffset == 1:
 			Cache.currentTool = 'scale - local'
 		Tool.scaleTool()
+	def R (self):
+		RELOAD.refreshAll()
+		cmds.warning('All Modules Refreshed :)')
 	def r_release(self):
 		print 'claiming "r" release from default maya'
 		HUD.updateToolHUD()
