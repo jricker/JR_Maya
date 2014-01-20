@@ -108,11 +108,10 @@ class Selection():
 			return 'None'
 	def getHistory(self, selection, i, historyName):
 		self.selection = selection
-		#try:
-		#	self.selection
-		#except:
-		#	self.selection = self.getSelection() # This was originallly coming from the dragger tool class but if we want to use it somehwere else, needed to add it here. 
-		selectionParent = cmds.listRelatives(self.selection[i], p=True) # creates a list for the selection parnet var
+		if self.getType(0) == 'joint' or self.getType(0) == 'mesh': # need this because joints can be placed underneath parent geo and then the radius gets adjusted through them. 
+			selectionParent = self.selection
+		else:
+			selectionParent = cmds.listRelatives(self.selection[i], p=True) # creates a list for the selection parnet var
 		if selectionParent == None:
 			selectionParent = self.selection # already a list so no need to have a [0] callout in it
 		if historyName == 'Extrude':

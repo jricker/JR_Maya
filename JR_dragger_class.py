@@ -10,6 +10,7 @@ class DraggerTool(Selection):
 	def __call__(self, selection = 'NA' , historyName = '' ):
 		if selection == 'NA':
 			selection = self.getSelection()
+		print selection, ' this is the selection'
 		#self.selection = selection
 		#print self.selection, ' this is the selection'
 		self.history = self.getHistory(selection, -1, historyName)

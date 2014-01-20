@@ -43,6 +43,7 @@ class HUDs(Selection):
 			cmds.nodeIconButton( style='iconOnly', command= partial(self.primitiveActions, 'CreatePolyPipeCtx', 'cmds.polyPipe()'), image1='polyPipe.png' )
 			cmds.nodeIconButton( style='iconOnly', command= partial(self.primitiveActions, 'CreatePolyPlaneCtx', 'cmds.polyPlane()'), image1='polyMesh.png') 
 			cmds.nodeIconButton( style='iconOnly', command= partial(self.primitiveActions, 'cmds.EPCurveTool()', 'cmds.warning("Create your own curve drop automatically")' ), image1='curveEP.png' )
+			cmds.nodeIconButton( style='iconOnly', command= partial(self.primitiveActions, 'cmds.JointTool()', 'Tool.jointTool()' ), image1='kinJoint.png' )
 			cmds.showWindow( 'primitives' )
 	def mirrorMenu(self, tool):
 		if cmds.window('mirror', exists=True):
@@ -82,6 +83,7 @@ class HUDs(Selection):
 			if self.getType(0) == 'None':
 				exec toolName
 			else:
+				exec createCommand
 				cmds.warning('section action when something is selected not yet implimented')
 	def lensChange(self, FOV, *args ):
 		currentCamera = cmds.ls(selection = True)

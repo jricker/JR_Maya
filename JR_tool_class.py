@@ -99,6 +99,20 @@ class Tools(Selection, DraggerTool, Attributes, Materials):
 			pass
 		#cmds.select( deselect = 1 ) # removes selection from the face initially extruded, to allow for rotation and translation of new extruded face
 		Dragger( X , 'Extrude')
+	def jointTool(self):
+		if len(self.getSelection()) == 1:
+			location = self.getMiddle()[0]
+			cmds.joint(p = location)
+		else:
+			items = []
+			for i in self.getSelection():
+				cmds.select(i)
+				location = self.getMiddle()[0]
+				cmds.joint(p = location)
+				items.append(cmds.ls(selection=True))
+			cmds.select(clear = 1)
+			for i in items:
+				cmds.select(i, add = 1)
 	def chipFacesTool(self):
 		# cuts faces off of the poly and then seperates the faces to it's own polygon object, also ungroups them
 		selectedFaces = self.getSelection()
@@ -256,6 +270,9 @@ class Tools(Selection, DraggerTool, Attributes, Materials):
 	def primitiveTool(self):
 		if self.getType(0)[1] == 'CAMERA':
 			Attribute.setAttributes( attrs = [('Locator Scale', '.locatorScale')] )
+			history = ''
+		elif self.getType(0) == 'joint':
+			Attribute.setAttributes( attrs = [('Radius', '.radius')] )
 			history = ''
 		if self.getHistory(self.getSelection(), 0, 'polyCube' ):
 			Attribute.setAttributes( attrs = [ ('Width Div', '.subdivisionsWidth') , ('Height Div', '.subdivisionsHeight'), ('Depth Div', '.subdivisionsDepth') ]  )
