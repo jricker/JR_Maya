@@ -5,6 +5,7 @@ from JR_cache_class import *
 from JR_attribute_class import *
 from JR_selection_class import *
 from JR_refresh_modules import *
+import maya.mel as mel
 class Hotkeys(Selection):
 	def __init__(self):
 		pass
@@ -33,6 +34,9 @@ class Hotkeys(Selection):
 					Tool.selectionMask( 'vertex' )
 	def alt_one(self):
 		JR_custom_window.outlinerWindow()
+	def shift_one(self):
+		mel.eval('setDisplaySmoothness 1;')
+		cmds.subdivDisplaySmoothness( s=1 )
 	###############################################      2      ###############################################
 	def two(self):
 		if cmds.selectMode ( query = 1, object = 1):
@@ -53,6 +57,9 @@ class Hotkeys(Selection):
 					Tool.selectionMask( 'edge' )
 	def alt_two(self):
 		JR_custom_window.hyperWindow()
+	def shift_two(self):
+		mel.eval('setDisplaySmoothness 2;')
+		cmds.subdivDisplaySmoothness( s=2 )
 	###############################################      3      ###############################################
 	def three(self):
 		if cmds.selectMode ( query = 1, object = 1):
@@ -70,6 +77,9 @@ class Hotkeys(Selection):
 					Tool.selectionMask( 'face' )
 	def alt_three(self):
 		JR_custom_window.graphWindow()
+	def shift_three(self):
+		mel.eval('setDisplaySmoothness 3;')
+		cmds.subdivDisplaySmoothness( s=3 )
 	###############################################      4      ###############################################
 	def alt_four(self):
 		cmds.HypershadeWindow()
@@ -97,7 +107,10 @@ class Hotkeys(Selection):
 	def alt_q(self):
 		Cache.keyOffset = 2
 		Cache.currentTool = 'select - attrs'
-		Tool.selectTool()
+		if self.getType(0) == 'joint':
+			mel.eval('jdsWin;') # shows the joint size window for all joints
+		else:
+			Tool.selectTool()
 		HUD.updateToolHUD()
 	###############################################      W      ###############################################
 	def w (self):

@@ -17,7 +17,7 @@ if 'jricker' in os.path.expanduser("~"):
 	mel.eval("putenv MAYA_SCRIPT_PATH (`getenv MAYA_SCRIPT_PATH` + \";\" + \"D:/projects/nfs15/PreProd/TnT/Tools/python/mayaPythonScripts/EAGR_toolsLauncher/EAGR_tools/MEL/\");")
 	mel.eval("putenv MAYA_PLUG_IN_PATH (`getenv MAYA_PLUG_IN_PATH` + \";\" + \"D:/projects/nfs15/PreProd/TnT/Tools/python/mayaPythonScripts/EAGR_toolsLauncher/EAGR_tools/Plugins/\");")
 	mel.eval("global string $EAGRToolsPath=\"D:/projects/nfs15/PreProd/TnT/Tools/python/mayaPythonScripts/EAGR_toolsLauncher/\"")
-	#NEED TO BE FIXED!!!!! #mel.eval("source \"D:/projects/nfs15/PreProd/TnT/Tools/python/mayaPythonScripts/EAGR_toolsLauncher/EAGR_tools/mel/FrostbiteScripts.mel\" ")
+	mel.eval("source \"D:/projects/nfs15/PreProd/TnT/Tools/python/mayaPythonScripts/EAGR_toolsLauncher/EAGR_tools/mel/FrostbiteScripts.mel\" ")
 	## MY USER SETUPS ###
 	#mel.eval("putenv MAYA_SCRIPT_PATH (`getenv MAYA_SCRIPT_PATH` + \";\" + \"C:/Users/jricker/Documents/GitHub/JR_Maya/\");")
 	cmds.headsUpDisplay( rp=(1, 0) ) # Need to remove the default occupied value before
@@ -42,9 +42,10 @@ cmds.headsUpDisplay( 'prevAttrHUD', l = '-', lfs = 'small', s = 5, b=1)
 #
 def setupHotkeys():
 	cmds.scriptEditorInfo(suppressWarnings=True) # supress annoying warnings
-	from JR_hk_map	import *		# import user_hotkeys script
-	Map.globalHotkeys() 				# init global hotkeys
-	Map.setCategory('frostbite') 		# init category hotkeys
+	#from JR_hk_map import *		# import user_hotkeys script
+	import JR_hk_map # import user_hotkeys script
+	JR_hk_map.Map.globalHotkeys() 				# init global hotkeys
+	JR_hk_map.Map.setCategory('frostbite') 		# init category hotkeys
 	# SET SCENE DEFAULTS
 	cmds.setAttr ("defaultResolution.height", 720) # Frame Height
 	cmds.setAttr ("defaultResolution.width", 1280) # Frame Width

@@ -91,10 +91,10 @@ class Tools(Selection, DraggerTool, Attributes, Materials):
 		X = self.getSelection() # adds selection to a variable so we can deselect it later while still using it for the Dragger command.
 		if self.getType(0) == 'face':
 			cmds.polyExtrudeFacet( X, constructionHistory = 1, keepFacesTogether = 1)
-			Attribute.setAttributes( attrs = [('Z Translate', '.localTranslateZ'), ('Local Scale', '.localScale'), ('Division', '.divisions')] )
+			Attribute.setAttributes( attrs = [('Thickness', '.thickness'), ('Z Translate', '.localTranslateZ'), ('Local Scale', '.localScale'), ('Division', '.divisions')] )
 		elif self.getType(0) == 'edge':
 			cmds.polyExtrudeEdge( X, constructionHistory = 1, keepFacesTogether = 1)
-			Attribute.setAttributes( attrs = [('Z Translate', '.localTranslateZ'), ('Local Scale', '.localScale'), ('Division', '.divisions')] )
+			Attribute.setAttributes( attrs = [('Thickness', '.thickness'), ('Z Translate', '.localTranslateZ'), ('Local Scale', '.localScale'), ('Division', '.divisions')] )
 		else:
 			pass
 		#cmds.select( deselect = 1 ) # removes selection from the face initially extruded, to allow for rotation and translation of new extruded face
@@ -270,9 +270,6 @@ class Tools(Selection, DraggerTool, Attributes, Materials):
 	def primitiveTool(self):
 		if self.getType(0)[1] == 'CAMERA':
 			Attribute.setAttributes( attrs = [('Locator Scale', '.locatorScale')] )
-			history = ''
-		elif self.getType(0) == 'joint':
-			Attribute.setAttributes( attrs = [('Radius', '.radius')] )
 			history = ''
 		if self.getHistory(self.getSelection(), 0, 'polyCube' ):
 			Attribute.setAttributes( attrs = [ ('Width Div', '.subdivisionsWidth') , ('Height Div', '.subdivisionsHeight'), ('Depth Div', '.subdivisionsDepth') ]  )

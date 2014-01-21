@@ -110,6 +110,8 @@ class Selection():
 		self.selection = selection
 		if self.getType(0) == 'joint' or self.getType(0) == 'mesh': # need this because joints can be placed underneath parent geo and then the radius gets adjusted through them. 
 			selectionParent = self.selection
+		elif i == '':
+			selectionParent = cmds.listRelatives(self.selection, p=True) # creates a list for the selection parnet var
 		else:
 			selectionParent = cmds.listRelatives(self.selection[i], p=True) # creates a list for the selection parnet var
 		if selectionParent == None:

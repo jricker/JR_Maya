@@ -1,3 +1,5 @@
+#-*- coding: utf-8 -*-
+# the above code must be there for characters like the £ sign. non asci types
 import maya.cmds as cmds
 from functools import partial
 from JR_cache_class import *
@@ -12,12 +14,15 @@ class Mapping():
 		# 1
 		cmds.nameCommand('one', ann= 'one', stp='python', c="python(\"from JR_hk_cmds import *;i=Hotkeys();i.one()\")")
 		cmds.nameCommand('alt_one', ann= 'alt_one', stp='python', c="python(\"from JR_hk_cmds import *;i=Hotkeys();i.alt_one()\")")
+		cmds.nameCommand('shift_one', ann= 'shift_one', stp='python', c="python(\"from JR_hk_cmds import *;i=Hotkeys();i.shift_one()\")")
 		# 2
 		cmds.nameCommand('two', ann= 'two', stp='python', c="python(\"from JR_hk_cmds import *;i=Hotkeys();i.two()\")")
 		cmds.nameCommand('alt_two', ann= 'alt_two', stp='python', c="python(\"from JR_hk_cmds import *;i=Hotkeys();i.alt_two()\")")
+		cmds.nameCommand('shift_two', ann= 'shift_two', stp='python', c="python(\"from JR_hk_cmds import *;i=Hotkeys();i.shift_two()\")")
 		# 3
 		cmds.nameCommand('three', ann= 'three', stp='python', c="python(\"from JR_hk_cmds import *;i=Hotkeys();i.three()\")")
 		cmds.nameCommand('alt_three', ann= 'alt_three', stp='python', c="python(\"from JR_hk_cmds import *;i=Hotkeys();i.alt_three()\")")
+		cmds.nameCommand('shift_three', ann= 'shift_three', stp='python', c="python(\"from JR_hk_cmds import *;i=Hotkeys();i.shift_three()\")")
 		# 4
 		cmds.nameCommand('alt_four', ann= 'alt_four', stp='python', c="python(\"from JR_hk_cmds import *;i=Hotkeys();i.alt_four()\")")
 		# Q
@@ -97,12 +102,18 @@ class Mapping():
 		# 1
 		cmds.hotkey( k='1', name= 'one' ) # one
 		cmds.hotkey( k='1', alt=True, name= 'alt_one' ) # Alt + one
+		cmds.hotkey( k='!', name= 'shift_one' ) # Shift + one
 		# 2
 		cmds.hotkey( k='2', name= 'two' ) # two
 		cmds.hotkey( k='2', alt=True, name= 'alt_two' ) # Alt + two
+		###
+		## CHANGE THIS IF WE'RE USING A US KEYBOARD - FOR UK ONLY RIGHT NOW!!!
+		###
+		cmds.hotkey( k='"', name= 'shift_two' ) # Shift + two
 		# 3
 		cmds.hotkey( k='3', name= 'three' ) # three
 		cmds.hotkey( k='3', alt=True, name= 'alt_three' ) # Alt + three
+		cmds.hotkey( k=u'£', name= 'shift_three' ) # Shift + three
 		# 4
 		cmds.hotkey( k='4', alt=True, name= 'alt_four' ) # Alt + four
 		# Q

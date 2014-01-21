@@ -9,11 +9,25 @@ class DraggerTool(Selection):
 		self.dragDirection = []
 	def __call__(self, selection = 'NA' , historyName = '' ):
 		if selection == 'NA':
-			selection = self.getSelection()
-		print selection, ' this is the selection'
-		#self.selection = selection
+			self.selection = self.getSelection()
+		else:
+			self.selection = selection
 		#print self.selection, ' this is the selection'
-		self.history = self.getHistory(selection, -1, historyName)
+		'''
+		####
+		self.historyList = []
+		self.attributeList = []
+		for i in self.selection:
+			print i, ' this is the selection name at the moment'
+			self.historyList.append( self.getHistory(i, '', historyName) )
+		for i in self.historyList:
+			self.attributeList.append(i[0] + Cache.currentAttribute)
+		####
+		print self.historyList, 'XXXXXXXXXXX - History List'
+		print self.attributeList, 'XXXXXXXXXXX - Attribute List'
+		####
+		'''
+		self.history = self.getHistory(self.selection, -1, historyName)
 		self.attribute = self.history[-1] + Cache.currentAttribute
 		print self.attribute, ' this is the start attribute'
 		#self.attributeValue = cmds.getAttr( self.attribute )
@@ -27,7 +41,7 @@ class DraggerTool(Selection):
 		#Attribute.setAttributes()
 		#Cache.currentTool = ''
 		#HUD.updateToolHUD()
-		print 'exiting dragger tool'
+		cmds.warning('exiting dragger tool')
 	def pressFunction(self):
 		self.attribute = self.history[-1] + Cache.currentAttribute # re-init the attribute in case cached has been switched
 		self.modifier = cmds.draggerContext( 'dragTool', query=True, modifier=True)

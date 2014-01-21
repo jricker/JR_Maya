@@ -19,6 +19,9 @@ def playblastStart(cameraList, directory, formatInfo):
 	# anti aliasing on
 	cmds.setAttr ("hardwareRenderingGlobals.multiSampleEnable", 1)
 	cmds.setAttr ("hardwareRenderingGlobals.multiSampleCount", 16)
+	## set transparecy sorting
+	cmds.setAttr ("hardwareRenderingGlobals.transparencyAlgorithm", 3)
+	cmds.setAttr ("hardwareRenderingGlobals.transparencyQuality", 1)
 	# screen space AO
 	cmds.setAttr ("hardwareRenderingGlobals.ssaoEnable", 1)
 	cmds.setAttr ("hardwareRenderingGlobals.ssaoAmount", .5)
