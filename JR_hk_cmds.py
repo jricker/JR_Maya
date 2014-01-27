@@ -79,7 +79,7 @@ class Hotkeys(Selection):
 		JR_custom_window.graphWindow()
 	def shift_three(self):
 		mel.eval('setDisplaySmoothness 3;')
-		cmds.subdivDisplaySmoothness( s=3 )
+		#cmds.subdivDisplaySmoothness( s=3 )
 	###############################################      4      ###############################################
 	def alt_four(self):
 		cmds.HypershadeWindow()

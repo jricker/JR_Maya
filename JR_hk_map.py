@@ -109,11 +109,13 @@ class Mapping():
 		###
 		## CHANGE THIS IF WE'RE USING A US KEYBOARD - FOR UK ONLY RIGHT NOW!!!
 		###
-		cmds.hotkey( k='"', name= 'shift_two' ) # Shift + two
+		cmds.hotkey( k='"', name= 'shift_two' ) # Shift + two = UK KEYBOARD
+		cmds.hotkey( k=u'@', name= 'shift_two' ) # Shift + two = US KEYBOARD
 		# 3
 		cmds.hotkey( k='3', name= 'three' ) # three
 		cmds.hotkey( k='3', alt=True, name= 'alt_three' ) # Alt + three
-		cmds.hotkey( k=u'£', name= 'shift_three' ) # Shift + three
+		cmds.hotkey( k=u'£', name= 'shift_three' ) # Shift + three = UK KEYBOARD
+		cmds.hotkey( k=u'#', name= 'shift_three' ) # Shift + three = US KEYBOARD
 		# 4
 		cmds.hotkey( k='4', alt=True, name= 'alt_four' ) # Alt + four
 		# Q
