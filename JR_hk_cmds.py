@@ -35,6 +35,7 @@ class Hotkeys(Selection):
 	def alt_one(self):
 		JR_custom_window.outlinerWindow()
 	def shift_one(self):
+		Cache.subdivisionLevel = '1'
 		mel.eval('setDisplaySmoothness 1;')
 		cmds.subdivDisplaySmoothness( s=1 )
 	###############################################      2      ###############################################
@@ -58,6 +59,7 @@ class Hotkeys(Selection):
 	def alt_two(self):
 		JR_custom_window.hyperWindow()
 	def shift_two(self):
+		Cache.subdivisionLevel = '2'
 		mel.eval('setDisplaySmoothness 2;')
 		cmds.subdivDisplaySmoothness( s=2 )
 	###############################################      3      ###############################################
@@ -78,8 +80,9 @@ class Hotkeys(Selection):
 	def alt_three(self):
 		JR_custom_window.graphWindow()
 	def shift_three(self):
+		Cache.subdivisionLevel = '3'
 		mel.eval('setDisplaySmoothness 3;')
-		#cmds.subdivDisplaySmoothness( s=3 )
+		cmds.subdivDisplaySmoothness( s=3 )
 	###############################################      4      ###############################################
 	def alt_four(self):
 		cmds.HypershadeWindow()

@@ -267,6 +267,10 @@ class Tools(Selection, DraggerTool, Attributes, Materials):
 		#cmds.select(new)
 		#cmds.createDisplayLayer(name = 'Instances', noRecurse=True)
 		#cmds.setAttr('Instances'+'.displayType', 2)
+	def creaseTool(self):
+		cmds.polyCrease( value=0.9 )
+		Attribute.setAttributes( attrs = [ ('Offset', '.offset'), ('Segments', '.segments') ] )
+		Dragger( X , 'Bevel')
 	def primitiveTool(self):
 		if self.getType(0)[1] == 'CAMERA':
 			Attribute.setAttributes( attrs = [('Locator Scale', '.locatorScale')] )
@@ -289,6 +293,12 @@ class Tools(Selection, DraggerTool, Attributes, Materials):
 		elif self.getHistory(self.getSelection(), 0, 'polyPyramid' ):
 			Attribute.setAttributes( attrs = [ ('Radius', '.sideLength') , ('Height Div', '.subdivisionsHeight'), ('Cap Div', '.subdivisionsCaps') , ('Sides', '.numberOfSides') ]  )
 			history = 'polyPyramid'
+		elif self.getHistory(self.getSelection(), 0, 'polyPipe' ):
+			Attribute.setAttributes( attrs = [ ('Radius', '.radius') , ('Round Cap', '.roundCap'),  ('Height', '.height'), ('Thickness', '.thickness') , ('Axis Div', '.subdivisionsAxis'), ('Height Div', '.subdivisionsHeight'), ('Cap Div', '.subdivisionsCaps') ]  )
+			history = 'polyPipe'
+		elif self.getHistory(self.getSelection(), 0, 'polyPlane' ):
+			Attribute.setAttributes( attrs = [ ('Width', '.width') , ('Height', '.height'),  ('Width Div', '.subdivisionsWidth'), ('Height Div', '.subdivisionsHeight') ]  )
+			history = 'polyPlane'  
 		Dragger(self.getSelection(), history )
 	def selectTool(self):
 		selectAttributes = [ ('Normal', 'options = 4'), ('Reflection', '.options = 4') ]

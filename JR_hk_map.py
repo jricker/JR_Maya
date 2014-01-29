@@ -41,6 +41,8 @@ class Mapping():
 		cmds.nameCommand('ctrl_r', ann= 'ctrl_r', stp='python', c="python(\"from JR_hk_cmds import *;i=Hotkeys();i.ctrl_r()\")")
 		cmds.nameCommand('r_release', ann= 'r_release', stp='python', c="python(\"from JR_hk_cmds import *;i=Hotkeys();i.r_release()\")")
 		cmds.nameCommand('alt_r', ann= 'alt_r', stp='python', c="python(\"from JR_hk_cmds import *;i=Hotkeys();i.alt_r()\")")
+		# H
+		cmds.nameCommand('h', ann= 'h', stp='python', c="python(\"from JR_hk_cmds import *;i=Hotkeys();i.h()\")")
 		# L
 		cmds.nameCommand('ctrl_l', ann= 'ctrl_l', stp='python', c="python(\"from JR_hk_cmds import *;i=Hotkeys();i.ctrl_l()\")")
 		# P
@@ -130,6 +132,8 @@ class Mapping():
 		cmds.hotkey( k='R', name= 'R' ) # R
 		cmds.hotkey( k='r', ctl=True, name = 'ctrl_r' ) # Ctrl + r
 		cmds.hotkey( k='r', alt=True, name = 'alt_r' ) # Alt + r
+		# H
+		cmds.hotkey( k='h', name= 'h' ) # h
 		# L
 		cmds.hotkey( k='l', ctl=True, name = 'ctrl_l' ) # Ctrl + l
 		# P

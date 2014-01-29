@@ -13,6 +13,7 @@ class myCache():
 		self.vertSelection = ''
 		self.jointSelection = ''
 		self.meshSelection = ''
+		self.subdivisionLevel = ''
 		# cached for picture in picture feature
 		self.cameraJob = 2000
 		self.modelPanel = ''
