@@ -276,7 +276,7 @@ class Tools(Selection, DraggerTool, Attributes, Materials):
 			Attribute.setAttributes( attrs = [('Locator Scale', '.locatorScale')] )
 			history = ''
 		if self.getHistory(self.getSelection(), 0, 'polyCube' ):
-			Attribute.setAttributes( attrs = [ ('Width Div', '.subdivisionsWidth') , ('Height Div', '.subdivisionsHeight'), ('Depth Div', '.subdivisionsDepth') ]  )
+			Attribute.setAttributes( attrs = [ ('Width', '.width') , ('Height', '.height'), ('Depth', '.depth'), ('Width Div', '.subdivisionsWidth') , ('Height Div', '.subdivisionsHeight'), ('Depth Div', '.subdivisionsDepth') ]  )
 			history = 'polyCube' 
 		elif self.getHistory(self.getSelection(), 0, 'polySphere' ):
 			Attribute.setAttributes( attrs = [ ('Axis Div', '.subdivisionsAxis') , ('Height Div', '.subdivisionsHeight') ]  )

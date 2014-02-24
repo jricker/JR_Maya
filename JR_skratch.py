@@ -165,3 +165,58 @@ if len(camerasSelected) == 0:
 else:
 	#print camerasSelected
 	playblastStart(camerasSelected)
+
+
+###########################
+###  EULER ANGLES CODE  ###
+###########################
+
+
+
+#######################################################################################################################
+## YOU CAN USE THIS METHOD FOR LINES AND VERTS ##
+#######################################################################################################################
+import maya.cmds as cmds
+sl=cmds.ls(selection=True, flatten=True)
+toVerts = cmds.polyListComponentConversion(sl, tv=True)
+verts = cmds.ls(toVerts, flatten = True)
+flatnormals = cmds.polyNormalPerVertex(verts, q=True, xyz=True)
+normals = []
+normals = zip(*[iter(flatnormals)]*3)
+xNorm = [x[0] for x in normals]; xVector = sum(xNorm)/len(xNorm)
+yNorm = [x[1] for x in normals]; yVector = sum(yNorm)/len(yNorm)
+zNorm = [x[2] for x in normals]; zVector = sum(zNorm)/len(zNorm)
+finalAngle = cmds.angleBetween( euler=True, v2= [xVector, yVector, zVector], v1=[0, 1, 0] )
+## TEST OBJECT ALIGNMENT
+cmds.xform('pCone1', ws = 1, ro = [ finalAngle[0], finalAngle[1] , finalAngle[2] ] )
+
+
+#######################################################################################################################
+### USE THIS METHOD FOR FACE SELECTION. STILL AN ISSUES IF OBJECT IS ROTATED, NEED TO CALCUATE THAT IN AS WELL SOMEHOW.
+#######################################################################################################################
+import maya.cmds as cmds
+import decimal
+## Poluate Vars
+sl = cmds.ls(selection=True, flatten=True)
+faceList = []
+xValue  = []
+yValue  = []
+zValue  = []
+# Find the face total and append it to the list
+for i in sl:
+	x = cmds.polyInfo( i, fn=True )
+	faceList.append(x)
+## Find the vectors for each face in the list
+for i in faceList:
+    vectors = str.split ( str(i[0])    )
+    xValue.append ( float(vectors [2]) )
+    yValue.append ( float(vectors [3]) )
+    zValue.append ( float(vectors [4]) )
+# Average the vectors from each x,y,z in face list
+xAverage = ( sum(xValue) / len(xValue) )
+yAverage = ( sum(yValue) / len(yValue) )
+zAverage = ( sum(zValue) / len(zValue) )
+# Find the angle in between Y up and the selected face vector
+finalAngle = cmds.angleBetween(euler = True, v1 = [0, 1, 0] , v2 = [xAverage,yAverage,zAverage] )
+# Test object for testing
+cmds.xform('pCone1', ws = 1, ro = [ finalAngle[0], finalAngle[1] , finalAngle[2] ] )
