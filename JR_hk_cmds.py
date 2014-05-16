@@ -6,6 +6,7 @@ from JR_attribute_class import *
 from JR_selection_class import *
 from JR_refresh_modules import *
 import maya.mel as mel
+
 class Hotkeys(Selection):
 	def __init__(self):
 		pass
@@ -151,6 +152,9 @@ class Hotkeys(Selection):
 	def e_release(self):
 		print 'claiming "e" release from default maya'
 		HUD.updateToolHUD()
+	def ctrl_e(self):
+		Tool.exportTool(Cache.currentCategory)
+		HUD.updateToolHUD()
 	def alt_e(self):
 		if Cache.currentCategory == 'frostbite':
 			Cache.currentTool = 'Importing Assets'
@@ -252,13 +256,12 @@ class Hotkeys(Selection):
 				if start == end: # this means there's no keyframes
 					start = cmds.playbackOptions(q=1, minTime=1)
 					end =   cmds.playbackOptions(q=1, maxTime=1)
-				cmds.bakeSimulation(self.getSelection(), time =(start,end), sampleBy = 1 )
+				cmds.bakeResults(self.getSelection(), simulation = True, time =(start,end), sampleBy = 1 )
 
 	###############################################      D      ###############################################
 	def d (self):
 		# Tool To create the measurement tool when vertexes are selected
 		if self.getType(0) == 'vertex':
-			sl = cmds.ls(selection=True, flatten = True)
 			locators = cmds.ls(type = 'locator')
 			distances = cmds.ls(type = 'distanceDimShape')
 			cmds.distanceDimension(startPoint = cmds.pointPosition( self.getSelection()[0]) ,endPoint= cmds.pointPosition( self.getSelection()[1] ))
@@ -284,10 +287,11 @@ class Hotkeys(Selection):
 		x = self.getType(0)
 		print x
 	def ctrl_i (self):
-		multipleFilters = "All Files (*.*);;Maya ASCii(*.ma);;Maya Binary(*.mb);;FBX (*.fbx);;Atom(*.atom)"
+		cmds.Import()
+		#multipleFilters = "All Files (*.*);;Maya ASCii(*.ma);;Maya Binary(*.mb);;FBX (*.fbx);;Atom(*.atom)"
 		#filename = cmds.fileDialog2(fileMode=1, caption="Import")
-		filename = cmds.fileDialog2 ( fileMode=1, fileFilter= multipleFilters, caption= "Import" )
-		cmds.file ( filename[0], i=True )
+		#filename = cmds.fileDialog2 ( fileMode=1, fileFilter= multipleFilters, caption= "Import" )
+		#cmds.file ( filename[0], i=True )
 	###############################################      O      ###############################################
 	def o (self):
 		cmds.playbackOptions( maxTime = cmds.currentTime( query=True ) )
@@ -296,8 +300,13 @@ class Hotkeys(Selection):
 		if Cache.currentContext == 'myMove':
 			cmds.snapMode( curve = True )
 		else:
-			if self.getType(0) == 'None':
+			if self.getSelection() == 'None':
 				HUD.primitiveMenu()
+			elif len(self.getSelection()) == 2:
+				if self.getType(0)[0] == 'camera':
+					Tool.constrainToParent('bake')
+				else:
+					Tool.constrainToParent('noBake')
 			else:
 				print 'this is where we can place the convert or create tools'
 	def c_release (self):

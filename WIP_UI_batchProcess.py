@@ -7,16 +7,17 @@ def UI():
 	#check for and create window
 	if cmds.window('exampleBatchUI', exists = True):
 		cmds.deleteUI('exampleBatchUI')
-	window = cmds.window('exampleBatchUI', w = 500, h = 350, mnb = False, mxb = False, sizeable = False, title = 'Example Batch')
+	# create the window
+	cmds.window('exampleBatchUI', w = 500, h = 350, mnb = False, mxb = False, sizeable = False, title = 'Example Batch')
 	# creat out main layout
 	mainLayout = cmds.columnLayout(w = 500, h = 350)
 	#create our row columb layout
 	cmds.separator(h = 15)
-	rowColumnLayout = cmds.rowColumnLayout(nc = 2, cw = [(1, 460), (2, 40)] , columnOffset = [(1, 'both', 5), (2, 'both', 5)]   ) # first section relates to 1 and 2 columb widths
+	cmds.rowColumnLayout(nc = 2, cw = [(1, 460), (2, 40)] , columnOffset = [(1, 'both', 5), (2, 'both', 5)]   ) # first section relates to 1 and 2 columb widths, this creates rowColumnLayout
 	#input field
 	cmds.text(label = 'Input Directory:', align='left')
 	cmds.text(label = '') # this is to fill the next column with a blank for spacing
-	inputField = cmds.textField('inputField', w = 460)
+	cmds.textField('inputField', w = 460) # create inputField
 	cmds.symbolButton(w=20, h=20, image = icon, c = partial(browseFilePath, 3, None, 'inputField') )
 	#seperator
 	cmds.separator(h=5, style = 'none')
@@ -24,7 +25,7 @@ def UI():
 	#text file field
 	cmds.text(label = 'Text File:', align='left')
 	cmds.text(label = '') # this is to fill the next column with a blank for spacing
-	textInputField = cmds.textField('textInputField', w = 460)
+	cmds.textField('textInputField', w = 460) # create text field
 	cmds.symbolButton(w=20, h=20, image = icon, c = partial(browseFilePath, 1, '*.txt', 'textInputField') )
 	#seperator
 	cmds.separator(h=5, style = 'none')
@@ -32,7 +33,7 @@ def UI():
 	#output field
 	cmds.text(label = 'Output Directory:', align='left')
 	cmds.text(label = '') # this is to fill the next column with a blank for spacing
-	outputField = cmds.textField('outputField', w = 460)
+	cmds.textField('outputField', w = 460) # create output field
 	cmds.symbolButton(w=20, h=20, image = icon, c = partial(browseFilePath, 3, None, 'outputField') )
 	#seperator
 	cmds.separator(h=5, style = 'none')
@@ -58,3 +59,4 @@ def process(*args):
 			print ' doing stuff'
 			
 	print inputDirectory, textFile, outputDirectory
+UI()

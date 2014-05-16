@@ -51,3 +51,4 @@ def build(*args):
 	selectedCharacter = cmds.optionMenu('characerOptionMenu', query = True, value = True)
 	fileName = projectPath + selectedCharacter +'.mb'
 	cmds.file(fileName, open = True, force = True, prompt = False)
+UI()

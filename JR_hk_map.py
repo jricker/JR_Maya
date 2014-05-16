@@ -35,6 +35,7 @@ class Mapping():
 		# E
 		cmds.nameCommand('e', ann= 'e', stp='python', c="python(\"from JR_hk_cmds import *;i=Hotkeys();i.e()\")")
 		cmds.nameCommand('e_release', ann= 'e_release', stp='python', c="python(\"from JR_hk_cmds import *;i=Hotkeys();i.e_release()\")")
+		cmds.nameCommand('ctrl_e', ann= 'ctrl_e', stp='python', c="python(\"from JR_hk_cmds import *;i=Hotkeys();i.ctrl_e()\")")
 		# R
 		cmds.nameCommand('r', ann= 'r', stp='python', c="python(\"from JR_hk_cmds import *;i=Hotkeys();i.r()\")")
 		cmds.nameCommand('R', ann= 'R', stp='python', c="python(\"from JR_hk_cmds import *;i=Hotkeys();i.R()\")")
@@ -127,6 +128,7 @@ class Mapping():
 		cmds.hotkey( k='w', name= 'w', releaseName = 'w_release' ) # w
 		# E
 		cmds.hotkey( k='e', name= 'e', releaseName = 'e_release' ) # e
+		cmds.hotkey( k='e', ctl=True, name = 'ctrl_e' ) # Ctrl + e
 		# R
 		cmds.hotkey( k='r', name= 'r', releaseName = 'r_release' ) # r
 		cmds.hotkey( k='R', name= 'R' ) # R

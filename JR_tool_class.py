@@ -34,22 +34,27 @@ class Tools(Selection, DraggerTool, Attributes, Materials):
 			cmds.selectType( allComponents = False, allObjects = True )
 	def createInMiddle(self, execCommand):
 		Cache.locatorList = []
-		if len(self.getSelection()) == 1:
+		if self.getSelection() == 'None':
 			location = self.getMiddle()[0]
 			exec execCommand
 			cmds.xform(t = location)
 		else:
-			items = []
-			for i in self.getSelection():
-				Cache.locatorList.append(i) #to understand which locator goes to which selection point
-				cmds.select(i)
+			if len(self.getSelection()) == 1:
 				location = self.getMiddle()[0]
 				exec execCommand
-				items.append(cmds.ls(selection=True))
 				cmds.xform(t = location)
-			cmds.select(clear = 1)
-			for i in items:
-				cmds.select(i, add = 1)
+			else:
+				items = []
+				for i in self.getSelection():
+					Cache.locatorList.append(i) #to understand which locator goes to which selection point
+					cmds.select(i)
+					location = self.getMiddle()[0]
+					exec execCommand
+					items.append(cmds.ls(selection=True))
+					cmds.xform(t = location)
+				cmds.select(clear = 1)
+				for i in items:
+					cmds.select(i, add = 1)
 	def cameraShakeTool(self):
 		JR_camera_shake.run()
 	def renameTool(self):
@@ -91,7 +96,7 @@ class Tools(Selection, DraggerTool, Attributes, Materials):
 		X = self.getSelection() # adds selection to a variable so we can deselect it later while still using it for the Dragger command.
 		if self.getType(0) == 'face':
 			cmds.polyExtrudeFacet( X, constructionHistory = 1, keepFacesTogether = 1)
-			Attribute.setAttributes( attrs = [('Thickness', '.thickness'), ('Offset', '.offset'), ('Division', '.divisions'), ('Z Translate', '.localTranslateZ')] )
+			Attribute.setAttributes( attrs = [('Thickness', '.thickness'), ('Offset', '.offset'), ('Division', '.divisions'), ('Z Translate', '.localTranslateZ'), ('Faces Together', '.keepFacesTogether')] )
 		elif self.getType(0) == 'edge':
 			cmds.polyExtrudeEdge( X, constructionHistory = 1, keepFacesTogether = 1)
 			Attribute.setAttributes( attrs = [('Thickness', '.thickness'), ('Offset', '.offset'), ('Division', '.divisions'), ('Z Translate', '.localTranslateZ')] )
@@ -113,6 +118,8 @@ class Tools(Selection, DraggerTool, Attributes, Materials):
 			cmds.select(clear = 1)
 			for i in items:
 				cmds.select(i, add = 1)
+	def centerPivot(self, item):
+		cmds.xform(item, centerPivots = True)
 	def chipFacesTool(self):
 		# cuts faces off of the poly and then seperates the faces to it's own polygon object, also ungroups them
 		selectedFaces = self.getSelection()
@@ -129,6 +136,7 @@ class Tools(Selection, DraggerTool, Attributes, Materials):
 		oldParent = cmds.listRelatives(old[0], p=True)
 		oldParentChildren = cmds.listRelatives(oldParent[0], c=True)
 		oldNodesToDelete = set(old) ^ set(oldParentChildren)
+		print oldNodesToDelete, ' this is old nodes to delete'
 		cmds.ungroup( oldParent )
 		cmds.delete(new, ch=1)
 		cmds.delete(old, ch=1)
@@ -136,7 +144,10 @@ class Tools(Selection, DraggerTool, Attributes, Materials):
 		cmds.select(new)
 		self.assignRandomMaterial() # assigns random lambert to newly created poly
 		cmds.delete(selectedFaces)
+		cmds.select(old)
+		cmds.xform(centerPivots = True)
 		cmds.select(new) # reselect it after material assign
+		cmds.xform(centerPivots = True) # Center pivot of new article.
 		JR_rename_tool.UI('exit') # to rename the freshly branched poly
 	def bevelTool(self):
 		X = self.getSelection() # this is added because once the bevel is performed the face is deselected.
@@ -172,9 +183,47 @@ class Tools(Selection, DraggerTool, Attributes, Materials):
 						cmds.headsUpMessage( 'FROM ' + str(length) + ' TO ' + str(newLength), verticalOffset=-100, horizontalOffset=-200 )
 			else:
 				cmds.warning('Vertex not selected')
+	def constrainToParent(self, bakeOrNo):
+		sl = cmds.ls(selection=True)
+		cmds.parentConstraint( sl[1], sl[0] )
+		cmds.select(sl[0])
+		if bakeOrNo == 'bake':
+			start = cmds.findKeyframe( self.getSelection(), which = "first" )
+			end = cmds.findKeyframe( self.getSelection(), which = "last" )
+			if start == end: # this means there's no keyframes
+				start = cmds.playbackOptions(q=1, minTime=1)
+				end =   cmds.playbackOptions(q=1, maxTime=1)
+			cmds.bakeResults( sl[0],time=(start, end), simulation=True )
+			cmds.delete( cn=True )
+			if self.getType(0)[0] == 'camera':
+				objectChild = cmds.listRelatives( sl[0], c=True )
+				# all attributes for camera child node
+				cmds.delete( objectChild, at='hfa', c=True )
+				cmds.delete( objectChild, at='vfa', c=True )
+				cmds.delete( objectChild, at='fl', c=True )
+				cmds.delete( objectChild, at='lsr', c=True )
+				cmds.delete( objectChild, at='fs', c=True )
+				cmds.delete( objectChild, at='fd', c=True )
+				cmds.delete( objectChild, at='sa', c=True )
+				cmds.delete( objectChild, at='coi', c=True )
+				# all attributes for camera node
+				cmds.delete( sl[0], at='FOV', c=True )
+				cmds.delete( sl[0], at='v', c=True )
+				cmds.delete( sl[0], at='sz', c=True )
+				cmds.delete( sl[0], at='sy', c=True )
+				cmds.delete( sl[0], at='sx', c=True )
+				# now initiate export selection
+				cmds.ExportSelection()
+		else:
+			pass
 	def exportTool(self, category):
 		if category == 'frostbite':
 			cmds.warning( 'here is where the Frostbite export will go')
+		else:
+			if self.getSelection == 'None':
+				cmds.Export()
+			else:
+				cmds.ExportSelection()
 		Attribute.setAttributes()
 	def cameraTool(self, category = 'NA'):
 		if category == 'frostbite':

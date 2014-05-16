@@ -144,7 +144,7 @@ def playblastStart(cameraList):
 		if '.mb' in sceneNameFull or '.ma' in sceneNameFull:
 			sceneName = sceneNameFull[:-3] 
 		else:
-			sceneName = SceneNameFull
+			sceneName = sceneNameFull
 		cmds.select(cl = 1)
 		focus = cmds.getPanel( withFocus=True )
 		cmds.modelPanel( focus, edit=True, camera = x )

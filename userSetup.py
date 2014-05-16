@@ -29,6 +29,7 @@ def sceneName():
 	sceneNameFull = cmds.file(query = True, shortName = True, sceneName = True)
 	return sceneNameFull
 # Begin populating headsup boxes
+cmds.commandPort(name=":7002", sourceType="python") # OPEN CONNECTION PORT 7002 for MAYA SUBLIME USAGE
 cmds.ToggleCurrentFrame() # turns on the current frame hud
 cmds.headsUpDisplay( 'categoryHUD', l = ':', ba = 'left' , s = 5, b=6)
 cmds.headsUpDisplay( 'toolHUD', l = ':', ba = 'left', s = 5, b=7)
