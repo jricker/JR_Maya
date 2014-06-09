@@ -44,6 +44,7 @@ class HUDs(Selection):
 			cmds.nodeIconButton( style='iconOnly', command= partial(self.primitiveActions, 'CreatePolyPlaneCtx', 'cmds.polyPlane()'), image1='polyMesh.png') 
 			cmds.nodeIconButton( style='iconOnly', command= partial(self.primitiveActions, 'cmds.EPCurveTool()', 'cmds.warning("Create your own curve drop automatically")' ), image1='curveEP.png' )
 			cmds.nodeIconButton( style='iconOnly', command= partial(self.primitiveActions, 'cmds.JointTool()', 'Tool.jointTool()' ), image1='kinJoint.png' )
+			cmds.nodeIconButton( style='iconOnly', command= partial(self.primitiveActions, 'cmds.SculptGeometryTool()', 'cmds.SculptGeometryTool()'), image1='brush.png' )
 			cmds.showWindow( 'primitives' )
 	def mirrorMenu(self, tool):
 		if cmds.window('mirror', exists=True):

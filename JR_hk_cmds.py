@@ -5,6 +5,7 @@ from JR_cache_class import *
 from JR_attribute_class import *
 from JR_selection_class import *
 from JR_refresh_modules import *
+from JR_material_class import *
 import maya.mel as mel
 
 class Hotkeys(Selection):
@@ -241,7 +242,9 @@ class Hotkeys(Selection):
 			cmds.polyCloseBorder()
 	###############################################      M      ###############################################
 	def ctrl_m (self):
-		HUD.mirrorMenu( Tool.mirrorModelingTool )
+		HUD.mirrorMenu( Tool.mirrorModelingTool )SSS
+	def m(self):
+		Tool.assignMaterialTool()
 	###############################################      B      ###############################################
 	def alt_b (self):
 		if self.getSelection() == 'None':
@@ -275,6 +278,10 @@ class Hotkeys(Selection):
 			cmds.polySubdivideFacet(sbm=1) #starts it off in linear form
 			Tool.smoothTool()
 		HUD.updateToolHUD()
+	def alt_d (self):
+		cmds.xform(cp=1)
+		#cmds.xform(self.getSelection(), pivots = self.getMiddle()[0])
+		cmds.warning('test test')
 	###############################################      A      ###############################################
 	#def a (self):
 	#	cmds.viewFit(all = True, animate = False)
@@ -294,7 +301,15 @@ class Hotkeys(Selection):
 		#cmds.file ( filename[0], i=True )
 	###############################################      O      ###############################################
 	def o (self):
-		cmds.playbackOptions( maxTime = cmds.currentTime( query=True ) )
+		if self.getSelection == 'None':
+			cmds.playbackOptions( maxTime = cmds.currentTime( query=True ) )
+		else:
+			wireOn = cmds.modelEditor('modelPanel4', q=1, wos=1)
+			if wireOn == True:
+			    cmds.modelEditor('modelPanel4', edit = True, wos=0)
+			else:
+			    cmds.modelEditor('modelPanel4', edit = True, wos=1)
+			cmds.select(deselect = 1)
 	###############################################      C      ###############################################
 	def c (self):
 		if Cache.currentContext == 'myMove':
@@ -306,7 +321,7 @@ class Hotkeys(Selection):
 				if self.getType(0)[0] == 'camera':
 					Tool.constrainToParent('bake')
 				else:
-					Tool.constrainToParent('noBake')
+					Tool.constrainToParent('noBake', 'Maintain')
 			else:
 				print 'this is where we can place the convert or create tools'
 	def c_release (self):

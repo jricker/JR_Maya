@@ -55,6 +55,8 @@ class Tools(Selection, DraggerTool, Attributes, Materials):
 				cmds.select(clear = 1)
 				for i in items:
 					cmds.select(i, add = 1)
+	def assignMaterialTool(self):
+		self.assignRandomMaterial()
 	def cameraShakeTool(self):
 		JR_camera_shake.run()
 	def renameTool(self):
@@ -183,9 +185,12 @@ class Tools(Selection, DraggerTool, Attributes, Materials):
 						cmds.headsUpMessage( 'FROM ' + str(length) + ' TO ' + str(newLength), verticalOffset=-100, horizontalOffset=-200 )
 			else:
 				cmds.warning('Vertex not selected')
-	def constrainToParent(self, bakeOrNo):
+	def constrainToParent(self, bakeOrNo = 'Bake', maintainOffset = 'No'):
 		sl = cmds.ls(selection=True)
-		cmds.parentConstraint( sl[1], sl[0] )
+		if maintainOffset == 'No':
+			cmds.parentConstraint( sl[1], sl[0] )
+		elif maintainOffset == 'Maintain':
+			cmds.parentConstraint( sl[1], sl[0], mo = True )
 		cmds.select(sl[0])
 		if bakeOrNo == 'bake':
 			start = cmds.findKeyframe( self.getSelection(), which = "first" )
