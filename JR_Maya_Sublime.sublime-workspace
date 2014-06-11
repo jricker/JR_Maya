@@ -160,16 +160,18 @@
 	},
 	"file_history":
 	[
-		"/C/Users/jricker/Documents/GitHub/JR_Maya/JR_hud_class.py",
+		"/C/Users/jricker/Documents/GitHub/JR_Maya/JR_tool_class.py",
+		"/C/Users/jricker/Documents/GitHub/JR_Maya/JR_hk_cmds.py",
 		"/C/Users/jricker/Documents/GitHub/JR_Maya/JR_cache_class.py",
+		"/C/Users/jricker/Documents/GitHub/JR_Maya/JR_attribute_class.py",
+		"/D/projects/havana/dl/Havana001/havanadata/Raw/Weapons/Handheld/A91/Rig/skeletonOffset.mel",
+		"/D/projects/havana/dl/Havana001/havanadata/Raw/Weapons/Handheld/A91/Rig/controls.mel",
+		"/C/Users/jricker/Documents/GitHub/JR_Maya/JR_hud_class.py",
 		"/C/Users/jricker/Documents/GitHub/JR_Maya/JR_camera_shuffle.py",
 		"/C/Users/jricker/Documents/GitHub/JR_Maya/JR_custom_window.py",
 		"/C/Users/jricker/Documents/GitHub/JR_Maya/userSetup.py",
-		"/C/Users/jricker/Documents/GitHub/JR_Maya/JR_attribute_class.py",
 		"/C/Users/jricker/Documents/GitHub/JR_Maya/JR_selection_class.py",
 		"/C/Users/jricker/Documents/GitHub/JR_Maya/JR_material_class.py",
-		"/C/Users/jricker/Documents/GitHub/JR_Maya/JR_tool_class.py",
-		"/C/Users/jricker/Documents/GitHub/JR_Maya/JR_hk_cmds.py",
 		"/C/Users/jricker/Documents/GitHub/JR_Maya/JR_hk_map.py",
 		"/C/Users/jricker/Documents/GitHub/JR_Maya/JR_Maya_Sublime.sublime-project",
 		"/C/Users/jricker/Documents/GitHub/JR_Maya/JR_skratch.py",
@@ -540,7 +542,7 @@
 	"show_minimap": true,
 	"show_open_files": false,
 	"show_tabs": true,
-	"side_bar_visible": true,
+	"side_bar_visible": false,
 	"side_bar_width": 249.0,
 	"status_bar_visible": true
 }
