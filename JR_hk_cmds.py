@@ -349,6 +349,9 @@ class Hotkeys(Selection):
 			HUD.lensHUD()
 	def alt_shift_c (self):
 		Tool.defaultCamSwitch()
+	###############################################      H      ###############################################
+	def h (self):
+		Tool.hideGeometry()
 	###############################################      V      ###############################################
 	def v (self):
 		cmds.snapMode( point = True )

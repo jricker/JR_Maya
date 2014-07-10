@@ -2,6 +2,7 @@ from JR_dragger_class import *
 from JR_attribute_class import *
 from JR_selection_class import *
 from JR_material_class import *
+from JR_cache_class import *
 import JR_camera_shake
 import JR_playblast_tool
 import JR_rename_tool
@@ -19,6 +20,28 @@ class Tools(Selection, DraggerTool, Attributes, Materials):
 			return cmds.polyListComponentConversion( self.getSelection(), internal = False, toEdge = True )
 		elif toType == 'vertex':
 			return cmds.polyListComponentConversion( self.getSelection(), toVertex = True )
+	def hideGeometry(self):
+		if self.getSelection() == 'None':
+			if Cache.hiddenItems != []:
+				for i in Cache.hiddenItems:
+					cmds.setAttr(i+'.visibility', 1)
+				Cache.hiddenItems = []
+			else:
+				print 'Nothing in the hidden list to unhide'
+		else:
+			if self.getType(0) == 'mesh':
+				visibleTemp = cmds.ls(geometry = 1,visible = 1)
+				visibleParents = [cmds.listRelatives( i , p=True ) for i in visibleTemp]
+				visibleList = []
+				for i in visibleParents:
+					temp = i[0]
+					visibleList.append(temp)
+    			selectionList = self.getSelection()
+    			hideSet = set(selectionList) ^ set(visibleList)
+    			hideList = list(hideSet)
+    			for i in hideList:
+					Cache.hiddenItems.append(i)
+					cmds.setAttr(i+'.visibility', 0)
 	def selectionMask(self, toType):
 		if cmds.selectMode( query = 1, component = True):
 			cmds.selectType( allComponents = False )
@@ -56,7 +79,9 @@ class Tools(Selection, DraggerTool, Attributes, Materials):
 				for i in items:
 					cmds.select(i, add = 1)
 	def assignMaterialTool(self):
+		a = self.getSelection()
 		self.assignRandomMaterial()
+		cmds.select(a)
 	def cameraShakeTool(self):
 		JR_camera_shake.run()
 	def renameTool(self):

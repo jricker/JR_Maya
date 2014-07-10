@@ -8,12 +8,15 @@ class myCache():
 		self.currentCategory = ''
 		self.currentAttribute = ''
 		self.currentContext = ''
+		# selected items
 		self.faceSelection = ''
 		self.edgeSelection = ''
 		self.vertSelection = ''
 		self.jointSelection = ''
 		self.meshSelection = ''
 		self.subdivisionLevel = ''
+		# hidden items
+		self.hiddenItems = []
 		# cached for picture in picture feature
 		self.cameraJob = 2000
 		self.modelPanel = ''
