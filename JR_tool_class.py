@@ -81,7 +81,25 @@ class Tools(Selection, DraggerTool, Attributes, Materials):
 	def assignMaterialTool(self):
 		a = self.getSelection()
 		self.assignRandomMaterial()
-		cmds.select(a)
+		## DELETE UNUSED TEMP MATERIALS
+		sceneGeo = cmds.ls(geometry=True)
+		sceneShaders = cmds.ls(materials = True)
+		shadersUsed = cmds.listConnections(cmds.listHistory(sceneGeo),t='shadingEngine')
+		shadersUsedTemp = set(shadersUsed)
+		shadersUsed = list(shadersUsedTemp)
+		shaderList=[]
+		for i in shadersUsed:
+		    if 'tempMaterial' in i:
+		        shaderList.append(cmds.listHistory(i,pdo=True)[1]) # this finds the actual name of the shader instead of its parent which is actually returned with is SG
+		toDelete = set(sceneShaders) ^ set(shaderList)
+		deleteList = list(toDelete)
+		for i in deleteList:
+		    if 'tempMaterial' in i:
+		        if 'SG' in i:
+		            pass
+		        else:
+		            cmds.delete(i)
+		cmds.select(a) #re-select geo
 	def cameraShakeTool(self):
 		JR_camera_shake.run()
 	def renameTool(self):
@@ -202,7 +220,7 @@ class Tools(Selection, DraggerTool, Attributes, Materials):
 				if length == 2:
 					cmds.polyMergeVertex(alwaysMergeTwoVertices = True)
 				elif length  > 2:
-					cmds.polyMergeVertex(distance = 0.01)
+					cmds.polyMergeVertex(distance = 0.001)
 					newLength = len(self.getSelection())
 					if newLength == length: # Nothing was merged because the before and after are the same, state so
 						cmds.headsUpMessage( str(length) + ' Verts Selected - 0 Merged', verticalOffset=-100, horizontalOffset=-200 )
@@ -319,8 +337,9 @@ class Tools(Selection, DraggerTool, Attributes, Materials):
 			cmds.instance(name = instance)
 		if direction == '-x':
 			cmds.scale(-1,1,1, instance, r=1, )
-			position = -1*(pivot[0]*2)
-			cmds.move(position, 0, 0, instance, relative=True)
+			#position = -1*(pivot[0]*2)
+			#position = pivot
+			#cmds.move(position, 0, 0, instance, relative=True)
 		elif direction == '+x':
 			cmds.scale(-1,1,1, instance, r=1, )
 			position = 1*(pivot[0]*2)

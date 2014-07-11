@@ -1,6 +1,7 @@
 #-*- coding: utf-8 -*-
 # the above code must be there for characters like the £ sign. non asci types
 import maya.cmds as cmds
+import maya.mel as mel
 from functools import partial
 from JR_cache_class import *
 class Mapping():
@@ -99,6 +100,12 @@ class Mapping():
 		Cache.currentCategory = category # set hotkey category to selected
 		self.categoryHotkeys() # intializes the nameCommands
 		cmds.headsUpDisplay('categoryHUD', edit=True, c = self.displayCategory ) # update HUD with hotkey category
+		#
+		if category == 'modeling':
+			mel.eval('setPolyCountVisibility 1')
+		else:
+			mel.eval('setPolyCountVisibility 0')
+		#
 		# GLOBAL HOTKEYS
 		# `
 		cmds.hotkey( k='`', name= 'tilde' ) # tilde
