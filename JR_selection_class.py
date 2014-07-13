@@ -5,9 +5,9 @@ class Selection():
 	def __init__(self):
 		### establishing user paths to use in scripts
 		userPath = os.path.expanduser("~")
-		userFolder = os.path.dirname(userPath)
+		self.userFolder = os.path.dirname(userPath)
 		#
-		self.desktop = userFolder + '/Desktop/'
+		self.desktop = self.userFolder + '/Desktop/'
 	def getParent(self, i):
 		return cmds.listRelatives(i, p=True)
 	def getSelection(self):

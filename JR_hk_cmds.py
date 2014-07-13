@@ -5,12 +5,11 @@ from JR_cache_class import *
 from JR_attribute_class import *
 from JR_selection_class import *
 from JR_refresh_modules import *
-from JR_material_class import *
+from JR_material_class import Materials
 import maya.mel as mel
-
-class Hotkeys(Selection):
+class Hotkeys(Selection, Materials):
 	def __init__(self):
-		pass
+		Materials.__init__(self)
 	def tilde(self):
 		Attribute.toggleUp()
 	def alt_tilde(self):
@@ -229,10 +228,6 @@ class Hotkeys(Selection):
 		if self.getType(0) == 'face' or self.getType(0) == 'mesh':
 			print ' not sure which tool should go here .. '
 	###############################################      F      ###############################################
-	#def f (self):
-	#	cmds.viewFit(animate = False)
-	#def f_release(self):
-	#	pass
 	def F (self):
 		# Sets a Keyframe on the focal length of a camera if selected - Just like Shift + w sets a keyframe on the move attr
 		if self.getType(0)[1] == 'CAMERA':
@@ -240,13 +235,17 @@ class Hotkeys(Selection):
 			cmds.setKeyframe(str(currentCamera[0]) + '.fl')
 		if self.getType(0) == 'edge':
 			cmds.polyCloseBorder()
+		if self.getType(0) == 'vertex':
+			Tool.flattenVertex()
 	###############################################      M      ###############################################
 	def ctrl_m (self):
 		HUD.mirrorMenu( Tool.mirrorModelingTool )
 	def m(self):
 		Tool.assignMaterialTool()
+	def M(self):
+		self.assignTestMaterial()
 	###############################################      B      ###############################################
-	def alt_b (self):
+	def alt_b(self):
 		if self.getSelection() == 'None':
 			cmds.CycleBackgroundColor() # cycles the background color as per the default
 		else:
@@ -289,7 +288,10 @@ class Hotkeys(Selection):
 	#	pass
 	###############################################      I      ###############################################
 	def i (self):
-		cmds.playbackOptions( minTime = cmds.currentTime( query=True ) )
+		if self.getSelection != 'None':
+			mel.eval('polyCleanupArgList 3 { "0","2","1","0","1","1","1","0","0","1e-005","0","1e-005","0","1e-005","0","-1","0" }')
+		else:
+			cmds.playbackOptions( minTime = cmds.currentTime( query=True ) )
 	def alt_i (self):
 		x = self.getType(0)
 		print x

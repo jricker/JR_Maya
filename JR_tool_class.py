@@ -228,6 +228,61 @@ class Tools(Selection, DraggerTool, Attributes, Materials):
 						cmds.headsUpMessage( 'FROM ' + str(length) + ' TO ' + str(newLength), verticalOffset=-100, horizontalOffset=-200 )
 			else:
 				cmds.warning('Vertex not selected')
+	def flattenVertex(self):
+		mousePos = cmds.autoPlace(um=True)
+		sl = cmds.ls(selection=True, flatten=True)
+		######################################################################################################## 
+		x = []
+		y = []
+		z = []
+		######################################################################################################## 
+		for i in sl:
+		    location = cmds.xform(i, query=True, translation=True, worldSpace=True)
+		    x.append(location[0])
+		    y.append(location[1])
+		    z.append(location[2])
+		avgX = sum(x)/len(x)
+		avgY = sum(y)/len(y)
+		avgZ = sum(z)/len(z)
+		xyzPos = [avgX,avgY,avgZ]
+		message = ['X', 'Y', 'Z']
+		largestValue = mousePos[0] - xyzPos[0]
+		positionToUse = 0
+		for i in range(len(mousePos)):
+		    if mousePos[i] == 0:
+		        pass
+		    else:
+		        temp = abs(mousePos[i]) - abs(xyzPos[0])
+		        if temp > largestValue:
+		            largestValue = temp
+		            positionToUse = i
+		if mousePos[positionToUse] - xyzPos[positionToUse] > 0:
+		    direction = '+'
+		elif  mousePos[positionToUse] - xyzPos[positionToUse] < 0:
+		    direction = '-'
+		######################################################################################################## 
+		if direction == '+':
+		    if positionToUse == 0:
+		        for i in range(len(sl)):
+		            cmds.xform(sl[i], translation=[max(x), y[i], z[i]], worldSpace=True)
+		    if positionToUse == 1:
+		        for i in range(len(sl)):
+		            cmds.xform(sl[i], translation=[x[i], max(y), z[i]], worldSpace=True)
+		    if positionToUse == 2:
+		        for i in range(len(sl)):
+		            cmds.xform(sl[i], translation=[x[i], y[i], max(z)], worldSpace=True)
+		if direction == '-':
+		    if positionToUse == 0:
+		        for i in range(len(sl)):
+		            cmds.xform(sl[i], translation=[min(x), y[i], z[i]], worldSpace=True)
+		    if positionToUse == 1:
+		        for i in range(len(sl)):
+		            cmds.xform(sl[i], translation=[x[i], min(y), z[i]], worldSpace=True)
+		    if positionToUse == 2:
+		        for i in range(len(sl)):
+		            cmds.xform(sl[i], translation=[x[i], y[i], min(z)], worldSpace=True)
+		######################################################################################################## 
+		cmds.headsUpMessage( 'FLATTENED IN THE ' + direction +' '+ message[positionToUse], verticalOffset=100, horizontalOffset=200 )
 	def constrainToParent(self, bakeOrNo = 'Bake', maintainOffset = 'No'):
 		sl = cmds.ls(selection=True)
 		if maintainOffset == 'No':
@@ -327,14 +382,14 @@ class Tools(Selection, DraggerTool, Attributes, Materials):
 		#Attribute.setAttributes()
 	def mirrorModelingTool(self, direction, *args):
 		original = self.getSelection()
-		pivot = cmds.xform(query = True, worldSpace = True, scalePivot = True)
+		#pivot = cmds.xform(query = True, worldSpace = True, scalePivot = True)
 		instance = original[0]+'_instance'
 		try:
 			if instance:
 				cmds.delete(instance)
-				cmds.instance(name = instance)
+				cmds.duplicate(name = instance)
 		except:
-			cmds.instance(name = instance)
+			cmds.duplicate(name = instance)
 		if direction == '-x':
 			cmds.scale(-1,1,1, instance, r=1, )
 			#position = -1*(pivot[0]*2)
@@ -342,24 +397,24 @@ class Tools(Selection, DraggerTool, Attributes, Materials):
 			#cmds.move(position, 0, 0, instance, relative=True)
 		elif direction == '+x':
 			cmds.scale(-1,1,1, instance, r=1, )
-			position = 1*(pivot[0]*2)
-			cmds.move(position, 0, 0, instance, relative=True)
+			#position = 1*(pivot[0]*2)
+			#cmds.move(position, 0, 0, instance, relative=True)
 		elif direction == '-y':
 			cmds.scale(1,-1,1, instance, r=1, )
-			position = -1*(pivot[1]*2)
-			cmds.move(0, position, 0, instance, relative=True)
+			#position = -1*(pivot[1]*2)
+			#cmds.move(0, position, 0, instance, relative=True)
 		elif direction == '+y':
 			cmds.scale(1,1,1, instance, r=1, )
-			position = 1*(pivot[1]*2)
-			cmds.move(0, position, 0, instance, relative=True)
+			#position = 1*(pivot[1]*2)
+			#cmds.move(0, position, 0, instance, relative=True)
 		elif direction == '-z':
 			cmds.scale(1,1,-1, instance, r=1, )
-			position = -1*(pivot[2]*2)
-			cmds.move(0, 0, position, instance, relative=True)
+			#position = -1*(pivot[2]*2)
+			#cmds.move(0, 0, position, instance, relative=True)
 		elif direction == '+z':
 			cmds.scale(1,1,1, instance, r=1, )
-			position = 1*(pivot[2]*2)
-			cmds.move(0, 0, position, instance, relative=True)
+			#position = 1*(pivot[2]*2)
+			#cmds.move(0, 0, position, instance, relative=True)
 		cmds.deleteUI('mirror', window=True )
 		#cmds.select(clear = True)
 		#cmds.select(new)

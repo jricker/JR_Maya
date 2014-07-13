@@ -57,6 +57,7 @@ class Mapping():
 		cmds.nameCommand('alt_b', ann= 'alt_b', stp='python', c="python(\"from JR_hk_cmds import *;i=Hotkeys();i.alt_b()\")")
 		# M
 		cmds.nameCommand('ctrl_m', ann= 'ctrl_m', stp='python', c="python(\"from JR_hk_cmds import *;i=Hotkeys();i.ctrl_m()\")")
+		cmds.nameCommand('M', ann= 'M', stp='python', c="python(\"from JR_hk_cmds import *;i=Hotkeys();i.M()\")")
 		cmds.nameCommand('m', ann= 'm', stp='python', c="python(\"from JR_hk_cmds import *;i=Hotkeys();i.m()\")")
 		# D
 		cmds.nameCommand('d', ann= 'd', stp='python', c="python(\"from JR_hk_cmds import *;i=Hotkeys();i.d()\")")
@@ -156,6 +157,7 @@ class Mapping():
 		cmds.hotkey( k='b', alt=True, name= 'alt_b' ) # ctrl + b
 		# M
 		cmds.hotkey( k='m', name = 'm' ) # m
+		cmds.hotkey( k='M', name = 'M' ) # M
 		cmds.hotkey( k='m', ctl=True, name = 'ctrl_m' ) # Ctrl + m		
 		# D
 		cmds.hotkey( k='d', name= 'd' ) # d

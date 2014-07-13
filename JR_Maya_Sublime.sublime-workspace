@@ -4,6 +4,26 @@
 		"selected_items":
 		[
 			[
+				"shader",
+				"shaderExists	(local, instance)"
+			],
+			[
+				"matera",
+				"materialName	(local, instance)"
+			],
+			[
+				"material",
+				"materialName	(local, instance)"
+			],
+			[
+				"assign",
+				"assignTestMaterial(materialType, item, materialName)	(attribute, function)"
+			],
+			[
+				"force",
+				"forceElement"
+			],
+			[
 				"camera",
 				"camera"
 			],
@@ -99,6 +119,46 @@
 	},
 	"buffers":
 	[
+		{
+			"file": "JR_hk_cmds.py",
+			"settings":
+			{
+				"buffer_size": 15901,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "JR_selection_class.py",
+			"settings":
+			{
+				"buffer_size": 7756,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "JR_hk_map.py",
+			"settings":
+			{
+				"buffer_size": 11535,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "JR_tool_class.py",
+			"settings":
+			{
+				"buffer_size": 21421,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "JR_material_class.py",
+			"settings":
+			{
+				"buffer_size": 2191,
+				"line_ending": "Windows"
+			}
+		}
 	],
 	"build_system": "",
 	"command_palette":
@@ -160,6 +220,9 @@
 	},
 	"file_history":
 	[
+		"/C/Users/James/Documents/GitHub/JR_Maya/JR_hk_map.py",
+		"/C/Users/James/Documents/GitHub/JR_Maya/JR_tool_class.py",
+		"/C/Users/James/Documents/GitHub/JR_Maya/JR_hk_cmds.py",
 		"/C/Users/jricker/Documents/GitHub/JR_Maya/JR_tool_class.py",
 		"/C/Users/jricker/Documents/GitHub/JR_Maya/JR_hk_cmds.py",
 		"/C/Users/jricker/Documents/GitHub/JR_Maya/JR_cache_class.py",
@@ -297,6 +360,17 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"userFolder",
+			"userPath",
+			"userFolder",
+			"m",
+			"ctrl_m",
+			"assign",
+			"\\",
+			"forceElement",
+			"position =",
+			"position",
+			"mirror",
 			"ctrl_m",
 			"assignRandomMaterial",
 			"material",
@@ -413,18 +487,7 @@
 			"Map",
 			"JR_hk_map",
 			"_one",
-			"alt_one",
-			"self.attribute",
-			"selection",
-			"cmds.setAttr",
-			"attributeValue",
-			";",
-			"ctrl_r",
-			"self.attribute",
-			"self.history",
-			"getHistory",
-			"t",
-			"historyName"
+			"alt_one"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -442,8 +505,144 @@
 	"groups":
 	[
 		{
+			"selected": 3,
 			"sheets":
 			[
+				{
+					"buffer": 0,
+					"file": "JR_hk_cmds.py",
+					"settings":
+					{
+						"buffer_size": 15901,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								8734,
+								8734
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 3438.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "JR_selection_class.py",
+					"settings":
+					{
+						"buffer_size": 7756,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								355,
+								355
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "JR_hk_map.py",
+					"settings":
+					{
+						"buffer_size": 11535,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								10821,
+								10821
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 2077.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "JR_tool_class.py",
+					"settings":
+					{
+						"buffer_size": 21421,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								14406,
+								14406
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 4820.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "JR_material_class.py",
+					"settings":
+					{
+						"buffer_size": 2191,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2092,
+								2092
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				}
 			]
 		}
 	],
