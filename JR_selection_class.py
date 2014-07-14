@@ -1,6 +1,7 @@
 import re
 import os
 import maya.cmds as cmds
+import maya.mel as mel
 class Selection():
 	def __init__(self):
 		### establishing user paths to use in scripts
@@ -34,6 +35,22 @@ class Selection():
 		return x
 	def getContext(self):
 		return cmds.currentCtx()
+	def getSharedGeo(self, sharedItem='materials'):
+		if sharedItem == 'materials':
+			sl = cmds.ls(selection=True)
+			shader = cmds.listConnections(cmds.listHistory(sl[0]),t='shadingEngine')
+			sharingList = cmds.listConnections(shader[0], type='mesh')
+			cmds.select(sharingList)
+		else:
+			cmds.warning("you've asked for a shared type that isn't supported yet!")
+	def getUVBoarder(self):
+		sl = cmds.ls(selection=True, flatten=True)
+		a = cmds.polyListComponentConversion( sl[0] ,fromFace=1, toUV=1)
+		cmds.select(a)
+		mel.eval("polySelectBorderShell 0;")
+		sl = cmds.ls(selection=True, flatten=True)
+		b = cmds.polyListComponentConversion( sl ,fromUV=1, toFace=1)
+		cmds.select(b)
 	def getMiddle(self):
 		# so far this method is only giving values for the position, if you want to put in values
 		# for the rotation and normal directino you'll have to devise actions for those in here as well

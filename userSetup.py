@@ -41,12 +41,19 @@ cmds.headsUpDisplay( 'nextAttrHUD',  l = '+',lfs = 'small',  s = 5, b=3)
 cmds.headsUpDisplay( 'currAttrHUD',  l = '>>', lfs = 'small',dataFontSize = 'large', s = 5, b=2)
 cmds.headsUpDisplay( 'prevAttrHUD', l = '-', lfs = 'small', s = 5, b=1)
 #
+def hideIconMenu():
+	# This turns off the icon button panel above all model editors. If you want it back on switch the 0 to a 1 on the top piece of code.
+	print ' THIS SHOULD BE TURNING OFF THE ICON BUTTON MENU '
+	mel.eval('optionVar -iv "collapseIconBarsInPanels" 0;') # switch this 0 to a 1 if you want it to come back on. 
+	mel.eval("if (`optionVar -q collapseIconBarsInPanels`) {toggleModelEditorBarsInAllPanels 0;} else {toggleModelEditorBarsInAllPanels 1;};")
 def setupHotkeys():
 	cmds.scriptEditorInfo(suppressWarnings=True) # supress annoying warnings
 	#from JR_hk_map import *		# import user_hotkeys script
 	import JR_hk_map # import user_hotkeys script
 	JR_hk_map.Map.globalHotkeys() 				# init global hotkeys
 	JR_hk_map.Map.setCategory('frostbite') 		# init category hotkeys
+	# hide icon menu
+	hideIconMenu()
 	# SET SCENE DEFAULTS
 	cmds.setAttr ("defaultResolution.height", 720) # Frame Height
 	cmds.setAttr ("defaultResolution.width", 1280) # Frame Width
@@ -79,4 +86,5 @@ def setupHotkeys():
 	mel.eval( "setHikDetailsVisibility (0) ; " )          #- maybe set this to 1 for animation?
 	mel.eval( "setCurrentContainerVisibility (0) ; " )
 	mel.eval( "setCameraNamesVisibility (0) ; " )
+	#
 utils.executeDeferred('setupHotkeys()')	# defer running command until everything is loaded and ready

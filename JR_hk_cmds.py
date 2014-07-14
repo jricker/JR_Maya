@@ -238,8 +238,11 @@ class Hotkeys(Selection, Materials):
 		if self.getType(0) == 'vertex':
 			Tool.flattenVertex()
 	###############################################      M      ###############################################
-	def ctrl_m (self):
+	def ctrl_m(self):
 		HUD.mirrorMenu( Tool.mirrorModelingTool )
+	def ctrl_M(self):
+		for i in self.getSelection():
+			self.assignRandomMaterial(item=i)	
 	def m(self):
 		Tool.assignMaterialTool()
 	def M(self):
@@ -402,8 +405,13 @@ class Hotkeys(Selection, Materials):
 			else:
 				cmds.setToolTo ('polySelectEditContext')
 	def alt_s (self):
-		currentCamera = cmds.modelEditor(Cache.modelPanel, query = 1, cam = 1)
-		cmds.select(currentCamera)
+		if self.getType(0) == 'mesh':
+			self.getSharedGeo()
+		elif self.getType(0) == 'face':
+			self.getUVBoarder()
+		else:
+			currentCamera = cmds.modelEditor(Cache.modelPanel, query = 1, cam = 1)
+			cmds.select(currentCamera)
 	def ctrl_S(self):
 		cmds.SaveSceneAs()
 HK = Hotkeys()

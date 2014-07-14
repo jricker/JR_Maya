@@ -57,6 +57,7 @@ class Mapping():
 		cmds.nameCommand('alt_b', ann= 'alt_b', stp='python', c="python(\"from JR_hk_cmds import *;i=Hotkeys();i.alt_b()\")")
 		# M
 		cmds.nameCommand('ctrl_m', ann= 'ctrl_m', stp='python', c="python(\"from JR_hk_cmds import *;i=Hotkeys();i.ctrl_m()\")")
+		cmds.nameCommand('ctrl_M', ann= 'ctrl_M', stp='python', c="python(\"from JR_hk_cmds import *;i=Hotkeys();i.ctrl_M()\")")
 		cmds.nameCommand('M', ann= 'M', stp='python', c="python(\"from JR_hk_cmds import *;i=Hotkeys();i.M()\")")
 		cmds.nameCommand('m', ann= 'm', stp='python', c="python(\"from JR_hk_cmds import *;i=Hotkeys();i.m()\")")
 		# D
@@ -97,7 +98,7 @@ class Mapping():
 	################################################################################################################################
 	def displayCategory(self):
 		return Cache.currentCategory.upper()
-	def setCategory(self, category):	
+	def setCategory(self, category):
 		Cache.currentCategory = category # set hotkey category to selected
 		self.categoryHotkeys() # intializes the nameCommands
 		cmds.headsUpDisplay('categoryHUD', edit=True, c = self.displayCategory ) # update HUD with hotkey category
@@ -158,7 +159,8 @@ class Mapping():
 		# M
 		cmds.hotkey( k='m', name = 'm' ) # m
 		cmds.hotkey( k='M', name = 'M' ) # M
-		cmds.hotkey( k='m', ctl=True, name = 'ctrl_m' ) # Ctrl + m		
+		cmds.hotkey( k='m', ctl=True, name = 'ctrl_m' ) # Ctrl + m
+		cmds.hotkey( k='M', ctl=True, name = 'ctrl_M' ) # Ctrl + M	
 		# D
 		cmds.hotkey( k='d', name= 'd' ) # d
 		cmds.hotkey( k='d', alt=True, name= 'alt_d' ) # Alt + d
