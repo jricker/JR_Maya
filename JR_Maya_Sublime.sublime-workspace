@@ -4,6 +4,10 @@
 		"selected_items":
 		[
 			[
+				"ass",
+				"assignRandomMaterial(materialType, item, materialName, red, green, blue)	(attribute, function)"
+			],
+			[
 				"shader",
 				"shaderExists	(local, instance)"
 			],
@@ -119,46 +123,6 @@
 	},
 	"buffers":
 	[
-		{
-			"file": "JR_hk_cmds.py",
-			"settings":
-			{
-				"buffer_size": 15901,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "JR_selection_class.py",
-			"settings":
-			{
-				"buffer_size": 7756,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "JR_hk_map.py",
-			"settings":
-			{
-				"buffer_size": 11535,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "JR_tool_class.py",
-			"settings":
-			{
-				"buffer_size": 21421,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "JR_material_class.py",
-			"settings":
-			{
-				"buffer_size": 2191,
-				"line_ending": "Windows"
-			}
-		}
 	],
 	"build_system": "",
 	"command_palette":
@@ -220,11 +184,22 @@
 	},
 	"file_history":
 	[
+		"/C/Users/jricker/Documents/GitHub/JR_Maya/test.py",
+		"/C/Users/jricker/Documents/GitHub/JR_Video/scripts/JR_substance_builder.py",
+		"/C/Users/jricker/Downloads/VK_Deflicker.gizmo",
+		"/C/Users/jricker/Downloads/Deflicker_Velocity.gizmo",
+		"/C/Users/jricker/Documents/GitHub/JR_Maya/userSetup.py",
+		"/C/Users/jricker/Documents/GitHub/JR_Maya/JR_material_class.py",
+		"/C/Users/jricker/Documents/GitHub/JR_Maya/JR_tool_class.py",
+		"/C/Users/jricker/Documents/GitHub/JR_Maya/JR_hk_map.py",
+		"/C/Users/jricker/Downloads/getuvshells.py",
+		"/C/Users/jricker/Documents/GitHub/JR_Video/scripts/JR_asset_builder.py",
+		"/C/Users/jricker/Documents/GitHub/JR_Maya/JR_selection_class.py",
+		"/C/Users/jricker/Documents/GitHub/JR_Maya/JR_hk_cmds.py",
+		"/C/Users/jricker/Copy/ASSETS/MODELS/WEAPONS/HANDHELD/knife_ACB90/07_SUBSTANCES/knife_ACB90.sbs",
 		"/C/Users/James/Documents/GitHub/JR_Maya/JR_hk_map.py",
 		"/C/Users/James/Documents/GitHub/JR_Maya/JR_tool_class.py",
 		"/C/Users/James/Documents/GitHub/JR_Maya/JR_hk_cmds.py",
-		"/C/Users/jricker/Documents/GitHub/JR_Maya/JR_tool_class.py",
-		"/C/Users/jricker/Documents/GitHub/JR_Maya/JR_hk_cmds.py",
 		"/C/Users/jricker/Documents/GitHub/JR_Maya/JR_cache_class.py",
 		"/C/Users/jricker/Documents/GitHub/JR_Maya/JR_attribute_class.py",
 		"/D/projects/havana/dl/Havana001/havanadata/Raw/Weapons/Handheld/A91/Rig/skeletonOffset.mel",
@@ -232,10 +207,6 @@
 		"/C/Users/jricker/Documents/GitHub/JR_Maya/JR_hud_class.py",
 		"/C/Users/jricker/Documents/GitHub/JR_Maya/JR_camera_shuffle.py",
 		"/C/Users/jricker/Documents/GitHub/JR_Maya/JR_custom_window.py",
-		"/C/Users/jricker/Documents/GitHub/JR_Maya/userSetup.py",
-		"/C/Users/jricker/Documents/GitHub/JR_Maya/JR_selection_class.py",
-		"/C/Users/jricker/Documents/GitHub/JR_Maya/JR_material_class.py",
-		"/C/Users/jricker/Documents/GitHub/JR_Maya/JR_hk_map.py",
 		"/C/Users/jricker/Documents/GitHub/JR_Maya/JR_Maya_Sublime.sublime-project",
 		"/C/Users/jricker/Documents/GitHub/JR_Maya/JR_skratch.py",
 		"/C/Users/jricker/Documents/GitHub/JR_Maya/WIP_UI_sceneOpen.py",
@@ -340,9 +311,7 @@
 		"/D/nfs14/TnT/Tools/python/mayaPythonScripts/jptr_checkScene/jptr_checkScene.py",
 		"/C/Program Files (x86)/Beyond Compare 3/7zxa.dll",
 		"/C/Users/jricker/Dropbox/python/2013_11_14/JR_selection_class.py",
-		"/C/Users/jricker/Documents/GitHub/JR_Maya/JR_rename_class.py",
-		"/C/Users/jricker/Documents/GitHub/JR_Maya/JR_rename_tool.py",
-		"/C/Users/jricker/Dropbox/python/WIP/toolsToImpliment.py"
+		"/C/Users/jricker/Documents/GitHub/JR_Maya/JR_rename_class.py"
 	],
 	"find":
 	{
@@ -360,6 +329,10 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"produceLOD",
+			"master",
+			"ACB90",
+			"ctrl_m",
 			"userFolder",
 			"userPath",
 			"userFolder",
@@ -483,11 +456,7 @@
 			"\\",
 			"perforce",
 			"network",
-			"for i in self.sele:",
-			"Map",
-			"JR_hk_map",
-			"_one",
-			"alt_one"
+			"for i in self.sele:"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -505,144 +474,8 @@
 	"groups":
 	[
 		{
-			"selected": 3,
 			"sheets":
 			[
-				{
-					"buffer": 0,
-					"file": "JR_hk_cmds.py",
-					"settings":
-					{
-						"buffer_size": 15901,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								8734,
-								8734
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Python/Python.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 3438.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 1,
-					"file": "JR_selection_class.py",
-					"settings":
-					{
-						"buffer_size": 7756,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								355,
-								355
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Python/Python.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 2,
-					"file": "JR_hk_map.py",
-					"settings":
-					{
-						"buffer_size": 11535,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								10821,
-								10821
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Python/Python.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 2077.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 3,
-					"file": "JR_tool_class.py",
-					"settings":
-					{
-						"buffer_size": 21421,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								14406,
-								14406
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Python/Python.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 4820.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 4,
-					"file": "JR_material_class.py",
-					"settings":
-					{
-						"buffer_size": 2191,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								2092,
-								2092
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/Python/Python.tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				}
 			]
 		}
 	],
