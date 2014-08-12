@@ -50,7 +50,7 @@ class DraggerTool(Selection):
 		if cmds.currentUnit( query=True, linear=True ) == 'cm':
 			self.speed = .01 # modifier for speed traveled through values while dragging
 		elif cmds.currentUnit( query=True, linear=True ) == 'm':
-			self.speed = .001 # modifier for speed traveled through values while dragging
+			self.speed = .1 # modifier for speed traveled through values while dragging
 		else:
 			self.speed = .0001
 		self.space = 'screen' # initialize the variable

@@ -114,7 +114,9 @@ class Tools(Selection, DraggerTool, Attributes, Materials):
 		if self.getType(0) == 'face':
 			cmds.polySubdivideFacet
 			Attribute.setAttributes( attrs = [ ('U', '.divisionsU') , ('V', '.divisionsV') ]  )
-		Dragger(X, 'polySubdFace')
+			Dragger(X, 'polySubdFace')
+		elif self.getType(0) == 'mesh':
+			cmds.polySmooth(X, mth=1, dv=1, bnr=1,c=1, kb=1, ksb=1, khe=0, kt=1, kmb=0, suv=1, peh=0, sl=1, dpe=1, ps=0.1, ro=1, ch=1)
 	def playblastTool(self, formatInfo):
 		selectedCams = []
 		#formatInfo = [ 'qt', 'Sorenson Video 3', [1280, 720] ]
@@ -196,7 +198,7 @@ class Tools(Selection, DraggerTool, Attributes, Materials):
 		JR_rename_tool.UI('exit') # to rename the freshly branched poly
 	def bevelTool(self):
 		X = self.getSelection() # this is added because once the bevel is performed the face is deselected.
-		cmds.polyBevel( X, ch=1, offset=0.5 ,segments =1, smoothingAngle = 30, offsetAsFraction = 1, autoFit = 1, worldSpace = 1, angleTolerance = 180, miteringAngle = 180, uvAssignment = 0, mergeVertices = 1, mergeVertexTolerance = 0.0001 )
+		cmds.polyBevel( X, ch=1, offset=0.05 ,segments =1, smoothingAngle = 30, offsetAsFraction = 1, autoFit = 1, worldSpace = 1, angleTolerance = 180, miteringAngle = 180, uvAssignment = 0, mergeVertices = 1, mergeVertexTolerance = 0.0001 )
 		Attribute.setAttributes( attrs = [ ('Offset', '.offset'), ('Segments', '.segments') ] )
 		Dragger( X , 'Bevel')
 	def polySeperateTool(self):

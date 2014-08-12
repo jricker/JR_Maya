@@ -191,13 +191,15 @@ class Hotkeys(Selection, Materials):
 		cmds.ReferenceEditor()
 	###############################################      L      ###############################################
 	def ctrl_l (self):
+		X = self.getSelection()
 		Tool.createInMiddle("cmds.spaceLocator( name = 'JR_locator_01', position = (0,0,0) )")
 		if Cache.locatorList != []:
 			newLocators = self.getSelection()
 			#print Cache.locatorList, ' this is the cache list'
 			#print self.getSelection(), 'this is the locator list'
 			# automatically bake the locators if more than one has been created, because I would only create more than one if it was necessary for verts of faces.
-			parentObject = self.getParent(Cache.locatorList[0] )
+			#parentObject = self.getParent(Cache.locatorList[0] )
+			parentObject = self.getParent(X)
 			#print parentObject[0]
 			start = cmds.findKeyframe( parentObject, which = "first" )
 			end = cmds.findKeyframe( parentObject, which = "last" )
@@ -278,6 +280,8 @@ class Hotkeys(Selection, Materials):
 			    cmds.group(list(newLocators)[0], list(newDistances)[0], n = 'measurement')
 		elif self.getType(0) == 'face':
 			cmds.polySubdivideFacet(sbm=1) #starts it off in linear form
+			Tool.smoothTool()
+		elif self.getType(0) == 'mesh':
 			Tool.smoothTool()
 		HUD.updateToolHUD()
 	def alt_d (self):
