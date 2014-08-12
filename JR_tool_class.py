@@ -116,6 +116,7 @@ class Tools(Selection, DraggerTool, Attributes, Materials):
 			Attribute.setAttributes( attrs = [ ('U', '.divisionsU') , ('V', '.divisionsV') ]  )
 			Dragger(X, 'polySubdFace')
 		elif self.getType(0) == 'mesh':
+			print "can't use this for smoothing because t's tied to the more important pivot positioning tool."
 			cmds.polySmooth(X, mth=1, dv=1, bnr=1,c=1, kb=1, ksb=1, khe=0, kt=1, kmb=0, suv=1, peh=0, sl=1, dpe=1, ps=0.1, ro=1, ch=1)
 	def playblastTool(self, formatInfo):
 		selectedCams = []

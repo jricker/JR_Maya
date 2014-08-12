@@ -281,18 +281,11 @@ class Hotkeys(Selection, Materials):
 		elif self.getType(0) == 'face':
 			cmds.polySubdivideFacet(sbm=1) #starts it off in linear form
 			Tool.smoothTool()
-		elif self.getType(0) == 'mesh':
-			Tool.smoothTool()
+		##elif self.getType(0) == 'mesh':
+		##	Tool.smoothTool()
 		HUD.updateToolHUD()
 	def alt_d (self):
 		cmds.xform(cp=1)
-		#cmds.xform(self.getSelection(), pivots = self.getMiddle()[0])
-		cmds.warning('test test')
-	###############################################      A      ###############################################
-	#def a (self):
-	#	cmds.viewFit(all = True, animate = False)
-	#def a_release(self):
-	#	pass
 	###############################################      I      ###############################################
 	def i (self):
 		if self.getSelection != 'None':
