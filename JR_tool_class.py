@@ -103,7 +103,7 @@ class Tools(Selection, DraggerTool, Attributes, Materials):
 	def cameraShakeTool(self):
 		JR_camera_shake.run()
 	def renameTool(self):
-		JR_rename_tool.UI()
+		JR_rename_tool.UI('exit')
 	def bridgeTool(self):
 		X = self.getSelection()
 		cmds.polyBridgeEdge(X, ch= 1, divisions= 0, smoothingAngle = 30)
