@@ -4,12 +4,36 @@
 		"selected_items":
 		[
 			[
-				"region",
-				"regionData	(local, instance)"
+				"mo",
+				"mov2prores(input_data, output_data)	(attribute, function)"
 			],
 			[
 				"replace",
-				"replaceTexts"
+				"replace"
+			],
+			[
+				"Text",
+				"TextLayer"
+			],
+			[
+				"cur",
+				"curLayer"
+			],
+			[
+				"my",
+				"myFile"
+			],
+			[
+				"origia",
+				"original_cell_value	(local, instance)"
+			],
+			[
+				"original",
+				"original_cell_value	(local, instance)"
+			],
+			[
+				"region",
+				"regionData	(local, instance)"
 			],
 			[
 				"replaceT",
@@ -54,10 +78,6 @@
 			[
 				"file",
 				"filename_list	(global, instance)"
-			],
-			[
-				"original",
-				"original_list	(global, instance)"
 			],
 			[
 				"origin",
@@ -271,6 +291,55 @@
 	},
 	"buffers":
 	[
+		{
+			"file": "/C/Users/jricker/Documents/GitHub/JR_Video/scripts/JR_batch_converter.py",
+			"settings":
+			{
+				"buffer_size": 4222,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/C/Users/jricker/Documents/GitHub/JR_Video/scripts/JR_upres_edit.py",
+			"settings":
+			{
+				"buffer_size": 4753,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/C/Users/jricker/Copy/Mediaworks/EA_database.py",
+			"settings":
+			{
+				"buffer_size": 2070,
+				"line_ending": "Windows",
+				"name": "EAC_CLIENTS = {'Chu, Shirley':'shirleyc@ea.com', '"
+			}
+		},
+		{
+			"file": "/C/Users/jricker/Documents/GitHub/JR_shotgun_test.py",
+			"settings":
+			{
+				"buffer_size": 920,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/C/Users/jricker/Documents/GitHub/python-api/setup.py",
+			"settings":
+			{
+				"buffer_size": 885,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/C/Users/jricker/Documents/GitHub/JR_Video/scripts/JR_convert_class.py",
+			"settings":
+			{
+				"buffer_size": 20687,
+				"line_ending": "Windows"
+			}
+		}
 	],
 	"build_system": "",
 	"command_palette":
@@ -332,26 +401,71 @@
 	},
 	"file_history":
 	[
+		"/C/Users/jricker/Documents/GitHub/python-api/tests/__init__.py",
+		"/C/Users/jricker/Documents/GitHub/python-api/shotgun_api3/shotgun.py",
+		"/C/Users/jricker/Copy/GHOST/CINEMATIC_SCRIPTS/libraries/zip/python_excel/xlwt-0.7.5/setup.py",
+		"/C/Users/jricker/Copy/GHOST/CINEMATIC_SCRIPTS/libraries/zip/python_excel/xlwt-0.7.5/PKG-INFO",
+		"/C/Users/jricker/Documents/GitHub/python-api/setup.py",
+		"/C/Users/jricker/Copy/PYTHON/MAYA/2013_11_29/shotgun_api3.py",
+		"/C/Users/jricker/Copy/PYTHON/MAYA/2013_11_29/userScripts.mel",
+		"/C/Users/jricker/Copy/PYTHON/MAYA/2013_11_29/userSetup.py",
+		"/C/Users/jricker/Desktop/JAPAN_EDIT_HIGHRES.edl",
+		"/C/Users/jricker/Desktop/JAPAN_EDIT_HIGHRES3.edl",
+		"/D/JAPAN/03_EDITS/02_PREMIER_PROJECT/JAPAN_EDIT_HIGHRES.prproj",
+		"/D/Resolve Projects/Users/James Ricker/Projects/edit_test/Sessions/Timeline_01/0b317911-b67e-45f6-afb7-261d47339a84.xml",
+		"/D/Resolve Projects/Users/James Ricker/Projects/JAPAN_FINAL_CC/Sessions/JAPAN_EDIT/cbcbee6d-bc9a-4335-8b23-9e96f42d7d57.xml",
+		"/D/Resolve Projects/Users/James Ricker/Projects/JAPAN_FINAL_CC/Media Refs/MpVideoClip/1eaeecf7-fc84-4a42-afa1-4df1d6fa2a9c.xml",
+		"/D/JAPAN/03_EDITS/02_PREMIER_PROJECT/JAPAN_EDIT_BKP.prproj",
+		"/D/JAPAN/03_EDITS/JAPAN_EDL.edl",
+		"/D/JAPAN/03_EDITS/JAPAN_EDL2.edl",
+		"/D/Resolve Projects/Settings/MediaMetadataPresetList.xml",
+		"/D/Resolve Projects/Settings/KeyboardPresetList.xml",
+		"/D/Resolve Projects/Settings/DeliverPresetList.xml",
+		"/D/Resolve Projects/Settings/WindowsPresetList.xml",
+		"/D/Resolve Projects/Settings/PTZRInputPresetList.xml",
+		"/D/Resolve Projects/Settings/PTZROutputPresetList.xml",
+		"/D/Resolve Projects/Settings/SlatePresetList.xml",
+		"/D/Resolve Projects/Users/Ricker/Configs/User Default Config.xml",
+		"/D/Resolve Projects/Users/admin/User.xml",
+		"/D/Resolve Projects/Users/Ricker/User.xml",
+		"/D/Resolve Projects/Users/Ricker/User.xml.resolve.old",
+		"/D/Resolve Projects/Settings/SYSTEM CONFIG.xml",
+		"/C/Users/jricker/Desktop/XBOX/XBOX Controller.py",
+		"/D/projects/genesis-dl-prod/Data/Source/FBScripts/startup.dbx",
+		"/C/Users/jricker/Documents/GitHub/JR_Video/scripts/JR_ui_class.py",
+		"/C/Users/jricker/Documents/GitHub/JR_Video/scripts/JR_AE_Replace.bat",
+		"/C/Users/jricker/Documents/GitHub/JR_Video/scripts/JR_AE_Generate.bat",
+		"/C/Users/jricker/Documents/GitHub/JR_Video/scripts/JR_ae_localization.jsx",
+		"/C/Users/jricker/Documents/GitHub/JR_Video/scripts/JR_ae_excel_reader.py",
+		"/C/Users/jricker/Documents/GitHub/JR_Video/scripts/JR_ae_generate.py",
+		"/C/Users/jricker/Desktop/data2.txt",
+		"/C/Users/jricker/Desktop/data.txt",
+		"/C/Users/jricker/Documents/Mediaworks/JR_system_class.py",
+		"/C/Users/jricker/Documents/Mediaworks/JR_rename_class.py",
+		"/C/Users/jricker/Documents/Mediaworks/JR_ae_generate.py",
+		"/C/Users/jricker/Desktop/JR_ae_localization.jsx",
+		"/C/Users/jricker/Desktop/JR_ae_excel_reader.py",
+		"/C/Users/jricker/Desktop/JR_ae_generate.py",
+		"/C/Users/jricker/Desktop/JR_AE_Replace.bat",
+		"/C/Users/jricker/Desktop/JR_AE_Generate.bat",
+		"/C/Users/jricker/Desktop/JR_rename_class.py",
+		"/C/Users/jricker/Desktop/JR_system_class.py",
+		"/C/Users/jricker/Documents/GitHub/JR_Maya/test.py",
 		"/C/Users/jricker/Documents/GitHub/JR_Maya/JR_hk_map.py",
 		"/C/Users/jricker/Documents/GitHub/JR_Maya/JR_tool_class.py",
 		"/C/Users/jricker/Documents/GitHub/JR_Maya/JR_hk_cmds.py",
 		"/C/Users/jricker/Dropbox/python/2013_04_26/tool_toDOs.py",
-		"/C/Users/jricker/Documents/GitHub/JR_Maya/test.py",
 		"/C/Users/jricker/Documents/GitHub/JR_Maya/JR_skratch.py",
 		"/C/Users/jricker/Copy/PYTHON/MAYA/2013_11_29/JR_skratch.py",
 		"/C/Users/jricker/Documents/GitHub/JR_Maya/JR_selection_class.py",
 		"/C/Users/jricker/Documents/GitHub/JR_Video/scripts/JR_substance_builder.py",
 		"/C/Users/jricker/Documents/GitHub/JR_Video/scripts/JR_asset_builder.py",
 		"/C/Users/jricker/Documents/GitHub/JR_Maya/JR_hud_class.py",
-		"/C/Users/jricker/Documents/GitHub/JR_Video/scripts/JR_ae_generate.py",
 		"/C/Users/jricker/Documents/GitHub/JR_Maya/JR_cache_class.py",
 		"/C/Users/jricker/Documents/GitHub/JR_Maya/JR_camera_shuffle.py",
 		"/C/Users/jricker/Documents/GitHub/JR_Maya/JR_custom_window.py",
 		"/C/Users/jricker/Documents/GitHub/JR_Maya/JR_dragger_class.py",
-		"/C/Users/jricker/Documents/GitHub/JR_Video/scripts/JR_ae_localization.jsx",
-		"/C/Users/jricker/Documents/GitHub/JR_Video/scripts/JR_ae_excel_reader.py",
 		"/C/Users/jricker/Documents/GitHub/JR_Video/scripts/JR_system_class.py",
-		"/C/Users/jricker/Documents/GitHub/JR_Video/scripts/JR_AE_Replace.bat",
 		"/C/Users/jricker/Documents/GitHub/JR_Video/scripts/JR_upres_edit.py",
 		"/C/Users/jricker/Documents/GitHub/JR_Video/scripts/test_batch.bat",
 		"/C/Users/jricker/Documents/GitHub/JR_Video/scripts/test2.py",
@@ -370,7 +484,6 @@
 		"/D/GATEBIL/03_EDITS/02_PREMIER_PROJECT/test_script.py",
 		"/C/Users/jricker/Documents/GitHub/JR_Video/scripts/excel_reader.py",
 		"/C/Users/jricker/Documents/GitHub/JR_Video/scripts/JR_dir_builder.py",
-		"/C/Users/jricker/Documents/GitHub/JR_Video/scripts/JR_AE_Generate.bat",
 		"/C/Users/jricker/Desktop/test.py",
 		"/C/Users/jricker/Copy/SCRIPTS/AE/True Comp Duplicator.jsx",
 		"/C/Users/jricker/Copy/GHOST/CINEMATIC_SCRIPTS/scripts/JR_dir_builder.py",
@@ -415,51 +528,7 @@
 		"/C/Users/jricker/Copy/GHOST/CINEMATIC_SCRIPTS/scripts/JR_deploy.bat",
 		"/C/Users/jricker/Copy/GHOST/CINEMATIC_SCRIPTS/scripts/JR_project_class.py",
 		"/C/Users/jricker/Copy/GHOST/CINEMATIC_SCRIPTS/scripts/JR_deploy.py",
-		"/C/Users/jricker/Copy/GHOST/CINEMATIC_SCRIPTS/scripts/JR_system_class.py",
-		"/C/Users/jricker/Copy/GHOST/CINEMATIC_SCRIPTS/settings/vDub_compression/vDub_avi_compression.vcf",
-		"/C/Users/jricker/Copy/GHOST/CINEMATIC_SCRIPTS/scripts/JR_convert_class.py",
-		"/C/Users/jricker/Documents/GitHub/python-api/shotgun_api3/JR_test_04.py",
-		"/C/mnt/software/shotgun/studio/install/core/python/tank/path_cache.py",
-		"/C/mnt/software/shotgun/studio/install/core/python/tank/folder/folder_types.py",
-		"/C/mnt/software/shotgun/studio/install/core/python/tank/folder/folder_io.py",
-		"/C/mnt/software/shotgun/studio/install/core/python/tank/folder/operations.py",
-		"/C/mnt/software/shotgun/studio/install/core/python/tank/folder/configuration.py",
-		"/C/mnt/software/shotgun/studio/install/core/python/tank/platform/application.py",
-		"/C/mnt/software/shotgun/studio/install/core/python/tank/api.py",
-		"/C/mnt/software/shotgun/studio/install/apps/app_store/tk-shotgun-folders/v0.1.5/app.py",
-		"/C/mnt/software/shotgun/studio/install/engines/app_store/tk-shotgun/v0.3.6/engine.py",
-		"/C/Users/jricker/Downloads/activate_shotgun_pipeline_toolkit.py",
-		"/C/mnt/software/shotgun/studio/install/core/python/tank/folder/__init__.py",
-		"/C/mnt/software/shotgun/studio/install/core/scripts/tank_cmd.py",
-		"/C/mnt/software/shotgun/studio/install/core/setup/tank_api_proxy/tank/__init__.py",
-		"/C/mnt/software/shotgun/studio/install/core/python/tank/__init__.py",
-		"/C/mnt/software/shotgun/studio/install/apps/app_store/tk-shotgun-folders/v0.1.5/app_backup.py",
-		"/C/mnt/software/shotgun/studio/install/apps/app_store/tk-shotgun-launchpublish/v0.1.14/app.py",
-		"/C/mnt/software/shotgun/studio/install/frameworks/app_store/tk-framework-widget/v0.1.23/framework.py",
-		"/C/mnt/software/shotgun/studio/install/engines/app_store/tk-shotgun/v0.3.6/python/tk_shotgun/task.py",
-		"/C/mnt/software/shotgun/studio/install/engines/app_store/tk-shell/v0.3.5/engine.py",
-		"/C/Users/jricker/Documents/GitHub/tk-shotgun/engine.py",
-		"/C/Users/jricker/Documents/GitHub/tk-shotgun/python/tk_shotgun/__init__.py",
-		"/C/Users/jricker/Documents/GitHub/tk-shotgun/python/tk_shotgun/task.py",
-		"/C/mnt/software/shotgun/fifa_14/install/core/python/sgtk/__init__.py",
-		"/C/mnt/software/shotgun/fifa_14/config/after_project_create.py",
-		"/C/Users/jricker/Dropbox/JR_test_03.py",
-		"/C/Users/jricker/Documents/GitHub/python-api/shotgun_api3/JR_test.py",
-		"/C/Users/jricker/Documents/GitHub/python-api/shotgun_api3/shotgun.py",
-		"/C/Users/jricker/Documents/GitHub/python-api/shotgun_api3/sg_25.py",
-		"/C/Users/jricker/Documents/GitHub/JR_test.py",
-		"/C/Users/jricker/Documents/GitHub/python-api/tests/test_api.py",
-		"/C/Users/jricker/Documents/GitHub/python-api/setup.py",
-		"/C/Users/jricker/Documents/GitHub/python-api/JR_test.py",
-		"/C/Users/jricker/Documents/GitHub/python-api/shotgun_api3.py",
-		"/C/Users/jricker/Desktop/nfsr_prefix.py",
-		"/C/Users/jricker/Desktop/iteration.py",
-		"/C/Users/jricker/Documents/GitHub/JR_Project/JR_rename_class.py",
-		"/C/Users/jricker/Documents/GitHub/JR_Project/JR_convert_class.py",
-		"/C/Users/jricker/Documents/GitHub/JR_Project/JR_project_class.py",
-		"/C/Users/jricker/Documents/GitHub/JR_Project/JR_system_class.py",
-		"/C/Program Files/Adobe/Adobe After Effects CS6/Support Files/Scripts/ScriptUI Panels/True Comp Duplicator.jsx",
-		"/C/Users/jricker/Documents/GitHub/JR_Project/JR_dir_builder.py"
+		"/C/Users/jricker/Copy/GHOST/CINEMATIC_SCRIPTS/scripts/JR_system_class.py"
 	],
 	"find":
 	{
@@ -477,6 +546,68 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			":",
+			">",
+			"<",
+			":",
+			":'",
+			">",
+			"<",
+			";",
+			">",
+			"<",
+			">",
+			"<",
+			"_H264.mp4",
+			">A00",
+			"a00",
+			"A00",
+			"A006C001",
+			"ActualMediaFilePath",
+			"D:\\JAPAN\\02_FOOTAGE\\03_MOV\\00_LQ\\GOPR0006.MP4",
+			".",
+			"D:\\JAPAN\\02_FOOTAGE\\03_MOV\\00_LQ\\GOPR0006.MP4",
+			".mp4",
+			"middle",
+			"MP4",
+			"new_relative_path",
+			"gopr",
+			"H264",
+			"\\",
+			"C:",
+			"D:\\",
+			"D:",
+			"\n   ",
+			">\n",
+			"24",
+			"c:",
+			"readExcelDocument",
+			"SERIOUS ISSUES WITH READING SPECIAL CHARACTERS - THEY DON'T WORK, FIX SOON!!!",
+			"print",
+			"decode",
+			"print",
+			"'\n",
+			"--B--",
+			":_:",
+			"readExcelDocument",
+			"jj",
+			"oo",
+			"instanceof",
+			"again",
+			"original_cell_value_again",
+			"f-8",
+			"curr_row",
+			"ricker",
+			"itemToSearch",
+			"systemLocation",
+			"GitHub\\\\JR_Video\\\\",
+			"GitHub\\\\JR_Video\\\\scripts",
+			"james",
+			"ricker",
+			"north america",
+			"\"north america\"",
+			"\"na\"",
+			"na",
 			"not working",
 			"locator",
 			"-",
@@ -542,69 +673,7 @@
 			"nx0",
 			"args",
 			"bye",
-			"hi",
-			"assignValues",
-			"warningMessage",
-			"buildDirectory",
-			"\\",
-			"'",
-			"\\",
-			"\"",
-			"\\",
-			"clearOutput",
-			"layer",
-			"Layer",
-			"layer",
-			"One",
-			"CompItem",
-			"myItemCollection2",
-			"CompItem",
-			"numLayers",
-			"L",
-			"layer",
-			"compItem",
-			"CompItem",
-			"compItem",
-			"clearOutput",
-			"test testing",
-			"toString",
-			"+",
-			"alert(listOfRegions",
-			"uk",
-			"ru",
-			"ger",
-			"sp",
-			"fr",
-			"all",
-			"ukChk",
-			"0",
-			"+",
-			"graphics",
-			"grp",
-			"ukLbl",
-			"statictext",
-			"staticText",
-			"TRUECOMPDUP_PALETTE",
-			"tcd_buildUI",
-			"thisObj",
-			"tcd_buildUI",
-			"myFile",
-			"readln",
-			"myFile",
-			"file",
-			"File",
-			"file",
-			"File",
-			"selectTxt",
-			"incExcTxt",
-			"incExcTxt.text",
-			"'",
-			"else",
-			"goBtn",
-			"newNamesGrp",
-			"ileTxt",
-			"fileTxt",
-			"errors"
+			"hi"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -622,8 +691,172 @@
 	"groups":
 	[
 		{
+			"selected": 3,
 			"sheets":
 			[
+				{
+					"buffer": 0,
+					"file": "/C/Users/jricker/Documents/GitHub/JR_Video/scripts/JR_batch_converter.py",
+					"settings":
+					{
+						"buffer_size": 4222,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2345,
+								2345
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "/C/Users/jricker/Documents/GitHub/JR_Video/scripts/JR_upres_edit.py",
+					"settings":
+					{
+						"buffer_size": 4753,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								4320,
+								4320
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "/C/Users/jricker/Copy/Mediaworks/EA_database.py",
+					"settings":
+					{
+						"buffer_size": 2070,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1655,
+								1656
+							]
+						],
+						"settings":
+						{
+							"auto_name": "EAC_CLIENTS = {'Chu, Shirley':'shirleyc@ea.com', '",
+							"syntax": "Packages/Python/Python.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "/C/Users/jricker/Documents/GitHub/JR_shotgun_test.py",
+					"settings":
+					{
+						"buffer_size": 920,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								920,
+								920
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "/C/Users/jricker/Documents/GitHub/python-api/setup.py",
+					"settings":
+					{
+						"buffer_size": 885,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "/C/Users/jricker/Documents/GitHub/JR_Video/scripts/JR_convert_class.py",
+					"settings":
+					{
+						"buffer_size": 20687,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								19570,
+								19570
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Python/Python.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 4266.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				}
 			]
 		}
 	],
