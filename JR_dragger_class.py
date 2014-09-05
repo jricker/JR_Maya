@@ -1,47 +1,25 @@
-import maya.cmds as cmds
-from JR_hud_class import *
 from JR_cache_class import *
-from JR_selection_class import *
-from JR_attribute_class import *
+import maya.cmds as cmds
+from JR_selection_class import Selection
+from functools import partial
 ################################### CAN USE THE PYTHON HOTKEY COMMAND TO IDENTIFY CUSTOM MODIFIERS WHEN DRAG TOOL IS BEING RUN ##################
 class DraggerTool(Selection):
 	def __init__(self):
 		self.dragDirection = []
-	def __call__(self, selection = 'NA' , historyName = '' ):
+	def Dragger(self, selection = 'NA' , historyName = '', speed = [0.01, .1, .0001] ):
 		if selection == 'NA':
 			self.selection = self.getSelection()
 		else:
 			self.selection = selection
-		#print self.selection, ' this is the selection'
-		'''
-		####
-		self.historyList = []
-		self.attributeList = []
-		for i in self.selection:
-			print i, ' this is the selection name at the moment'
-			self.historyList.append( self.getHistory(i, '', historyName) )
-		for i in self.historyList:
-			self.attributeList.append(i[0] + Cache.currentAttribute)
-		####
-		print self.historyList, 'XXXXXXXXXXX - History List'
-		print self.attributeList, 'XXXXXXXXXXX - Attribute List'
-		####
-		'''
 		self.history = self.getHistory(self.selection, -1, historyName)
 		self.attribute = self.history[-1] + Cache.currentAttribute
-		print self.attribute, ' this is the start attribute'
-		#self.attributeValue = cmds.getAttr( self.attribute )
 		try:
-			cmds.draggerContext( 'dragTool', edit=True, pressCommand= ('Dragger.pressFunction()'), dragCommand= ('Dragger.dragFunction()'), finalize = ('Dragger.exitFunction()'),  undoMode = "step")
+			cmds.draggerContext( 'dragTool', edit=True, pressCommand= partial(self.pressFunction), dragCommand= partial(self.dragFunction), finalize = partial(self.exitFunction),  undoMode = "step")
 		except:
-			cmds.draggerContext( 'dragTool', pressCommand= ('Dragger.pressFunction()'), dragCommand= ('Dragger.dragFunction()'), finalize = ('Dragger.exitFunction()'), undoMode = "step" )
+			cmds.draggerContext( 'dragTool', pressCommand= partial(self.pressFunction), dragCommand= partial(self.dragFunction), finalize = partial(self.exitFunction), undoMode = "step" )
 		cmds.setToolTo( 'dragTool' )
 	def exitFunction(self):
-		# Reset Attribute Hud and Tool Hud
-		#Attribute.setAttributes()
-		#Cache.currentTool = ''
-		#HUD.updateToolHUD()
-		cmds.warning('exiting dragger tool')
+		cmds.warning('exiting Dragger tool')
 	def pressFunction(self):
 		self.attribute = self.history[-1] + Cache.currentAttribute # re-init the attribute in case cached has been switched
 		self.modifier = cmds.draggerContext( 'dragTool', query=True, modifier=True)
@@ -50,7 +28,7 @@ class DraggerTool(Selection):
 		if cmds.currentUnit( query=True, linear=True ) == 'cm':
 			self.speed = .01 # modifier for speed traveled through values while dragging
 		elif cmds.currentUnit( query=True, linear=True ) == 'm':
-			self.speed = .1 # modifier for speed traveled through values while dragging
+			self.speed = .001 # modifier for speed traveled through values while dragging
 		else:
 			self.speed = .0001
 		self.space = 'screen' # initialize the variable
@@ -67,10 +45,8 @@ class DraggerTool(Selection):
 			cmds.draggerContext( 'dragTool', edit=True, space = 'screen')
 		if self.modifier == 'ctrl':
 			self.speed = self.speed * .01
-			#self.speedY = self.speedY * .01
 		if self.modifier == 'shift':
 			self.speed = self.speed * 10
-			#self.speedY = self.speedY * 10
 		if len(self.dragDirection) > 0:
 			self.dragDirection = []
 	def dragFunction(self):
@@ -135,5 +111,3 @@ class DraggerTool(Selection):
 						worldValue = abs(z)
 					cmds.setAttr( self.attribute, self.attributeValue[0][0], self.attributeValue[0][1], self.attributeValue[0][2] + (worldValue * worldMult) )
 				cmds.refresh(currentView=True)
-#pre-initialize tool
-Dragger = DraggerTool()

@@ -3,7 +3,8 @@ import random
 from JR_selection_class import Selection
 class Materials(Selection):
 	def __init__(self):
-		Selection.__init__(self)
+		pass
+		#Selection.__init__(self)
 	def assignRandomMaterial(self, materialType = 'lambert', item = 'NA', materialName = 'NA', red = 'NA', green = 'NA', blue = 'NA'):
 		# set conditions if nothing is specified in method call
 		if item == 'NA':

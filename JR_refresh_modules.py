@@ -1,5 +1,5 @@
 class Refresh():
-	def refreshAll(self):
+	def refreshAllClasses(self):
 		import JR_cache_class
 		import JR_dragger_class
 		import JR_attribute_class
@@ -31,4 +31,4 @@ class Refresh():
 		reload(JR_hud_class)
 		reload(JR_hk_map)
 		reload(JR_rename_class)
-RELOAD = Refresh()
+#RELOAD = Refresh()

@@ -1,7 +1,7 @@
-import maya.cmds as cmds
-from JR_selection_class import *
 from JR_cache_class import *
-cameraS = Selection()
+import maya.cmds as cmds
+from JR_selection_class import Selection
+Sel = Selection()
 def createWindow(cameraList):
 	#c = global.currentCamera()
 	x = cmds.window('cameraWindow', query=1 , exists = 1)
@@ -9,7 +9,7 @@ def createWindow(cameraList):
 		print 'not found, creating window'
 		cmds.window('cameraWindow', wh = [ 512, 288 ] )
 		cmds.paneLayout()
-		if cameraS.getType(0)[1] == 'LIGHT' or cameraS.getType(0)[1] == 'CAMERA':
+		if Sel.getType(0)[1] == 'LIGHT' or Sel.getType(0)[1] == 'CAMERA':
 			i = cmds.ls(selection=True)
 		else:
 			i = ('perspShape')
@@ -20,7 +20,7 @@ def createWindow(cameraList):
 		cmds.select( cameraList [Cache.camSceneOffset] )
 		cmds.modelEditor(Cache.modelPanel, edit=True, cam = cameraList [Cache.camSceneOffset] )
 def currentCamera():
-	if cameraS.getType(0)[1] == 'LIGHT' or cameraS.getType(0)[1] == 'CAMERA':
+	if Sel.getType(0)[1] == 'LIGHT' or Sel.getType(0)[1] == 'CAMERA':
 		print 'going through current camera section in camera shuffle'
 		i = cmds.ls(selection=True)
 		cmds.modelEditor(Cache.modelPanel, edit=True, cam = i[0] )

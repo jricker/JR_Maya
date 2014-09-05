@@ -2,7 +2,6 @@
 # the above code must be there for characters like the £ sign. non asci types
 import maya.cmds as cmds
 import maya.mel as mel
-from functools import partial
 from JR_cache_class import *
 class Mapping():
 	def __init__(self):
@@ -26,6 +25,8 @@ class Mapping():
 		cmds.nameCommand('shift_three', ann= 'shift_three', stp='python', c="python(\"from JR_hk_cmds import *;i=Hotkeys();i.shift_three()\")")
 		# 4
 		cmds.nameCommand('alt_four', ann= 'alt_four', stp='python', c="python(\"from JR_hk_cmds import *;i=Hotkeys();i.alt_four()\")")
+		# 5
+		cmds.nameCommand('alt_five', ann= 'alt_five', stp='python', c="python(\"from JR_hk_cmds import *;i=Hotkeys();i.alt_five()\")")
 		# Q
 		cmds.nameCommand('q', ann= 'q', stp='python', c="python(\"from JR_hk_cmds import *;i=Hotkeys();i.q()\")")
 		cmds.nameCommand('alt_q', ann= 'alt_q', stp='python', c="python(\"from JR_hk_cmds import *;i=Hotkeys();i.alt_q()\")")
@@ -85,6 +86,7 @@ class Mapping():
 		# S
 		cmds.nameCommand('S', ann= 'S', stp='python', c="python(\"from JR_hk_cmds import *;i=Hotkeys();i.S()\")")
 		cmds.nameCommand('alt_s', ann= 'alt_s', stp='python', c="python(\"from JR_hk_cmds import *;i=Hotkeys();i.alt_s()\")")
+		cmds.nameCommand('alt_S', ann= 'alt_S', stp='python', c="python(\"from JR_hk_cmds import *;i=Hotkeys();i.alt_S()\")")
 		cmds.nameCommand('ctrl_S', ann= 'ctrl_S', stp='python', c="python(\"from JR_hk_cmds import *;i=Hotkeys();i.ctrl_S()\")")
 	def categoryHotkeys(self):
 		# X
@@ -132,6 +134,8 @@ class Mapping():
 		cmds.hotkey( k=u'#', name= 'shift_three' ) # Shift + three = US KEYBOARD
 		# 4
 		cmds.hotkey( k='4', alt=True, name= 'alt_four' ) # Alt + four
+		# 5
+		cmds.hotkey( k='5', alt=True, name= 'alt_five' ) # Alt + five
 		# Q
 		cmds.hotkey( k='q', name= 'q', releaseName = 'q_release' ) # q
 		cmds.hotkey( k='q', alt=True, name= 'alt_q') # Alt + q
@@ -189,6 +193,7 @@ class Mapping():
 		# S
 		cmds.hotkey( k='S', name= 'S' ) # S
 		cmds.hotkey( k='s', alt=True, name= 'alt_s' ) # Alt + s
+		cmds.hotkey( k='S', alt=True, name= 'alt_S' ) # Alt + shift + s
 		cmds.hotkey( k='S', ctl=True, name= 'ctrl_S' ) # Ctrl + Shift + s
 #
 Map = Mapping()

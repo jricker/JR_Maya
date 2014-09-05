@@ -1,8 +1,10 @@
 from JR_selection_class import Selection
 class Rename(Selection):
-	def __init__(self, selection, name):
-		self.name = name
-		self.selection = selection + name # append the name to the end of the selection list so we can process it's properties with a -1 call in the 'i'
+	def __init__(self):
+		pass
+	#def __init__(self, selection, name):
+		#self.name = name
+		#self.selection = selection + name # append the name to the end of the selection list so we can process it's properties with a -1 call in the 'i'
 	def processNamespace(self, i):
 		if self.selection[-1][0] == ':': # if the input name starts with : then we want to return the root
 			return ':'

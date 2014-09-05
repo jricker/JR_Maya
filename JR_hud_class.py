@@ -1,14 +1,13 @@
 import maya.cmds as cmds
 from functools import partial
 from JR_cache_class import *
-from JR_tool_class import *
-from JR_hk_map import *
-from JR_dragger_class import *
-from JR_attribute_class import *
-from JR_selection_class import *
-class HUDs(Selection):
+from JR_tool_class import Tools
+from JR_hk_map import Mapping
+from JR_selection_class import Selection
+class HUDs(Selection, Tools, Mapping):
 	def __init__(self):
-		pass
+		Tools.__init__(self)
+		#pass
 	def updateToolHUD(self):
 		cmds.headsUpDisplay( 'toolHUD', edit = True, c = self.setToolHUD )
 	def setToolHUD(self):
@@ -20,13 +19,13 @@ class HUDs(Selection):
 		else:
 			cmds.window( 'category', h=20, titleBar = 0, s=0)
 			cmds.rowColumnLayout( numberOfRows=1, rs = [10, 10])
-			cmds.button(label = 'modeling',  c = partial(self.setCategory, 'modeling' ) ) # MODELING
+			cmds.button(label = 'modeling',  c = partial(self.change_category, 'modeling' ) ) # MODELING
 			cmds.separator(w = categorySpace, style = 'none')
-			cmds.button(label = 'frostbite', c = partial(self.setCategory, 'frostbite') ) # FROSTBITE
+			cmds.button(label = 'frostbite', c = partial(self.change_category, 'frostbite') ) # FROSTBITE
 			cmds.separator(w = categorySpace, style = 'none')
-			cmds.button(label = 'animation', c = partial(self.setCategory, 'animation') ) # ANIMATION
+			cmds.button(label = 'animation', c = partial(self.change_category, 'animation') ) # ANIMATION
 			cmds.separator(w = categorySpace, style = 'none')
-			cmds.button(label = 'uv', c = partial(self.setCategory, 'uv') ) # UV
+			cmds.button(label = 'uv', c = partial(self.change_category, 'uv') ) # UV
 			cmds.showWindow('category')
 	def primitiveMenu(self):
 		if cmds.window('primitives', exists=True):
@@ -43,7 +42,7 @@ class HUDs(Selection):
 			cmds.nodeIconButton( style='iconOnly', command= partial(self.primitiveActions, 'CreatePolyPipeCtx', 'cmds.polyPipe()'), image1='polyPipe.png' )
 			cmds.nodeIconButton( style='iconOnly', command= partial(self.primitiveActions, 'CreatePolyPlaneCtx', 'cmds.polyPlane()'), image1='polyMesh.png') 
 			cmds.nodeIconButton( style='iconOnly', command= partial(self.primitiveActions, 'cmds.EPCurveTool()', 'cmds.warning("Create your own curve drop automatically")' ), image1='curveEP.png' )
-			cmds.nodeIconButton( style='iconOnly', command= partial(self.primitiveActions, 'cmds.JointTool()', 'Tool.jointTool()' ), image1='kinJoint.png' )
+			cmds.nodeIconButton( style='iconOnly', command= partial(self.primitiveActions, 'cmds.JointTool()', 'self.jointTool()' ), image1='kinJoint.png' )
 			cmds.nodeIconButton( style='iconOnly', command= partial(self.primitiveActions, 'cmds.SculptGeometryTool()', 'cmds.SculptGeometryTool()'), image1='brush.png' )
 			cmds.showWindow( 'primitives' )
 	def mirrorMenu(self, tool):
@@ -172,10 +171,10 @@ class HUDs(Selection):
 		selectedCodec = cmds.optionMenu('codecOptionMenu', q = True, v = True)
 		Cache.playblastCodec = selectedCodec
 		cmds.deleteUI('pb')
-		Tool.playblastTool( [Cache.playblastFormat, Cache.playblastCodec, Cache.playblastSize] )
+		self.playblastTool( [Cache.playblastFormat, Cache.playblastCodec, Cache.playblastSize] )
 	###############################################             ###############################################
 	###############################################             ###############################################
-	def setCategory(self, category, *args):
+	def change_category(self, category, *args):
 		cmds.deleteUI('category', window=True )
-		Map.setCategory(category)
-HUD = HUDs()
+		self.setCategory(category)
+#HUD = HUDs()

@@ -1,38 +1,43 @@
-import JR_custom_window
-from JR_hud_class import *
-from JR_tool_class import *
 from JR_cache_class import *
-from JR_attribute_class import *
-from JR_selection_class import *
-from JR_refresh_modules import *
+import JR_custom_window
+from JR_hud_class import HUDs
+from JR_tool_class import Tools
+from JR_attribute_class import Attributes
+from JR_selection_class import Selection
+from JR_refresh_modules import Refresh
 from JR_material_class import Materials
 import maya.mel as mel
-class Hotkeys(Selection, Materials):
+import maya.cmds as cmds
+class Hotkeys(Selection, Tools, Attributes, Materials, HUDs, Refresh ):
 	def __init__(self):
+		Selection.__init__(self)
+		Attributes.__init__(self)
+		Tools.__init__(self)
 		Materials.__init__(self)
+		HUDs.__init__(self)
 	def tilde(self):
-		Attribute.toggleUp()
+		self.attr_toggleUp()
 	def alt_tilde(self):
-		Attribute.toggleDown()
+		self.attr_toggleDown()
 	def ctrl_tilde(self):
-		HUD.displayMenu()
+		self.displayMenu()
 	###############################################      1      ###############################################
 	def one(self):
 		if cmds.selectMode ( query = 1, object = 1):
 			cmds.selectMode ( component = 1)
-			Tool.selectionMask( 'vertex' )
+			self.selectionMask( 'vertex' )
 		else: # select mode is set to component
 			if self.getType(0) == 'face' or self.getType(0) == 'edge': 
 			# Check to see if another component is alread selected
 			# This will switch the selection over
-				cmds.select(Tool.convertSelection('vertex'))
-				Tool.selectionMask( 'vertex' )
+				cmds.select(self.convertSelection('vertex'))
+				self.selectionMask( 'vertex' )
 			else:
 				if cmds.selectType( query = 1, polymeshVertex = True):
 					cmds.selectMode ( object = 1)
 					cmds.selectType( allComponents = False )
 				else:
-					Tool.selectionMask( 'vertex' )
+					self.selectionMask( 'vertex' )
 	def alt_one(self):
 		JR_custom_window.outlinerWindow()
 	def shift_one(self):
@@ -43,20 +48,20 @@ class Hotkeys(Selection, Materials):
 	def two(self):
 		if cmds.selectMode ( query = 1, object = 1):
 			cmds.selectMode ( component = 1)
-			Tool.selectionMask( 'edge' )
+			self.selectionMask( 'edge' )
 		else: # select mode is set to component
 			if self.getType(0) == 'face':
-				cmds.select(Tool.convertSelection('edge'))
-				Tool.selectionMask( 'edge' )
+				cmds.select(self.convertSelection('edge'))
+				self.selectionMask( 'edge' )
 			elif self.getType(0) == 'vertex':
-				cmds.select(Tool.convertSelection('edgeBorder'))
-				Tool.selectionMask( 'edge' )
+				cmds.select(self.convertSelection('edgeBorder'))
+				self.selectionMask( 'edge' )
 			else:
 				if cmds.selectType( query = 1, polymeshEdge = True):
 					cmds.selectMode ( object = 1)
 					cmds.selectType( allComponents = False )
 				else:
-					Tool.selectionMask( 'edge' )
+					self.selectionMask( 'edge' )
 	def alt_two(self):
 		JR_custom_window.hyperWindow()
 	def shift_two(self):
@@ -67,17 +72,17 @@ class Hotkeys(Selection, Materials):
 	def three(self):
 		if cmds.selectMode ( query = 1, object = 1):
 			cmds.selectMode ( component = 1)
-			Tool.selectionMask( 'face' )
+			self.selectionMask( 'face' )
 		else: # select mode is set to component
 			if self.getType(0) == 'vertex' or self.getType(0) == 'edge':
-				cmds.select(Tool.convertSelection('face'))
-				Tool.selectionMask( 'face' )
+				cmds.select(self.convertSelection('face'))
+				self.selectionMask( 'face' )
 			else:
 				if cmds.selectType( query = 1, polymeshFace = True):
 					cmds.selectMode ( object = 1)
 					cmds.selectType( allComponents = False )
 				else:
-					Tool.selectionMask( 'face' )
+					self.selectionMask( 'face' )
 	def alt_three(self):
 		JR_custom_window.graphWindow()
 	def shift_three(self):
@@ -87,6 +92,9 @@ class Hotkeys(Selection, Materials):
 	###############################################      4      ###############################################
 	def alt_four(self):
 		cmds.HypershadeWindow()
+	###############################################      5      ###############################################
+	def alt_five(self):
+		mel.eval('tearOffPanel "UV Texture Editor" "polyTexturePlacementPanel" true;')
 	###############################################      G      ###############################################
 	def alt_g(self):
 		cmds.ToggleGrid()
@@ -104,18 +112,18 @@ class Hotkeys(Selection, Materials):
 			Cache.currentTool = 'select - normal'
 		elif Cache.keyOffset == 1:
 			Cache.currentTool = 'select - paint'
-		Tool.selectTool()
+		self.selectTool()
 	def q_release(self):
 		print 'claiming "q" release from default maya'
-		HUD.updateToolHUD()
+		self.updateToolHUD()
 	def alt_q(self):
 		Cache.keyOffset = 2
 		Cache.currentTool = 'select - attrs'
 		if self.getType(0) == 'joint':
 			mel.eval('jdsWin;') # shows the joint size window for all joints
 		else:
-			Tool.selectTool()
-		HUD.updateToolHUD()
+			self.selectTool()
+		self.updateToolHUD()
 	###############################################      W      ###############################################
 	def w (self):
 		offsetCount = 2
@@ -130,10 +138,10 @@ class Hotkeys(Selection, Materials):
 			Cache.currentTool = 'move - world'
 		elif Cache.keyOffset == 1:
 			Cache.currentTool = 'move - local'
-		Tool.moveTool()
+		self.moveTool()
 	def w_release(self):
 		print 'claiming "w" release from default maya'
-		HUD.updateToolHUD()
+		self.updateToolHUD()
 	###############################################      E      ###############################################
 	def e (self):
 		offsetCount = 2
@@ -148,21 +156,21 @@ class Hotkeys(Selection, Materials):
 			Cache.currentTool = 'rotate - local'
 		elif Cache.keyOffset == 1:
 			Cache.currentTool = 'rotate - world'
-		Tool.rotateTool()
+		self.rotateTool()
 	def e_release(self):
 		print 'claiming "e" release from default maya'
-		HUD.updateToolHUD()
+		self.updateToolHUD()
 	def ctrl_e(self):
-		Tool.exportTool(Cache.currentCategory)
-		HUD.updateToolHUD()
+		self.exportTool(Cache.currentCategory)
+		self.updateToolHUD()
 	def alt_e(self):
 		if Cache.currentCategory == 'frostbite':
 			Cache.currentTool = 'Importing Assets'
-			Tool.exportTool(Cache.currentCategory)
+			self.exportTool(Cache.currentCategory)
 		else:
 			Cache.currentTool = ''
 			cmds.warning(' only works with Frostbite category right now')
-		HUD.updateToolHUD()
+		self.updateToolHUD()
 	###############################################      R      ###############################################
 	def r (self):
 		offsetCount = 2
@@ -177,22 +185,22 @@ class Hotkeys(Selection, Materials):
 			Cache.currentTool = 'scale - world'
 		elif Cache.keyOffset == 1:
 			Cache.currentTool = 'scale - local'
-		Tool.scaleTool()
+		self.scaleTool()
 	def R (self):
-		RELOAD.refreshAll()
+		self.refreshAllClasses()
 		cmds.warning('All Modules Refreshed :)')
 	def r_release(self):
 		print 'claiming "r" release from default maya'
-		HUD.updateToolHUD()
+		self.updateToolHUD()
 	def alt_r(self):
-		Tool.renameTool()
-		HUD.updateToolHUD()
+		self.renameTool()
+		self.updateToolHUD()
 	def ctrl_r(self):
 		cmds.ReferenceEditor()
 	###############################################      L      ###############################################
 	def ctrl_l (self):
 		X = self.getSelection()
-		Tool.createInMiddle("cmds.spaceLocator( name = 'JR_locator_01', position = (0,0,0) )")
+		self.createInMiddle("cmds.spaceLocator( name = 'JR_locator_01', position = (0,0,0) )")
 		if Cache.locatorList != []:
 			newLocators = self.getSelection()
 			#print Cache.locatorList, ' this is the cache list'
@@ -225,7 +233,7 @@ class Hotkeys(Selection, Materials):
 			print 'not working'
 	###############################################      P      ###############################################
 	def alt_p (self):
-		HUD.playblastHUD()
+		self.playblastHUD()
 	def ctrl_p(self):
 		if self.getType(0) == 'face' or self.getType(0) == 'mesh':
 			print ' not sure which tool should go here .. '
@@ -238,15 +246,15 @@ class Hotkeys(Selection, Materials):
 		if self.getType(0) == 'edge':
 			cmds.polyCloseBorder()
 		if self.getType(0) == 'vertex':
-			Tool.flattenVertex()
+			self.flattenVertex()
 	###############################################      M      ###############################################
 	def ctrl_m(self):
-		HUD.mirrorMenu( Tool.mirrorModelingTool )
+		self.mirrorMenu( self.mirrorModelingTool )
 	def ctrl_M(self):
 		for i in self.getSelection():
 			self.assignRandomMaterial(item=i)	
 	def m(self):
-		Tool.assignMaterialTool()
+		self.assignMaterialTool()
 	def M(self):
 		self.assignTestMaterial()
 	###############################################      B      ###############################################
@@ -255,7 +263,7 @@ class Hotkeys(Selection, Materials):
 			cmds.CycleBackgroundColor() # cycles the background color as per the default
 		else:
 			if self.getType(0) == 'face' or self.getType(0) == 'vertex' or self.getType(0) == 'edge':
-				Tool.bevelTool()
+				self.bevelTool()
 			# switch this over to recognize the animation category later on istead of just fitting to a camera selection. Should be able to work on any object selected
 			else:
 				start = cmds.findKeyframe( self.getSelection(), which = "first" )
@@ -280,15 +288,15 @@ class Hotkeys(Selection, Materials):
 			    cmds.group(list(newLocators)[0], list(newDistances)[0], n = 'measurement')
 		elif self.getType(0) == 'face':
 			cmds.polySubdivideFacet(sbm=1) #starts it off in linear form
-			Tool.smoothTool()
+			self.smoothTool()
 		##elif self.getType(0) == 'mesh':
-		##	Tool.smoothTool()
-		HUD.updateToolHUD()
+		##	self.smoothTool()
+		self.updateToolHUD()
 	def alt_d (self):
 		cmds.xform(cp=1)
 	###############################################      I      ###############################################
 	def i (self):
-		if self.getSelection != 'None':
+		if self.getSelection() != 'None':
 			mel.eval('polyCleanupArgList 3 { "0","2","1","0","1","1","1","0","0","1e-005","0","1e-005","0","1e-005","0","-1","0" }')
 		else:
 			cmds.playbackOptions( minTime = cmds.currentTime( query=True ) )
@@ -303,7 +311,7 @@ class Hotkeys(Selection, Materials):
 		#cmds.file ( filename[0], i=True )
 	###############################################      O      ###############################################
 	def o (self):
-		if self.getSelection == 'None':
+		if self.getSelection() == 'None':
 			cmds.playbackOptions( maxTime = cmds.currentTime( query=True ) )
 		else:
 			wireOn = cmds.modelEditor('modelPanel4', q=1, wos=1)
@@ -318,12 +326,12 @@ class Hotkeys(Selection, Materials):
 			cmds.snapMode( curve = True )
 		else:
 			if self.getSelection() == 'None':
-				HUD.primitiveMenu()
+				self.primitiveMenu()
 			elif len(self.getSelection()) == 2:
 				if self.getType(0)[0] == 'camera':
-					Tool.constrainToParent('bake')
+					self.constrainToParent('bake')
 				else:
-					Tool.constrainToParent('noBake', 'Maintain')
+					self.constrainToParent('noBake', 'Maintain')
 			else:
 				print 'this is where we can place the convert or create tools'
 	def c_release (self):
@@ -332,28 +340,28 @@ class Hotkeys(Selection, Materials):
 		if self.getType(0) == 'locator' or self.getType(0)[0] == 'camera':
 			cmds.color(ud = 2)
 		elif self.getType(0) == 'face' or self.getType(0) == 'mesh':
-			Tool.splitFaceTool()
+			self.splitFaceTool()
 		else:
 			if Cache.currentCategory == 'frostbite':
 				Cache.currentTool = ''
-				Tool.cameraTool(Cache.currentCategory)
+				self.cameraTool(Cache.currentCategory)
 			else:
 				Cache.currentTool = ''
-				Tool.cameraTool() # just creates a normal camera, nothing special inside
-		HUD.updateToolHUD()
+				self.cameraTool() # just creates a normal camera, nothing special inside
+		self.updateToolHUD()
 	def C_release (self):
 		cmds.snapMode( curve = False ) # it gets stuck for some reason and must be turned off
 	def alt_c (self):
-		Tool.sceneCamSwitch()
+		self.sceneCamSwitch()
 		# Activate lens HUD window
 		x = cmds.window('FOV', query=1 , exists = 1)
 		if x is False:
-			HUD.lensHUD()
+			self.lensHUD()
 	def alt_shift_c (self):
-		Tool.defaultCamSwitch()
+		self.defaultCamSwitch()
 	###############################################      H      ###############################################
 	def h (self):
-		Tool.hideGeometry()
+		self.hideGeometry()
 	###############################################      V      ###############################################
 	def v (self):
 		cmds.snapMode( point = True )
@@ -368,16 +376,16 @@ class Hotkeys(Selection, Materials):
 		if Cache.currentCategory == 'modeling':
 			if self.getType(0) == 'face':
 				Cache.currentTool = 'Extrude Face'
-				Tool.extrudeTool()
+				self.extrudeTool()
 			elif self.getType(0) == 'edge':
 				Cache.currentTool = 'Extrude Edge'
-				Tool.extrudeTool()
+				self.extrudeTool()
 			else:
 				Cache.currentTool = ''
 				cmds.warning('nothing selected')
 		else:
 			pass
-		HUD.updateToolHUD()
+		self.updateToolHUD()
 	###############################################      S      ###############################################
 	def S(self):
 		if cmds.currentCtx() == 'polySlideEdgeContext':
@@ -386,19 +394,22 @@ class Hotkeys(Selection, Materials):
 			cmds.setToolTo ('polySlideEdgeContext')
 		else:
 			if self.getType(0) == 'edge':
-				Tool.bridgeTool()
+				try:
+					self.bridgeTool()
+				except RuntimeError:
+					cmds.setToolTo('polySlideEdgeContext')
 			elif cmds.selectType(q=1, polymeshVertex = True) == True: #check to see if mask type is vertex
-				Tool.vertexMergeTool()
+				self.vertexMergeTool()
 			elif self.getType(0) == 'face':
-				Tool.chipFacesTool()
+				self.chipFacesTool()
 			elif self.getType(0) == 'mesh':
 				if len(self.getSelection()) == 1:
-					Tool.polySeperateTool() # seperate because there's only one poly selected
+					self.polySeperateTool() # seperate because there's only one poly selected
 				else:
-					Tool.polyMergeTool() # merge because there's more than one poly selected
+					self.polyMergeTool() # merge because there's more than one poly selected
 			elif self.getType(0)[0] == 'camera':
 				print 'yes it is'
-				Tool.cameraShakeTool()
+				self.cameraShakeTool()
 			else:
 				cmds.setToolTo ('polySelectEditContext')
 	def alt_s (self):
@@ -409,6 +420,8 @@ class Hotkeys(Selection, Materials):
 		else:
 			currentCamera = cmds.modelEditor(Cache.modelPanel, query = 1, cam = 1)
 			cmds.select(currentCamera)
+	def alt_S (self):
+		cmds.MergeToCenter()
 	def ctrl_S(self):
 		cmds.SaveSceneAs()
-HK = Hotkeys()
+#HK = Hotkeys()

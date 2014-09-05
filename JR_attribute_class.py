@@ -1,4 +1,3 @@
-from JR_hud_class import *
 from JR_cache_class import *
 import maya.cmds as cmds
 class Attributes():
@@ -22,11 +21,11 @@ class Attributes():
 		else:
 			#attribute = self.history[-1] + attributes[Cache.offset]
 			return Cache.attributeList[Cache.offset] [1]  # 1 is for the second value in the tuple
-	def toggleUp(self):
+	def attr_toggleUp(self):
 		Cache.offset +=1
 		Cache.currentAttribute = self.switchAttribute()
 		self.updateAttrHUD()
-	def toggleDown(self):
+	def attr_toggleDown(self):
 		Cache.offset -=1
 		Cache.currentAttribute = self.switchAttribute()
 		self.updateAttrHUD()
@@ -52,4 +51,3 @@ class Attributes():
 			return ''
 		else:
 			return Cache.attributeList[Cache.offset-1] [0]
-Attribute = Attributes()

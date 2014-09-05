@@ -1,16 +1,20 @@
-from JR_dragger_class import *
-from JR_attribute_class import *
-from JR_selection_class import *
-from JR_material_class import *
 from JR_cache_class import *
+from JR_dragger_class import DraggerTool
+from JR_attribute_class import Attributes
+from JR_selection_class import Selection
+from JR_material_class import Materials
+from JR_rename_tool import RenameTool
 import JR_camera_shake
 import JR_playblast_tool
-import JR_rename_tool
 import JR_camera_shuffle
+import maya.cmds as cmds
 #
-class Tools(Selection, DraggerTool, Attributes, Materials):
+class Tools(Selection, DraggerTool, Attributes, Materials, RenameTool):
 	def __init__(self):
 		Selection.__init__(self)
+		Attributes.__init__(self)
+		DraggerTool.__init__(self)
+		RenameTool.__init__(self)
 	def convertSelection(self, toType):
 		if toType == 'face':
 			return cmds.polyListComponentConversion( self.getSelection(), internal = True, toFace = True )
@@ -103,18 +107,18 @@ class Tools(Selection, DraggerTool, Attributes, Materials):
 	def cameraShakeTool(self):
 		JR_camera_shake.run()
 	def renameTool(self):
-		JR_rename_tool.UI('exit')
+		self.Rename_UI('exit')
 	def bridgeTool(self):
 		X = self.getSelection()
 		cmds.polyBridgeEdge(X, ch= 1, divisions= 0, smoothingAngle = 30)
-		Attribute.setAttributes( attrs = [ ('Twist', '.twist') , ('Divisions', '.divisions'), ('CurveType', '.curveType'), ('Taper', '.taper') ]  )
-		Dragger( X , 'Bridge')
+		self.setAttributes( attrs = [ ('Twist', '.twist') , ('Divisions', '.divisions'), ('CurveType', '.curveType'), ('Taper', '.taper') ]  )
+		self.Dragger( X , 'Bridge')
 	def smoothTool(self):
 		X = self.getSelection()
 		if self.getType(0) == 'face':
 			cmds.polySubdivideFacet
-			Attribute.setAttributes( attrs = [ ('U', '.divisionsU') , ('V', '.divisionsV') ]  )
-			Dragger(X, 'polySubdFace')
+			self.setAttributes( attrs = [ ('U', '.divisionsU') , ('V', '.divisionsV') ]  )
+			self.Dragger(X, 'polySubdFace')
 		elif self.getType(0) == 'mesh':
 			print "can't use this for smoothing because t's tied to the more important pivot positioning tool."
 			cmds.polySmooth(X, mth=1, dv=1, bnr=1,c=1, kb=1, ksb=1, khe=0, kt=1, kmb=0, suv=1, peh=0, sl=1, dpe=1, ps=0.1, ro=1, ch=1)
@@ -144,14 +148,14 @@ class Tools(Selection, DraggerTool, Attributes, Materials):
 		X = self.getSelection() # adds selection to a variable so we can deselect it later while still using it for the Dragger command.
 		if self.getType(0) == 'face':
 			cmds.polyExtrudeFacet( X, constructionHistory = 1, keepFacesTogether = 1)
-			Attribute.setAttributes( attrs = [('Thickness', '.thickness'), ('Offset', '.offset'), ('Division', '.divisions'), ('Z Translate', '.localTranslateZ'), ('Faces Together', '.keepFacesTogether')] )
+			self.setAttributes( attrs = [('Thickness', '.thickness'), ('Offset', '.offset'), ('Division', '.divisions'), ('Z Translate', '.localTranslateZ'), ('Faces Together', '.keepFacesTogether')] )
 		elif self.getType(0) == 'edge':
 			cmds.polyExtrudeEdge( X, constructionHistory = 1, keepFacesTogether = 1)
-			Attribute.setAttributes( attrs = [('Thickness', '.thickness'), ('Offset', '.offset'), ('Division', '.divisions'), ('Z Translate', '.localTranslateZ')] )
+			self.setAttributes( attrs = [('Thickness', '.thickness'), ('Offset', '.offset'), ('Division', '.divisions'), ('Z Translate', '.localTranslateZ')] )
 		else:
 			pass
 		#cmds.select( deselect = 1 ) # removes selection from the face initially extruded, to allow for rotation and translation of new extruded face
-		Dragger( X , 'Extrude')
+		self.Dragger( X , 'Extrude')
 	def jointTool(self):
 		if len(self.getSelection()) == 1:
 			location = self.getMiddle()[0]
@@ -200,8 +204,8 @@ class Tools(Selection, DraggerTool, Attributes, Materials):
 	def bevelTool(self):
 		X = self.getSelection() # this is added because once the bevel is performed the face is deselected.
 		cmds.polyBevel( X, ch=1, offset=0.05 ,segments =1, smoothingAngle = 30, offsetAsFraction = 1, autoFit = 1, worldSpace = 1, angleTolerance = 180, miteringAngle = 180, uvAssignment = 0, mergeVertices = 1, mergeVertexTolerance = 0.0001 )
-		Attribute.setAttributes( attrs = [ ('Offset', '.offset'), ('Segments', '.segments') ] )
-		Dragger( X , 'Bevel')
+		self.setAttributes( attrs = [ ('Offset', '.offset'), ('Segments', '.segments') ] )
+		self.Dragger( X , 'Bevel')
 	def polySeperateTool(self):
 		cmds.polySeparate()
 		cmds.delete(ch=1)
@@ -330,7 +334,7 @@ class Tools(Selection, DraggerTool, Attributes, Materials):
 				cmds.Export()
 			else:
 				cmds.ExportSelection()
-		Attribute.setAttributes()
+		self.setAttributes()
 	def cameraTool(self, category = 'NA'):
 		if category == 'frostbite':
 			frostbiteCam = cmds.camera(dr = 1, dgm = 1, ncp = .1, fcp = 10000 )
@@ -345,7 +349,7 @@ class Tools(Selection, DraggerTool, Attributes, Materials):
 			cmds.color( frostbiteCam[0], ud=2 )
 		elif category == 'NA':
 			cmds.camera(dr = 1, dgm = 1, ncp = .01, fcp = 10000 )
-		Attribute.setAttributes()
+		self.setAttributes()
 	def motionPathTool(self, status):
 		if status == 'On':
 			for i in x:
@@ -367,7 +371,7 @@ class Tools(Selection, DraggerTool, Attributes, Materials):
 		# add to the offset
 		Cache.camSceneOffset +=1
 		# clear attributes
-		#Attribute.setAttributes()
+		#self.setAttributes()
 	def defaultCamSwitch(self):
 		i = self.getCameras('default')
 		# check cached offset to see if it's beyond the limit
@@ -382,7 +386,7 @@ class Tools(Selection, DraggerTool, Attributes, Materials):
 		cmds.modelEditor( 'modelPanel4', edit=True, camera = i[ Cache.camDefaultOffset ])
 		Cache.camDefaultOffset +=1
 		# clear attributes
-		#Attribute.setAttributes()
+		#self.setAttributes()
 	def mirrorModelingTool(self, direction, *args):
 		original = self.getSelection()
 		#pivot = cmds.xform(query = True, worldSpace = True, scalePivot = True)
@@ -425,37 +429,37 @@ class Tools(Selection, DraggerTool, Attributes, Materials):
 		#cmds.setAttr('Instances'+'.displayType', 2)
 	def creaseTool(self):
 		cmds.polyCrease( value=0.9 )
-		Attribute.setAttributes( attrs = [ ('Offset', '.offset'), ('Segments', '.segments') ] )
-		Dragger( X , 'Bevel')
+		self.setAttributes( attrs = [ ('Offset', '.offset'), ('Segments', '.segments') ] )
+		self.Dragger( X , 'Bevel')
 	def primitiveTool(self):
 		if self.getType(0)[1] == 'CAMERA':
-			Attribute.setAttributes( attrs = [('Locator Scale', '.locatorScale')] )
+			self.setAttributes( attrs = [('Locator Scale', '.locatorScale')] )
 			history = ''
 		if self.getHistory(self.getSelection(), 0, 'polyCube' ):
-			Attribute.setAttributes( attrs = [ ('Width', '.width') , ('Height', '.height'), ('Depth', '.depth'), ('Width Div', '.subdivisionsWidth') , ('Height Div', '.subdivisionsHeight'), ('Depth Div', '.subdivisionsDepth') ]  )
+			self.setAttributes( attrs = [ ('Width', '.width') , ('Height', '.height'), ('Depth', '.depth'), ('Width Div', '.subdivisionsWidth') , ('Height Div', '.subdivisionsHeight'), ('Depth Div', '.subdivisionsDepth') ]  )
 			history = 'polyCube' 
 		elif self.getHistory(self.getSelection(), 0, 'polySphere' ):
-			Attribute.setAttributes( attrs = [ ('Axis Div', '.subdivisionsAxis') , ('Height Div', '.subdivisionsHeight') ]  )
+			self.setAttributes( attrs = [ ('Axis Div', '.subdivisionsAxis') , ('Height Div', '.subdivisionsHeight') ]  )
 			history = 'polySphere' 
 		elif self.getHistory(self.getSelection(), 0, 'polyCylinder' ):
-			Attribute.setAttributes( attrs = [ ('Radius', '.radius') , ('Height', '.height'), ('Axis Div', '.subdivisionsAxis') , ('Height Div', '.subdivisionsHeight'), ('Caps Div', '.subdivisionsCaps') ]  )
+			self.setAttributes( attrs = [ ('Radius', '.radius') , ('Height', '.height'), ('Axis Div', '.subdivisionsAxis') , ('Height Div', '.subdivisionsHeight'), ('Caps Div', '.subdivisionsCaps') ]  )
 			history = 'polyCylinder' 
 		elif self.getHistory(self.getSelection(), 0, 'polyTorus' ):
-			Attribute.setAttributes( attrs = [ ('Radius', '.radius') , ('Section Radius', '.sectionRadius'), ('Twist', '.twist') , ('Axis Div', '.subdivisionsAxis'), ('Height Div', '.subdivisionsHeight') ]  )
+			self.setAttributes( attrs = [ ('Radius', '.radius') , ('Section Radius', '.sectionRadius'), ('Twist', '.twist') , ('Axis Div', '.subdivisionsAxis'), ('Height Div', '.subdivisionsHeight') ]  )
 			history = 'polyTorus' 
 		elif self.getHistory(self.getSelection(), 0, 'polyCone' ):
-			Attribute.setAttributes( attrs = [ ('Radius', '.radius') , ('Height', '.height'), ('Axis Div', '.subdivisionsAxis') , ('Height Div', '.subdivisionsHeight'), ('Cap Div', '.subdivisionsCap') ]  )
+			self.setAttributes( attrs = [ ('Radius', '.radius') , ('Height', '.height'), ('Axis Div', '.subdivisionsAxis') , ('Height Div', '.subdivisionsHeight'), ('Cap Div', '.subdivisionsCap') ]  )
 			history = 'polyCone' 
 		elif self.getHistory(self.getSelection(), 0, 'polyPyramid' ):
-			Attribute.setAttributes( attrs = [ ('Radius', '.sideLength') , ('Height Div', '.subdivisionsHeight'), ('Cap Div', '.subdivisionsCaps') , ('Sides', '.numberOfSides') ]  )
+			self.setAttributes( attrs = [ ('Radius', '.sideLength') , ('Height Div', '.subdivisionsHeight'), ('Cap Div', '.subdivisionsCaps') , ('Sides', '.numberOfSides') ]  )
 			history = 'polyPyramid'
 		elif self.getHistory(self.getSelection(), 0, 'polyPipe' ):
-			Attribute.setAttributes( attrs = [ ('Radius', '.radius') , ('Round Cap', '.roundCap'),  ('Height', '.height'), ('Thickness', '.thickness') , ('Axis Div', '.subdivisionsAxis'), ('Height Div', '.subdivisionsHeight'), ('Cap Div', '.subdivisionsCaps') ]  )
+			self.setAttributes( attrs = [ ('Radius', '.radius') , ('Round Cap', '.roundCap'),  ('Height', '.height'), ('Thickness', '.thickness') , ('Axis Div', '.subdivisionsAxis'), ('Height Div', '.subdivisionsHeight'), ('Cap Div', '.subdivisionsCaps') ]  )
 			history = 'polyPipe'
 		elif self.getHistory(self.getSelection(), 0, 'polyPlane' ):
-			Attribute.setAttributes( attrs = [ ('Width', '.width') , ('Height', '.height'),  ('Width Div', '.subdivisionsWidth'), ('Height Div', '.subdivisionsHeight') ]  )
+			self.setAttributes( attrs = [ ('Width', '.width') , ('Height', '.height'),  ('Width Div', '.subdivisionsWidth'), ('Height Div', '.subdivisionsHeight') ]  )
 			history = 'polyPlane'  
-		Dragger(self.getSelection(), history )
+		self.Dragger(self.getSelection(), history )
 	def selectTool(self):
 		selectAttributes = [ ('Normal', 'options = 4'), ('Reflection', '.options = 4') ]
 		paintAttributes = [ ('Select', 'options = 4'), ('Soft Select', '.options = 4'), ('Brush Size', '.options = 4') ]
@@ -463,11 +467,11 @@ class Tools(Selection, DraggerTool, Attributes, Materials):
 			if Cache.keyOffset == 0:
 				cmds.selectContext('mySelect', edit = True)
 				Cache.currentContext = 'mySelect'
-				Attribute.setAttributes ( selectAttributes )
+				self.setAttributes ( selectAttributes )
 			elif Cache.keyOffset == 1:
 				cmds.artSelectCtx('myPaintSelect', edit = True)
 				Cache.currentContext = 'myPaintSelect'
-				Attribute.setAttributes ( paintAttributes )
+				self.setAttributes ( paintAttributes )
 			elif Cache.keyOffset == 2:
 				Cache.currentContext = 'selectDragger'
 				self.primitiveTool()
@@ -475,11 +479,11 @@ class Tools(Selection, DraggerTool, Attributes, Materials):
 			if Cache.keyOffset == 0:
 				cmds.selectContext ( 'mySelect' )
 				Cache.currentContext = 'mySelect'
-				Attribute.setAttributes ( selectAttributes )
+				self.setAttributes ( selectAttributes )
 			elif Cache.keyOffset == 1:
 				cmds.artSelectCtx ( 'myPaintSelect' )
 				Cache.currentContext = 'myPaintSelect'
-				Attribute.setAttributes ( paintAttributes )
+				self.setAttributes ( paintAttributes )
 			elif Cache.keyOffset == 2:
 				Cache.currentContext = 'selectDragger'
 				self.primitiveTool()
@@ -490,60 +494,60 @@ class Tools(Selection, DraggerTool, Attributes, Materials):
 			if Cache.keyOffset == 0:
 				cmds.manipMoveContext('myMove', edit = True, mode = 2 ) # world mode
 				Cache.currentContext = 'myMove'
-				Attribute.setAttributes()
+				self.setAttributes()
 			else:
 				cmds.manipMoveContext('myMove', edit = True, mode = 0 ) # object mode
 				Cache.currentContext = 'myMove'
-				Attribute.setAttributes()
+				self.setAttributes()
 		except:
 			if Cache.keyOffset == 0:
 				cmds.manipMoveContext( 'myMove', mode = 2 ) # world mode
 				Cache.currentContext = 'myMove'
-				Attribute.setAttributes()
+				self.setAttributes()
 			else:
 				cmds.manipMoveContext('myMove', mode = 0 ) # object mode
 				Cache.currentContext = 'myMove'
-				Attribute.setAttributes()
+				self.setAttributes()
 		cmds.setToolTo( Cache.currentContext )
 	def rotateTool(self):
 		try:
 			if Cache.keyOffset == 0:
 				cmds.manipRotateContext('myRotate', edit = True, mode = 0) # world mode
 				Cache.currentContext = 'myRotate'
-				Attribute.setAttributes()
+				self.setAttributes()
 			else:
 				cmds.manipRotateContext('myRotate', edit = True, mode = 1) # local mode
 				Cache.currentContext = 'myRotate'
-				Attribute.setAttributes()
+				self.setAttributes()
 		except:
 			if Cache.keyOffset == 0:
 				cmds.manipRotateContext( 'myRotate', mode = 0 ) # world mode
 				Cache.currentContext = 'myRotate'
-				Attribute.setAttributes()
+				self.setAttributes()
 			else:
 				cmds.manipRotateContext('myRotate', mode = 1 ) # local mode
 				Cache.currentContext = 'myRotate'
-				Attribute.setAttributes()
+				self.setAttributes()
 		cmds.setToolTo( Cache.currentContext )
 	def scaleTool(self):
 		try:
 			if Cache.keyOffset == 0:
 				cmds.manipScaleContext('myScale', edit = True, mode = 2) # world mode
 				Cache.currentContext = 'myScale'
-				Attribute.setAttributes()
+				self.setAttributes()
 			else:
 				cmds.manipScaleContext('myScale', edit = True, mode = 0) # object mode
 				Cache.currentContext = 'myScale'
-				Attribute.setAttributes()
+				self.setAttributes()
 		except:
 			if Cache.keyOffset == 0:
 				cmds.manipScaleContext( 'myScale', mode = 2 ) # world mode
 				Cache.currentContext = 'myScale'
-				Attribute.setAttributes()
+				self.setAttributes()
 			else:
 				cmds.manipScaleContext('myScale', mode = 0) # object mode
 				Cache.currentContext = 'myScale'
-				Attribute.setAttributes()
+				self.setAttributes()
 		cmds.setToolTo( Cache.currentContext )
 #
-Tool = Tools()
+#Tool = Tools()
